@@ -1,0 +1,108 @@
+\section{Preliminaries}
+
+\subsection{Notation}
+$\sec$ denotes the security parameter and for $n\in\mathbb N$, $[n]:=\{1,\dots,n\}$. We use $\langle \A,\B\rangle$ to denote a protocol between two parties \A and \B as well as the transcript of the protocol, which consists of all the messages sent between them. We use $(\A(a),\B(b))_{\langle \A,\B\rangle}$ to denote the joint output distribution of $\A$ and \B when interacting in protocol $\langle \A,\B\rangle$ with inputs $a$ and $b$.
+
+
+\begin{definition}[Random Oracle]
+A \emph{random oracle} over a set of domains and an image is a collection of functions \H that map an element $q$ within one of the domains  to a uniform element $\H(q)$ in the image.  
+\end{definition}
+
+
+\subsection{Key Agreement}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\node [anchor=west] at (0,5) {\A:};
+\node [anchor=west] at (7,5) {\B:};
+\node [anchor=west] at (0,4.5){$\mes_\A\leftarrow\A(\tape_\A)$};
+\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_\A$}(6.75,4.5);
+\node [anchor=west] at (7,4){$\mes_\B\leftarrow\B(\tape_\B,\mes_\A)$};
+\draw [thick, <-] (3.75,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
+\node [anchor=west] at (0,3.5) {$\key_\A=\EK(\tape_\A,\mes_\B)$};
+\node [anchor=west] at (7,3.5) {$\key_\B=\EK(\tape_\B,\mes_\A)$};
+\end{tikzpicture}
+\label{fig:UKA}
+\caption{The figure shows a key agreement protocol between parties \A and \B with random tapes $\tape_\A$ and $\tape_\B$. For correctness, we require $\key_\A=\key_\B$.}
+\end{figure}
+
+
+\begin{definition}[(Two Message) Uniform Key Agreement (\UKA)] 
+Let \G be a group.
+We call a protocol $\langle \A,\B\rangle$ between two ppt parties \A and \B (two message) uniform key agreement if \A first sends a message $\mes_\A\in\G$ to \B and \B responds with a final message $\mes_\B$ and in the end, both establish a common key $\key$ (see Figure~\ref{fig:UKA}) using a key establish algorithm \EK. Further, we require three properties:
+\begin{description}
+\item[Correctness:]
+$$
+\Pr[\key_\A=\EK(\tape_\A,\mes_\B)=\EK(\tape_\B,\mes_\A)=\key_\B]\geq 1-\negl,
+$$
+where $\tape_\A\leftarrow\bits^*$, $\tape_\B\leftarrow\bits^*$, $\mes_\A\leftarrow\A(\tape_\A)$ and $\mes_\B\leftarrow\B(\tape_\B)$.
+\item [Key Indistinguishability:] For any ppt distinguisher \D,
+$$ 
+|\Pr[\D(1^\sec,\langle \A,\B\rangle, \key)=1]-\Pr[\D(1^\sec,\langle \A,\B\rangle, u)=1]|=\negl,
+$$
+where $\key$ is the established key between \A and \B and $u$ is a uniform element from the key domain.
+\item [Uniformity:] For any ppt distinguisher \D, 
+$$
+|\Pr[\D(1^\sec,\mes_\A)=1]-\Pr[\D( 1^\sec,u)=1]|=\negl,
+$$
+where $u$ is a uniform element from \G.
+\end{description}
+When \A and \B can send their messages concurrently, we call it a $1$-round \UKA otherwise a $2$-round \UKA.
+\end{definition}
+
+\begin{definition}[Multi-Instance Uniformity]
+We call a \UKA \emph{multi-instance uniform} if for any ppt distinguisher \D,
+$$
+|\Pr[\D^{\O_{\A}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=\negl,
+$$
+where $\O_{\A}$ outputs $\mes_\A\leftarrow\A(\tape_\A)$ for fresh randomness $\tape_\A$ and $\O_u$ outputs $u\leftarrow\G$.
+\end{definition}
+
+\begin{definition}[Multi-Instance Key Indistinguishability]
+We call a \UKA \emph{multi-instance key indistinguishable} if for any ppt distinguisher \D,
+$$
+|\Pr[\D^{\O_{\key}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=\negl,
+$$
+where $\O_{\key}$ outputs  $\langle \A,\B\rangle$ and $\key=\EK(\tape_\A,\mes_\B)=\EK(\tape_\B,\mes_\A)$. $\O_u$ outputs $\langle \A,\B\rangle$ and a uniform element $u$ from the key domain. Both oracles use fresh random tapes $\tape_\A,\tape_\B\leftarrow\bits^*$ for every query.
+\end{definition}
+
+\subsection{Oblivious Transfer}
+
+
+
+\begin{definition}[Ideal $k$ out of $n$ Oblivious Transfer]
+An \emph{ideal $k$ out of $n$ oblivious transfer} is an oracle \OOT that interacts with two parties, a sender \send and a receiver \rec. It takes a subset  $\set\subseteq[n]$ of size $k$ from \rec and in the end \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs the strings $(s_i)_{i\in\set}\subset(s_i)_{i\in[n]}$. We distinguish three kinds of ideal OTs
+\begin{description}
+\item[Sender Chosen Ideal OT:] $\send$ chooses $(s_i)_{i\in[n]}$ and sends it to \OOT. \OOT sends $(s_i)_{i\in\set}$ to \rec. We refer to \OOT with $\OOT^{\send}$.
+\item[Receiver Chosen Ideal OT:] \rec chooses $(s_i)_{i\in\set}$ and sends it to \OOT. \OOT samples the remaining strings $(s_i)_{i\in[n]}\setminus(s_i)_{i\in\set}$ uniformly at random and sends $(s_i)_{i\in[n]}$ to \send. We refer to \OOT with $\OOT^{\rec}$.
+\item[Uniform Ideal OT:] \OOT samples $(s_i)_{i\in[n]}$ uniformly at random and sends $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in\set}$ to \rec. We refer to \OOT with $\OOT^{u}$.
+\end{description}
+\end{definition}
+
+\begin{definition}[$k$ out of $n$ Oblivious Transfer ($\OT_{k,n}$)]
+We call a protocol $\langle \send,\rec \rangle$ between two ppt parties, a sender \send and a receiver \rec, a \emph{$k$ out of $n$ oblivious transfer} if \rec has as input a set $\set\subset[n]$ of size $k$ and at the end, \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs $(s_i)_{i\in\set}$. For security, we require two properties with respect to an ideal OT \OOT.
+\begin{description}
+\item[Security Against a Malicious Sender:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+$$
+|\Pr[\D((\Adv,\rec)_{\langle \Adv, \rec\rangle})=1] -\Pr[\D( (\Adv', \O_{\OT, \rec})_{\langle \Adv', \OOT\rangle})=1]|=\negl,
+$$
+where $\O_{\OT, \rec}$ is the \rec's side output within the view of \OOT and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+\item[Security Against a Malicious Receiver:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+$$
+|\Pr[\D((\send, \Adv)_{\langle \send, \Adv\rangle})=1] -\Pr[\D((\O_{\OT,\send},\Adv')_{\langle \OOT , \Adv' \rangle})=1]|=\negl,
+$$
+where $\O_{\OT,\send}$ is  the \send's side output within the view of \OOT and all algorithms receive input $1^\sec$.
+\end{description}
+We distinguish four different kinds of OTs
+\begin{description}
+\item[Uniform $\OT_{k,n}$:] The OT is secure with respect to $\OOT^u$.
+\item[Sender Chosen $\OT_{k,n}$:] The OT is secure with respect to $\OOT^{\send}$.
+\item[Receiver Chosen $\OT_{k,n}$:] The OT is secure with respect to $\OOT^{\rec}$.
+\item[Endemic $\OT_{k,n}$:] The OT is secure against a malicious  sender with respect to $\OOT^{\send}$ and secure against a malicious receiver with respect to $\OOT^{\rec}$.
+\end{description}
+\end{definition}
+
+\begin{remark}
+A uniform OT has the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic OT gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can choose the strings $(s_i)_{i\in\set}$.
+\end{remark}

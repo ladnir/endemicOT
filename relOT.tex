@@ -1,0 +1,62 @@
+\section{Relations between Various Notions of OT}
+
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\node (U) at (4,4) {Uniform OT};
+\node (SC) at (0,2) {Sender Chosen OT};
+\node (RC) at (8,2) {Receiver Chosen OT};
+\node (E) at (4,0) {Endemic OT};
+\node (TC) at (3,2) {Coin Tossing};
+\draw [-implies,double equal sign distance] (U) -- (SC);
+\draw [-implies,double equal sign distance] (U) -- (RC);
+\draw [-implies,double equal sign distance] (SC) -- (E);
+\draw [-implies,double equal sign distance] (RC) -- (E);
+\draw [->, thick] (U) -- (TC);
+\draw [->, thick] (E) --(5,2.5)-- (U);
+\draw [-, thick] (5,2.5)-- (TC);
+\draw [->, thick] (E) .. controls (1,0.75) .. (SC);
+\draw [->, thick] (E) .. controls (7,0.75) .. (RC);
+\end{tikzpicture}
+\label{fig:OTrelations}
+\caption{
+The figure depicts the different notions of OT and their relations. $A\Rightarrow B$ denotes that  any realization of primitive $A$ also realizes primitive $B$. $A\rightarrow B$ denotes that any realization of primitive $A$ can be efficiently transformed into a realization of primitive $B$.
+}
+\end{figure}
+
+\begin{lemma}
+Let the distribution of OT strings be efficiently sampleable. 
+Then a uniform $\OT_{k,n}$ is also a sender chosen as well as a receiver chosen $\OT_{k,n}$. If \OT is a sender or receiver chosen $\OT_{k,n}$, then it is also an endemic $\OT_{k,n}$.
+\end{lemma}
+
+\begin{proof}
+\begin{claim}\label{claim:utocs}
+Let \OT be secure against a malicious sender with respect to an ideal OT $\OOT^*$ that sends the OT strings $(s_i)_{i\in[n]}$ to the sender and the distribution of $(s_i)_{i\in[n]}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\send}$, which receives the OT strings $(s_i)_{i\in[n]}$ from the sender.
+\end{claim}
+
+
+\begin{proof}
+We show that if there is an adversary that breaks the security against a malicious security with respect to ideal OT $\OOT^{\send}$ then there is also an adversary that breaks the security with respect to $\OOT'$. More precisely, if there is a ppt adversary $\Adv_1$ such that for any ppt adversary $\Adv_1'$ there exists a ppt distinguisher $\D_1$ with 
+$$
+|\Pr[\D_1((\Adv_1,\rec)_{\langle \Adv_1, \rec\rangle})=1] -\Pr[\D_1( (\Adv'_1, \O_{\OT, \rec}^{\send})_{\langle \Adv_1', \OOT^{\send}\rangle})=1]|=\epsilon,
+$$
+where $\O_{\OT, \rec}^{\send}$ is the \rec's side output within the view of $\OOT^{\send}$ and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+Then there is also a ppt adversary $\Adv_2$ such that for any ppt adversary $\Adv_2'$ there exists a ppt distinguisher $\D_2$ with 
+$$
+|\Pr[\D_2((\Adv_2,\rec)_{\langle \Adv_2, \rec\rangle})=1] -\Pr[\D_1( (\Adv'_2, \O_{\OT, \rec}^*)_{\langle \Adv_2', \OOT^*\rangle})=1]|=\epsilon,
+$$
+where $\O_{\OT, \rec}^*$ is the \rec's side output within the view of $\OOT^*$ and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+
+We set $\Adv_2:=\Adv_1$ and $\D_2:=\D_1$. Further, for any $\Adv_2'$, there is an $\Adv_1'$  such that the distribution of $(\Adv'_2, \O_{\OT, \rec}^*)_{\langle \Adv_2', \OOT^*\rangle}$ is identical with the distribution $(\Adv'_1, \O_{\OT, \rec}^{\send})_{\langle \Adv_1', \OOT^{\send}\rangle}$. This follows from the fact that  $\Adv_1'$ could choose the OT strings $(s_i)_{i\in[n]}$  from the same distribution as $\OOT^*$ does and otherwise follow the description of $\Adv_2'$. Since $\D_1$ is successful for any $\Adv_1'$ it will be also for any $\Adv_2'$, which can be seen as a special case on over the set of all ppt adversaries $\Adv_1'$.
+\end{proof}
+
+\begin{claim}\label{claim:utocr}
+Let \OT be secure against a malicious receiver with respect to an ideal OT $\OOT^*$ that sends the learned OT strings $(s_i)_{i\in\set}$ to the receiver and the distribution of $(s_i)_{i\in\set}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\rec}$, which receives the OT strings $(s_i)_{i\in\set}$ from the receiver.
+\end{claim}
+
+\begin{proof}
+The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again, the set of all ppt $\Adv_2'$ is a subset of the set of all ppt $\Adv_1'$ and identical with the set of all $\Adv_1'$ that sample  $(s_i)_{i\in\set}$ from the same distribution as when sent by $\OOT^*$.
+\end{proof}
+
+\end{proof}

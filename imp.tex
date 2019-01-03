@@ -1,0 +1,28 @@
+\section{Optimality of the Result}
+
+\newcommand{\OG}{\ensuremath{\O_{\mathsf{G}}}\xspace}
+\newcommand{\OK}{\ensuremath{\O_{\mathsf{K}}}\xspace}
+\newcommand{\sk}{\ensuremath{\mathsf{sk}}\xspace}
+\newcommand{\pk}{\ensuremath{\mathsf{pk}}\xspace}
+\renewcommand{\L}{\ensuremath{\mathsf{L}}\xspace}
+\newcommand{\LOG}{\ensuremath{\L_{\OG}}\xspace}
+\newcommand{\LOK}{\ensuremath{\L_{\OK}}\xspace}
+\newcommand{\E}{\ensuremath{\mathsf{E}}\xspace}
+
+
+
+\begin{definition}[Asymmetric Random Oracle]
+An \emph{asymmetric random oracle} consists of two oracles \OG and \OK, with the following description.
+\begin{description}
+\item[\OG:] \OG has a list \LOG that is empty in the beginning. On an (empty) query, \OG samples $\sk\leftarrow\bits^{\sec}$. If $(\sk,*)\not\in\LOG$, it samples  $\pk\leftarrow\bits^{\sec}$. Then it outputs and stores  $(\sk,\pk)$ in \LOG. If $(\sk,*)\in\LOG$, \OG outputs entry $(\sk,\pk)$ of \LOG.
+\item[\OK:] \OK has a list \LOK, which is empty in the beginning, and access to list \LOG. On a query $(\sk_1,\pk_2)$, \OK looks up $\pk_1$ s.t. $(\sk_1,\pk_1)\in\LOG$. If $(\pk_1,\pk_2,\key)$ or $(\pk_2,\pk_1,\key)$ are in \LOK, it outputs $\key$. Otherwise it samples $\key\leftarrow\bits^{\sec}$, outputs $\key$ and stores $(\pk_1,\pk_2,\key)$ in \LOK.  
+\end{description} 
+\end{definition}
+
+\begin{lemma}
+Let $\langle \A, \B\rangle$ be a protocol between two parties \A and \B with access to a random oracle \H and an asymmetric random oracle $(\OG, \OK)$, where the outputs of \OK are submitted to \A, \B after all messages are sent. Then, there is an algorithm \E that takes as input the transcript $\langle \A, \B\rangle$ and outputs two lists $\L_1, \L_2$, such that with high probability, the views of \A and \B are mutually independent conditioned on $\L_1$, $\L_2$, transcript $\langle \A, \B\rangle$ and $(\pk_{\A,i},\pk_{\B,j},\key)_{i\in[Q_{\A}],j\in[Q_{\B}]}\subseteq\LOK$.
+\end{lemma}
+
+\begin{lemma}
+Let $\langle \A, \B\rangle$ be a protocol between two parties \A and \B with access to a random oracle \H and an asymmetric random oracle $(\OG, \OK)$, where \A makes $Q_{\A}$ and \B $Q_{\B}$ queries to $\OG$. Then, there is an algorithm \E that takes as input the transcript $\langle \A, \B\rangle$, the $Q_{\A}\cdot Q_{\B}$ asymmetric intersection queries $(\pk_{\A,i},\pk_{\B,j},\key)_{i\in[Q_{\A}],j\in[Q_{\B}]}\subseteq\LOK$ and outputs two lists $\L_1, \L_2$, such that with high probability, the views of \A and \B are mutually independent conditioned on $\L_1$, $\L_2$, transcript $\langle \A, \B\rangle$ and $(\pk_{\A,i},\pk_{\B,j},\key)_{i\in[Q_{\A}],j\in[Q_{\B}]}\subseteq\LOK$.
+\end{lemma}
