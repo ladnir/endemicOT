@@ -52,19 +52,21 @@ When \A and \B can send their messages concurrently, we call it a $1$-round \UKA
 \end{definition}
 
 \begin{definition}[Multi-Instance Uniformity]
-We call a \UKA \emph{multi-instance uniform} if for any ppt distinguisher \D,
+We call a \UKA $Q$ \emph{multi-instance uniform} if for any ppt distinguisher \D,
 $$
 |\Pr[\D^{\O_{\A}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=\negl,
 $$
-where $\O_{\A}$ outputs $\mes_\A\leftarrow\A(\tape_\A)$ for fresh randomness $\tape_\A$ and $\O_u$ outputs $u\leftarrow\G$.
+where $\O_{\A}$ outputs $\mes_\A\leftarrow\A(\tape_\A)$ for fresh randomness $\tape_\A$ and $\O_u$ outputs $u\leftarrow\G$ and $Q$ is a bound on the amount of queries to $\O_{u}$, $\O_{\A}$.
 \end{definition}
 
+
+
 \begin{definition}[Multi-Instance Key Indistinguishability]
-We call a \UKA \emph{multi-instance key indistinguishable} if for any ppt distinguisher \D,
+We call a \UKA $(Q,n)$ \emph{multi-instance key indistinguishable} if for any ppt distinguisher \D,
 $$
-|\Pr[\D^{\O_{\key}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=\negl,
+|\Pr[\D^{\O_{\langle \A,\B\rangle}, \O_{\key}}(1^{\sec})]=1]-Pr[\D^{\O_{\langle \A,\B\rangle},\O_{u}}(1^{\sec})=1]|=\negl,
 $$
-where $\O_{\key}$ outputs  $\langle \A,\B\rangle$ and $\key=\EK(\tape_\A,\mes_\B)=\EK(\tape_\B,\mes_\A)$. $\O_u$ outputs $\langle \A,\B\rangle$ and a uniform element $u$ from the key domain. Both oracles use fresh random tapes $\tape_\A,\tape_\B\leftarrow\bits^*$ for every query.
+where $\O_{\langle \A,\B\rangle}$ outputs on the $i$-th query a transcript $\T_i:=\langle \A_i,\B_i\rangle$, $\O_{\key}$ outputs on query $j$, key $\key_j=\EK(\tape_{\A_j},\mes_{\B_j})=\EK(\tape_{\B_j},\mes_{\A_j})$ that matches transcript $\T_i$. $\O_u$ outputs a uniform element $u$ from the key domain. $\O_{\langle \A,\B\rangle}$ uses fresh random tapes $\tape_{\A_i},\tape_{\B_i}\leftarrow\bits^*$ for every query. $Q$ is a bound on the amount of queries to $\O_{\langle \A,\B\rangle}$, where $n$ bounds the amount of queries to $\O_{\key}$, $\O_{u}$. 
 \end{definition}
 
 \subsection{Oblivious Transfer}
@@ -94,15 +96,15 @@ $$
 $$
 where $\O_{\OT,\send}$ is  the \send's side output within the view of \OOT and all algorithms receive input $1^\sec$.
 \end{description}
-We distinguish four different kinds of OTs
+We distinguish four different security notions.
 \begin{description}
-\item[Uniform $\OT_{k,n}$:] The OT is secure with respect to $\OOT^u$.
-\item[Sender Chosen $\OT_{k,n}$:] The OT is secure with respect to $\OOT^{\send}$.
-\item[Receiver Chosen $\OT_{k,n}$:] The OT is secure with respect to $\OOT^{\rec}$.
-\item[Endemic $\OT_{k,n}$:] The OT is secure against a malicious  sender with respect to $\OOT^{\send}$ and secure against a malicious receiver with respect to $\OOT^{\rec}$.
+\item[Uniform Security:] The OT is secure with respect to $\OOT^u$.
+\item[Sender Tweakable Security:] The OT is secure with respect to $\OOT^{\send}$.
+\item[Receiver Tweakable Security:] The OT is secure with respect to $\OOT^{\rec}$.
+\item[Endemic Security:] The OT is secure against a malicious  sender with respect to $\OOT^{\send}$ and secure against a malicious receiver with respect to $\OOT^{\rec}$.
 \end{description}
 \end{definition}
 
 \begin{remark}
-A uniform OT has the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic OT gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can choose the strings $(s_i)_{i\in\set}$.
+Uniform security is the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic security gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can potentially choose the strings $(s_i)_{i\in\set}$.
 \end{remark}

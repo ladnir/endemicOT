@@ -1,13 +1,13 @@
-\section{Relations between Various Notions of OT}
+\section{Relations between OT Security Notions}
 
 
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}
-\node (U) at (4,4) {Uniform OT};
-\node (SC) at (0,2) {Sender Chosen OT};
-\node (RC) at (8,2) {Receiver Chosen OT};
-\node (E) at (4,0) {Endemic OT};
+\node (U) at (4,4) {Uniform Security};
+\node (SC) at (0,2) {Sender Tweakable};
+\node (RC) at (8,2) {Receiver Tweakable};
+\node (E) at (4,0) {Endemic Security};
 \node (TC) at (3,2) {Coin Tossing};
 \draw [-implies,double equal sign distance] (U) -- (SC);
 \draw [-implies,double equal sign distance] (U) -- (RC);
@@ -21,18 +21,19 @@
 \end{tikzpicture}
 \label{fig:OTrelations}
 \caption{
-The figure depicts the different notions of OT and their relations. $A\Rightarrow B$ denotes that  any realization of primitive $A$ also realizes primitive $B$. $A\rightarrow B$ denotes that any realization of primitive $A$ can be efficiently transformed into a realization of primitive $B$.
+The figure depicts the different security notions of OT and their relations. $A\Rightarrow B$ denotes that security $A$ implies security $B$. $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed into an OT realizing security $B$.
 }
 \end{figure}
 
 \begin{lemma}
 Let the distribution of OT strings be efficiently sampleable. 
-Then a uniform $\OT_{k,n}$ is also a sender chosen as well as a receiver chosen $\OT_{k,n}$. If \OT is a sender or receiver chosen $\OT_{k,n}$, then it is also an endemic $\OT_{k,n}$.
+Then a uniform security implies sender as well as a receiver tweakable security. If \OT is a sender or receiver tweakable secure, then it is also an endemically secure.
 \end{lemma}
 
 \begin{proof}
+In the first step, we show that uniform security implies sender tweakable security and receiver tweakable security implies endemic security. These two implications result from the same simple fact that a malicious sender interacting with the ideal OT is easier to construct when it can choose the OT strings rather than if it receives the strings from the ideal OT. The following claim formalizes this fact. 
 \begin{claim}\label{claim:utocs}
-Let \OT be secure against a malicious sender with respect to an ideal OT $\OOT^*$ that sends the OT strings $(s_i)_{i\in[n]}$ to the sender and the distribution of $(s_i)_{i\in[n]}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\send}$, which receives the OT strings $(s_i)_{i\in[n]}$ from the sender.
+Let \OT be secure against a malicious sender with respect to an ideal OT $\OOT^*$ that sends the OT strings $(s_i)_{i\in[n]}$ to the sender, i.e. oracle $\OOT^u$ and $\OOT^{\rec}$, and the distribution of $(s_i)_{i\in[n]}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\send}$, which receives the OT strings $(s_i)_{i\in[n]}$ from the sender.
 \end{claim}
 
 
@@ -51,8 +52,9 @@ where $\O_{\OT, \rec}^*$ is the \rec's side output within the view of $\OOT^*$ a
 We set $\Adv_2:=\Adv_1$ and $\D_2:=\D_1$. Further, for any $\Adv_2'$, there is an $\Adv_1'$  such that the distribution of $(\Adv'_2, \O_{\OT, \rec}^*)_{\langle \Adv_2', \OOT^*\rangle}$ is identical with the distribution $(\Adv'_1, \O_{\OT, \rec}^{\send})_{\langle \Adv_1', \OOT^{\send}\rangle}$. This follows from the fact that  $\Adv_1'$ could choose the OT strings $(s_i)_{i\in[n]}$  from the same distribution as $\OOT^*$ does and otherwise follow the description of $\Adv_2'$. Since $\D_1$ is successful for any $\Adv_1'$ it will be also for any $\Adv_2'$, which can be seen as a special case on over the set of all ppt adversaries $\Adv_1'$.
 \end{proof}
 
+The remaining two implications, from uniform security to receiver tweakable security and from sender tweakable security to endemic security follow in a similar fashion. Again it is easier to construct a malicious receiver interacting with the ideal OT when he can choose the OT strings rather than receiving them from the ideal OT.
 \begin{claim}\label{claim:utocr}
-Let \OT be secure against a malicious receiver with respect to an ideal OT $\OOT^*$ that sends the learned OT strings $(s_i)_{i\in\set}$ to the receiver and the distribution of $(s_i)_{i\in\set}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\rec}$, which receives the OT strings $(s_i)_{i\in\set}$ from the receiver.
+Let \OT be secure against a malicious receiver with respect to an ideal OT $\OOT^*$ that sends the learned OT strings $(s_i)_{i\in\set}$ to the receiver, i.e. oracle $\OOT^u$ and $\OOT^{\send}$, and the distribution of $(s_i)_{i\in\set}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\rec}$, which receives the OT strings $(s_i)_{i\in\set}$ from the receiver.
 \end{claim}
 
 \begin{proof}
