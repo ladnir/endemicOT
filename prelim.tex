@@ -96,15 +96,15 @@ $$
 $$
 where $\O_{\OT,\send}$ is  the \send's side output within the view of \OOT and all algorithms receive input $1^\sec$.
 \end{description}
-We distinguish four different kinds of OTs
+We distinguish four different security notions.
 \begin{description}
-\item[Uniform $\OT_{k,n}$:] The OT is secure with respect to $\OOT^u$.
-\item[Sender Chosen $\OT_{k,n}$:] The OT is secure with respect to $\OOT^{\send}$.
-\item[Receiver Chosen $\OT_{k,n}$:] The OT is secure with respect to $\OOT^{\rec}$.
-\item[Endemic $\OT_{k,n}$:] The OT is secure against a malicious  sender with respect to $\OOT^{\send}$ and secure against a malicious receiver with respect to $\OOT^{\rec}$.
+\item[Uniform Security:] The OT is secure with respect to $\OOT^u$.
+\item[Sender Tweakable Security:] The OT is secure with respect to $\OOT^{\send}$.
+\item[Receiver Tweakable Security:] The OT is secure with respect to $\OOT^{\rec}$.
+\item[Endemic Security:] The OT is secure against a malicious  sender with respect to $\OOT^{\send}$ and secure against a malicious receiver with respect to $\OOT^{\rec}$.
 \end{description}
 \end{definition}
 
 \begin{remark}
-A uniform OT has the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic OT gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can choose the strings $(s_i)_{i\in\set}$.
+Uniform security is the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic security gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can potentially choose the strings $(s_i)_{i\in\set}$.
 \end{remark}
