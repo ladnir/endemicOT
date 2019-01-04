@@ -26,3 +26,17 @@ Let $\langle \A, \B\rangle$ be a protocol between two parties \A and \B with acc
 \begin{lemma}
 Let $\langle \A, \B\rangle$ be a protocol between two parties \A and \B with access to a random oracle \H and an asymmetric random oracle $(\OG, \OK)$, where \A makes $Q_{\A}$ and \B $Q_{\B}$ queries to $\OG$. Then, there is an algorithm \E that takes as input the transcript $\langle \A, \B\rangle$, the $Q_{\A}\cdot Q_{\B}$ asymmetric intersection queries $(\pk_{\A,i},\pk_{\B,j},\key)_{i\in[Q_{\A}],j\in[Q_{\B}]}\subseteq\LOK$ and outputs two lists $\L_1, \L_2$, such that with high probability, the views of \A and \B are mutually independent conditioned on $\L_1$, $\L_2$, transcript $\langle \A, \B\rangle$ and $(\pk_{\A,i},\pk_{\B,j},\key)_{i\in[Q_{\A}],j\in[Q_{\B}]}\subseteq\LOK$.
 \end{lemma}
+
+
+
+\begin{theorem}
+There is no secure $k$ out of $n$ endemic OT where the sender makes at most $n$ queries to $\OK$ and the receiver makes at most $k-1$ queries to $\OG$. 
+\end{theorem}
+
+\begin{proof}
+We show that there is either a sucessful malicious sender or receiver that breaks the protocol. We start by constructing a malicious sender that receives $k-1$ OT strings learned by the receiver and tries to determine the $k$-th OT string. An attack that is successful with more than probability $\frac{1}{n-k-1}$ would violate the security of the OT. 
+
+On a high level, the malicious sender chooses the following strategy. It runs the normal protocol interacting with \rec to receive the OT strings $(s_i)_{i\in[n]}$. Further, \rec sends him $k-1$ of his learned strings $(s_i)_{i\in\set_1}$, where $\set_1$ has size $k-1$. It will then run algorithm \E to learn the two lists $\L_1$, $\L_2$, where it provides \E his own list of query answer pairs of $\OK$, which contains all asymmetric intersection queries. 
+
+Now, given the transcript, $L_1$, $L_2$ the views of the malicious sender and \rec are mutually independent. This allows the malicious sender to resample the view of \rec such that its output, $(s_{\rec,i})_{i\in\set_{\rec}}$, where $\set_{\rec}$ has size $k$, is still consistent with its own view, i.e. $(s_{\rec,i})_{i\in\set_{\rec}}\subset(s_i)_{i\in[n]}$. The malicious sender uses this resampling procedure to determine 
+\end{proof}
