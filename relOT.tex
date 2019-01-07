@@ -72,8 +72,29 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 
 \paragraph{Transformations.} 
 
+
+\begin{figure}[t]
+	\framebox{\begin{minipage}{0.95\linewidth}
+			Input: The sender $\send$ has input $s_1,...,s_n\in \{0,1\}^\ell$ while the receiver $\rec$ has input $\set\subseteq [n]$ of size $k$.
+			\begin{enumerate}
+				\item \label{step:senderChosen_step1} The parties invoke $\O^{e}_{k,n}$ where $\rec$ takes the role of the receiver with inputs $\set$. The $\send$ obtains $(m_i)_{i\in[n]}$ and the $\rec$ obtains $(m_i)_{i\in \set}$ from  $\O^{e}_{k,n}$. 
+				\item \label{step:senderChosen_step2}  $\send$ sends the strings $r_1,...,r_n$ to $\rec$ where $r_i:=s_i\oplus m_i$.
+				\item \label{step:senderChosen_step3}  $\rec$ outputs $(s_i)_{i\in \set}$ where $s_i:=m_i\oplus r_i$.
+	\end{enumerate}\end{minipage}}
+	\caption{Sender Chosen OT Protocol $\Pi^{\send}_{k,n}$ in the $\O^{e}_{k,n}$ hybrid (\definitionref{def:ot}).}
+	\label{fig:protoSendOT}
+\end{figure}
+
+
 \begin{lemma}
-	Let $\Pi$ be an $r$-round protocol that satisfies the endemic $\OT_{k,n}$ security notion. Then there exists an $(r+1)$-round protocol $\Pi'$ that realizes the Sender Chosen Ideal OT, $\OOT^{\send}$.
+	$\Pi^{\send}_{k,n}$ of \figureref{fig:protoSendOT} realizes the Sender Chosen Ideal OT $\OOT^{\send}$ (\definitionref{def:ot}) with unconditional security.
 \end{lemma}
 
-
+\begin{proof}
+	First let us consider any corrupt sender $\Adv_1$. We construct a new $\Adv_1'$ adversary which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output  to $\Adv_1$.  $\Adv_1'$ plays the role of $\O^{e}_{k,n}$ and $\rec$ in $\Pi^{\send}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$ in \stepref{step:senderChosen_step1}, along with the strings $r_1,...,r_n$ in \stepref{step:senderChosen_step2}.  $\Adv_1'$ extracts the OT strings of $\Adv_1$ as $s_i:=r_i\oplus m_i$. $\Adv_1'$ sends $(s_i)_{i\in [n]}$ to $\O^{\send}_{k,n}$ and outputs whatever $\Adv_1$ outputs.
+	
+	Observe that the output of the honest party is identically when $\Adv_1$ interacts with $\rec$ in $\Pi^{\send}_{k,n}$ and when $\Adv_1'$ interacts with $\O^{\send}_{k,n}$.
+	
+	
+	Now let us consider a corrupt receiver $\Adv_2$.   We construct a new $\Adv_2'$ adversary which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output distribution to $\Adv_2$. $\Adv_2'$ plays the role of $\O^{e}_{k,n}$ and $\send$ in $\Pi^{\send}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $m_1,...,m_n$ from $\Adv_1$ in \stepref{step:senderChosen_step1}
+\end{proof}0
