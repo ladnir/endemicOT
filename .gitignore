@@ -1,5 +1,10 @@
+/tmp/
+/document.dvi
+/document.pdf
+/document.synctex.gz
 *.pdf
 *.log
 *.out
 *.aux
 *.gz
+
