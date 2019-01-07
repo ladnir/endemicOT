@@ -77,7 +77,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 	\framebox{\begin{minipage}{0.95\linewidth}
 			Input: The sender $\send$ has input $s_1,...,s_n\in \{0,1\}^\ell$ while the receiver $\rec$ has input $\set\subseteq [n]$ of size $k$.
 			\begin{enumerate}
-				\item \label{step:senderChosen_step1} The parties invoke $\O^{e}_{k,n}$ where $\rec$ takes the role of the receiver with inputs $\set$. The $\send$ obtains $(m_i)_{i\in[n]}$ and the $\rec$ obtains $(m_i)_{i\in \set}$ from  $\O^{e}_{k,n}$. 
+				\item \label{step:senderChosen_step1} The parties invoke $\O^{e}_{k,n}$ where $\rec$ takes the role of the receiver with inputs $\set$. $\send$ obtains $(m_i)_{i\in[n]}$ and $\rec$ obtains $(m_i)_{i\in \set}$ from  $\O^{e}_{k,n}$. 
 				\item \label{step:senderChosen_step2}  $\send$ sends the strings $r_1,...,r_n$ to $\rec$ where $r_i:=s_i\oplus m_i$.
 				\item \label{step:senderChosen_step3}  $\rec$ outputs $(s_i)_{i\in \set}$ where $s_i:=m_i\oplus r_i$.
 	\end{enumerate}\end{minipage}}
@@ -91,12 +91,45 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \end{lemma}
 
 \begin{proof}
-	First let us consider any corrupt sender $\Adv_1$. We construct a new $\Adv_1'$ adversary which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output  to $\Adv_1$.  $\Adv_1'$ plays the role of $\O^{e}_{k,n}$ and $\rec$ in $\Pi^{\send}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$ in \stepref{step:senderChosen_step1}, along with the strings $r_1,...,r_n$ in \stepref{step:senderChosen_step2}.  $\Adv_1'$ extracts the OT strings of $\Adv_1$ as $s_i:=r_i\oplus m_i$. $\Adv_1'$ sends $(s_i)_{i\in [n]}$ to $\O^{\send}_{k,n}$ and outputs whatever $\Adv_1$ outputs.
+	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output  to $\Adv_1$.  $\Adv_1'$ plays the role of $\O^{e}_{k,n}$ and $\rec$ in $\Pi^{\send}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$ in \stepref{step:senderChosen_step1}, along with the strings $r_1,...,r_n$ in \stepref{step:senderChosen_step2}.  $\Adv_1'$ extracts the OT strings of $\Adv_1$ as $s_i:=r_i\oplus m_i$. $\Adv_1'$ sends $(s_i)_{i\in [n]}$ to $\O^{\send}_{k,n}$ and outputs whatever $\Adv_1$ outputs.
 	
 	Observe that the output of the honest receiver is identically when $\Adv_1$ interacts with $\rec$ in $\Pi^{\send}_{k,n}$ and when $\Adv_1'$ interacts with $\O^{\send}_{k,n}$.
 	
 	
-	Now let us consider a corrupt receiver $\Adv_2$. We construct a new $\Adv_2'$ adversary which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output distribution to $\Adv_2$. $\Adv_2'$ plays the role of $\O^{e}_{k,n}$ and $\send$ in $\Pi^{\send}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$ in \stepref{step:senderChosen_step1}. $\Adv_2'$ sends $\set$ to  $\O^{\send}_{k,n}$ and receives $(s_i)_{i\in \set}$ in response. $\Adv_2'$ computes $r_i:=s_i\oplus m_i$ for $i\in \set$ and uniformly samples $r_i\gets \{0,1\}^\ell$ for $i\in [n]\setminus \set$. $\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_2$ and outputs whatever $\Adv_2$ outputs.
+	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output distribution to $\Adv_2$. $\Adv_2'$ plays the role of $\O^{e}_{k,n}$ and $\send$ in $\Pi^{\send}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$ in \stepref{step:senderChosen_step1}. $\Adv_2'$ sends $\set$ to  $\O^{\send}_{k,n}$ and receives $(s_i)_{i\in \set}$ in response. $\Adv_2'$ computes $r_i:=s_i\oplus m_i$ for $i\in \set$ and uniformly samples $r_i\gets \{0,1\}^\ell$ for $i\in [n]\setminus \set$. $\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_2$ and outputs whatever $\Adv_2$ outputs.
 
-	The transcripts of $\Adv_2$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observer that in the real interaction for $i\in [n]\setminus\set$, $r_i:=s_i\oplus m_i$ where $m_i$ is sampled uniformly at random  by the oracle $\O^{e}_{k,n}$ and is independent of the transcript of $\Adv_2$. Therefore sampling $r_i$ directly is identically distributed. 
+	The transcripts of $\Adv_2$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observer that in the real interaction for $i\in [n]\setminus\set$, $r_i:=s_i\oplus m_i$ where $m_i$ is sampled uniformly at random  by the oracle $\O^{e}_{k,n}$ and is independent of the transcript of $\Adv_2$ (conditioned on $r_i$). Therefore sampling $r_i$ directly is identically distributed. 
+	
+	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ has in protocol $\Pi^{\send}_{k,n}$ implies the same advantage $\Adv_1'$ or $\Adv_2'$ has against the instantiation of $\O^{\send}_{k,n}$, e.g. $\negl$.
+\end{proof}
+
+
+\begin{figure}[t]
+	\framebox{\begin{minipage}{0.95\linewidth}
+			Input: The sender $\send$ has no input while the receiver $\rec$ has input $\set\subseteq [n]$ of size $k$ and $(s_i)_{i\in \set}$ where $s_i\in \{0,1\}^\ell$.
+			\begin{enumerate}
+				\item \label{step:receiverChosen_step1} The parties invoke $\O^{e}_{k,n}$ where $\rec$ takes the role of the receiver with inputs $\set$. $\send$ obtains $(m_i)_{i\in[n]}$ and $\rec$ obtains $(m_i)_{i\in \set}$ from  $\O^{e}_{k,n}$. 
+				\item \label{step:receiverChosen_step2}  $\rec$ sends the strings $r_1,...,r_n$ to $\send$ where $r_i:=s_i\oplus m_i$ for $i\in \set$ and $r_i\gets\{0,1\}^\ell$ for $i\in [n]\setminus\set$.
+				\item \label{step:receiverChosen_step3}  $\send$ outputs $(s_i)_{i\in [n]}$ where $s_i:=m_i\oplus r_i$.
+	\end{enumerate}\end{minipage}}
+	\caption{Receiver Chosen OT Protocol $\Pi^{\rec}_{k,n}$ in the $\O^{e}_{k,n}$ hybrid (\definitionref{def:ot}).}
+	\label{fig:protoRecvOT}
+\end{figure}
+
+
+\begin{lemma}
+	$\Pi^{\rec}_{k,n}$ of \figureref{fig:protoRecvOT} realizes the Receiver Chosen Ideal OT $\OOT^{\rec}$ (\definitionref{def:ot}) with unconditional security.
+\end{lemma}
+
+\begin{proof}
+	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with the oracle $\O^{\rec}_{k,n}$ and produces an identical output distribution as $\Adv_1$.  $\Adv_1'$ plays the role of $\O^{e}_{k,n}$ and $\rec$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$ in \stepref{step:receiverChosen_step1}. $\Adv_1'$ invokes $\O^{\rec}_{k,n}$ as the sender and receives $s_1,...,s_n$ in response. $\Adv_1'$ sends $r_1,...,r_n$ to $\Adv_1$ where $r_i:=m_1\oplus s_i$ and 	 outputs whatever $\Adv_1$ outputs.
+	
+	The transcripts of $\Adv_1$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observer that in the real interaction for $i\in [n]\setminus\set$, $r_i\gets\{0,1\}^\ell$ while $\Adv_1'$ chooses $r_i:=m_1\oplus s_i$ where $s_i$ is sampled uniformly at random by $\O^{R}_{k,n}$. Therefore computing $r_i:=m_1\oplus s_i$ is identically distributed to $r_i\gets\{0,1\}^\ell$ given that $s_i\gets\{0,1\}^\ell$ is independent of the transcript of $\Adv_1$. 
+	
+	
+	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with the oracle $\O^{\rec}_{k,n}$ and produces an identical output as $\Adv_2$. $\Adv_2'$ plays the role of $\O^{e}_{k,n}$ and $\send$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$ in \stepref{step:receiverChosen_step1}. $\Adv_2'$ receives $r_1,...,r_n$ from $\Adv_2$ in \ref{step:receiverChosen_step2} and extracts $(s_i)_{i\in \set}$ as $s_i:=r_i\oplus m_i$. $\Adv_2'$ sends $\set$ and $(s_i)_{i\in \set}$ to $\O^{\rec}_{k,n}$ and outputs whatever $\Adv_2$ outputs.
+	
+	The output distribution of he honest sender is identical in these two interactions is identical except for $(s_i)_{i\in [n]\setminus \set}$. In the real interaction \send outputs $s_i:=m_i\oplus r_i$ where $m_i$ is sampled uniformly by $\O^{e}_{k,n}$ and independent of the transcript. Therefore $\O^{\rec}_{k,n}$ sampling $s_i\gets\{0,1\}^\ell$ directly is identically distributed.
+	
+	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ has in protocol $\Pi^{\rec}_{k,n}$ implies the same advantage $\Adv_1'$ or $\Adv_2'$ has against the instantiation of $\O^{\rec}_{k,n}$, e.g. $\negl$.
 \end{proof}
