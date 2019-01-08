@@ -1,1 +1,53 @@
+\begin{lemma}
+There is no sender tweakable secure two message OT where the sender sends its message first. 
+\end{lemma}
 
+\newcommand{\PRF}{\ensuremath{\mathsf{PRF}}\xspace}
+\newcommand{\aux}{\ensuremath{\mathsf{aux}}\xspace}
+
+\begin{proof}
+For a two message OT where the sender sends it message first, the sender's message $\mes_{\send}$ is a function $f_{\send}$ on input $\tape_{\send}$ and some auxiliary input $\aux$. Further, there is a function $f_{\rec}$ that takes the random tape $\tape_{\rec}$, $\mes_{\send}$ and choice bit $b$ of $\rec$. Finally, there are two functions $f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$ that outputs $(s_0,s_1)$ and $f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b)$ that outputs $s_b$. 
+
+First, we assume that \send is committed to $(s_0,s_1)$ given $\mes_{\send}$, i.e. there is a $(s_0,s_1)$ such that
+$$
+\Pr_{\mes_{\rec}, (\tape_{\send},\aux)}[f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)=(s_0,s_1)\mid \mes_{\send}=f_{\send}(\tape_{\send},\aux)]\geq\frac{3}{4}.
+$$
+
+In this case, a malicious receiver can break the security as follows. It selects two random tapes $\tape_{\rec,1}$, $\tape_{\rec,2}$, two choice bits $b_1=0$, $b_2=1$ and computes for all $i\in[2]$, $\mes_{\rec,i}= f_{\rec}(\tape_{\rec,i},\mes_{\send},b_i)$ and $s_{b_{i},i}=f_{\OT,\rec}(\tape_{\rec,i},\mes_{\send},b_i)$. It outputs $(s_{0,1},s_{1,2})$ as a guess for $s_0,s_1$.
+
+Let the scheme be $\delta$ correct, for $\delta\geq 1-\negl$. Then, the probability that the first malicious receiver reconstructs $(s_0,s_1)$ correctly is lower bounded using Jensen's inequality by
+$$
+\Pr[(s_{0,1},s_{1,2})=(s_0,s_1)]\geq \left(\frac{3}{4}\delta\right)^2> \frac{1}{2},
+$$
+where $(s_0,s_1)=f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$. An malicious receiver interacting with the ideal \OT can achieve this at most with probability $\frac{1}{2}$. Hence, there is a distinguisher that breaks the sender tweakable security of the OT.
+
+Now assume that for any $(s_0,s_1)$,
+\begin{eqnarray}\label{eqn:noncomm}
+\Pr_{\mes_{\rec}, \tape_{\send}}[f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)=(s_0,s_1)\mid \mes_{\send}=f_{\send}(\tape_{\send},\aux)]<\frac{3}{4}.
+\end{eqnarray}
+In this case, we show that a malicious receiver can tweak the distribution of $s_0,s_1$.
+The malicious receiver uses a hardwired pseudorandom function (PRF) key $\key$ for a PRF $\PRF$ that outputs a single bit.\footnote{OT implies one-way functions and hence also PRFs.} The malicious receiver samples two random tapes $\tape_{\rec,1}$, $\tape_{\rec,2}$, two uniform choice bits $b_1$, $b_2$, computes for all $i\in[2]$ $\mes_{\rec,i}=f_{\rec}(\tape_{\rec,i},\mes_{\send},b_i)$ and $s_{b_i,i}=f_{\OT,\rec}(\tape_{\rec,i},\mes_{\send},b_i)$. If $\PRF_{\key}(s_{b_1,1})=0$ it sends $\mes_{\rec,1}$ to \send and outputs $s_{b_1,1}$ otherwise it sends $\mes_{\rec, 2}$ to \send and outputs $s_{b_2,2}$
+
+ We first give a bound on the probability that $\PRF_{\key}(s_{b_i,i})=0$. Let $\epsilon_{\PRF}$ be a probability such that
+$$
+\Pr[\PRF_{\key}(s_{b_i,i})=0]= \frac{1}{2}-\epsilon_{\PRF}.
+$$
+Then there is a distinguisher $\D$ that simply outputs $1$ if $\PRF_{\key}(s_{b_i,i})=0$. Hence,
+$$
+|\Pr[\D(1^\sec,s_{b_i,i},\PRF_{\key}(s_{b_i,i}))=1]-\Pr[\D(1^\sec,s_{b_i,i},u)=1]|=\epsilon_{\PRF},
+$$  
+where $u\leftarrow\bits$. Since $\D$ breaks \PRF with probability $\epsilon_{\PRF}$ and \PRF is secure, $\epsilon_{\PRF}$ is negligible. By $(\ref{eqn:noncomm})$, it holds with at least probability $\frac{3}{16}$ that $s_{b_1,1}\neq s_{b_2,2}$. Therefore, the probability that for the output $s_{b_i,i}$ of the malicious holds $\PRF_{\key}(s_{b_i,i})=0$ is at least
+\begin{eqnarray*}
+\lefteqn{\Pr[\PRF_{\key}(s_{b_i,i})=0]}\\
+&=&\Pr[\PRF_{\key}(s_{b_1,1})=0]+\Pr[\PRF_{\key}(s_{b_1,1})=1\wedge\PRF_{\key}(s_{b_2,2})=0]\\
+&\geq&  \left(\frac{1}{2}-\epsilon_{\PRF}\right)+\left(\frac{1}{2}+\epsilon_{\PRF}\right)\cdot\frac{3}{16}\left(\frac{1}{2}-\epsilon_{\PRF}\right)\\
+&=& \frac{1}{2}+\frac{1}{64}-\negl.
+\end{eqnarray*}
+Since the OT is $\delta=1-\negl$ correct, we get by using a union bound that the malicious receivers output $s_{b_i,i}$ is correct and $\PRF_{\key}(s_{b_i,i})=0$ holds at least with probability $\frac{1}{2}+\frac{1}{64}-\negl$. Hence, $\PRF_{\key}(s_{b_i,i})=0$ holds with a noticeable bias - given $\key$- when the malicious receiver interacts with an honest sender. If there is a distribution of $(s_0,s_1)$ from which the ideal OT samples with the same bias, then there is a distinguisher $\D$ that breaks the security of \PRF. $\D$ samples from this distribution, queries $\PRF$ on the samples and outputs $1$ if the query returns $0$. 
+
+Since there is no such a distribution for a secure PRF, there is no adversary $\Adv'$ that creates the same output distribution when interacting with the ideal OT as when the malicious receiver interacts with the honest sender. Hence, the OT is not sender tweakable secure. 
+\end{proof}
+
+\begin{lemma}
+There is no receiver tweakable secure two message OT where the receiver sends its message first.
+\end{lemma}
