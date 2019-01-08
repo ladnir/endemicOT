@@ -1,4 +1,4 @@
-\begin{lemma}
+\begin{lemma}\label{lem:nosendtweak}
 There is no sender tweakable secure two message OT where the sender sends its message first. 
 \end{lemma}
 
@@ -6,7 +6,8 @@ There is no sender tweakable secure two message OT where the sender sends its me
 \newcommand{\aux}{\ensuremath{\mathsf{aux}}\xspace}
 
 \begin{proof}
-For a two message OT where the sender sends it message first, the sender's message $\mes_{\send}$ is a function $f_{\send}$ on input $\tape_{\send}$ and some auxiliary input $\aux$. Further, there is a function $f_{\rec}$ that takes the random tape $\tape_{\rec}$, $\mes_{\send}$ and choice bit $b$ of $\rec$. Finally, there are two functions $f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$ that outputs $(s_0,s_1)$ and $f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b)$ that outputs $s_b$. 
+We show that the most general notion of OT, one out of two OT is impossible.  
+For a two message OT where the sender sends its message first, the sender's message $\mes_{\send}$ is a function $f_{\send}$ on input $\tape_{\send}$ and some auxiliary input $\aux$. A sender could sample $s_0,s_1$ during the protocol or receive them as input. We use $\aux$ to cover the second case. Further, there is a function $f_{\rec}$ that takes the random tape $\tape_{\rec}$, $\mes_{\send}$ and choice bit $b$ of $\rec$. Finally, there are two functions $f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$ that outputs $(s_0,s_1)$ and $f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b)$ that outputs $s_b$. 
 
 First, we assume that \send is committed to $(s_0,s_1)$ given $\mes_{\send}$, i.e. there is a $(s_0,s_1)$ such that
 $$
@@ -19,7 +20,7 @@ Let the scheme be $\delta$ correct, for $\delta\geq 1-\negl$. Then, the probabil
 $$
 \Pr[(s_{0,1},s_{1,2})=(s_0,s_1)]\geq \left(\frac{3}{4}\delta\right)^2> \frac{1}{2},
 $$
-where $(s_0,s_1)=f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$. An malicious receiver interacting with the ideal \OT can achieve this at most with probability $\frac{1}{2}$. Hence, there is a distinguisher that breaks the sender tweakable security of the OT.
+where $(s_0,s_1)=f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$. A malicious receiver interacting with the ideal \OT can achieve this at most with probability $\frac{1}{2}$. Hence, there is a distinguisher that breaks the sender tweakable security of the OT.
 
 Now assume that for any $(s_0,s_1)$,
 \begin{eqnarray}\label{eqn:noncomm}
@@ -51,3 +52,41 @@ Since there is no such a distribution for a secure PRF, there is no adversary $\
 \begin{lemma}
 There is no receiver tweakable secure two message OT where the receiver sends its message first.
 \end{lemma}
+
+\begin{proof}
+Again, we rule out the most general notion of OT, one out of two OT. We follow a similar strategy as in the previous lemma.
+A two message OT where the receiver sends its message first has the following structure. The receiver's message $\mes_{\rec}$ is a function $f_{\rec}$ on input $\tape_{\rec}$, $b$ and some auxiliary input $\aux$. Further, there is a function $f_{\send}$ that takes the random tape $\tape_{\send}$ and $\mes_{\rec}$ as input. Finally, there are two functions $f_{\OT,\send}(\tape_{\send},\mes_{\rec})$ that outputs $(s_0,s_1)$ and $f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b,\aux)$ that outputs $s_b$. 
+
+We distinguish two cases. In case one,  we assume that \rec is committed to $s_b$ given $\mes_{\rec}$, i.e. there is a $s_b$ such that
+$$
+\Pr_{\mes_{\send}, (\tape_{\rec},b,\aux)}[f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b,\aux)=s_b\mid \mes_{\rec}=f_{\rec}(\tape_{\rec},b,\aux)]\geq\frac{3}{4}.
+$$
+Further, $s_{\overline b}$ should not be determined by $\mes_{\rec}$. I.e. if there is a $s_{\overline b}$ s.t. 
+$$
+\Pr_{\tape_{\send}}[s_{\overline b}\text{ is output of }f_{\OT,\send}(\tape_{\send},\mes_{\rec})\text{ for bit }\overline b]=\frac{1}{2}+\epsilon,
+$$
+then a malicious receiver can sample $\tape_{\send}$ and compute $f_{\OT,\send}(\tape_{\send},\mes_{\rec})$ to learn $s_{\overline b}$ with probability $\frac{1}{2}+\epsilon-(1-\delta)$, where OT is $\delta=1-\negl$ correct. Since the ideal primitive samples $s_{\overline b}$ at uniform, the malicious receiver breaks the OT with probability $\epsilon-\negl$. Therefore, $\epsilon=\negl$. 
+
+But now, a malicious sender can sample two random tapes $\tape_{\send,1}$, $\tape_{\send,2}$
+and compute for all $i\in[2]$, $(s_{0,i},s_{1,i})=f_{\OT,\send}(\tape_{\send,i},\mes_{\rec})$ and checks for all $i\in\bits$ whether $s_{i,1}=s_{i,2}$. It outputs a random $b'$ if it holds for both or no $i\in\bits$, otherwise it outputs $b'$ such that $s_{b',1}=s_{b',2}$. Then,
+\begin{eqnarray*}
+\lefteqn{\Pr[b=b']}\\
+&=&\frac{1}{2}\Pr[\nexists! i:s_{i,1}= s_{i,2}]+\Pr[s_{b,1}=s_{b,2}\wedge s_{\overline b,1}\neq s_{\overline b,2}]-(1-\delta)\\
+&\geq& \frac{4}{16}+\frac{1}{4}\epsilon^2+\frac{5}{16}-\frac{5}{4}\epsilon^2-(1-\delta) =\frac{1}{2}+\frac{1}{16}-\negl
+,
+\end{eqnarray*}
+where we apply a union bound to argue that the outputs are correct and corresponds to the receivers choice. Since in the ideal model, an adversary can guess $b$ only with probability $\frac{1}{2}$, this constitutes a break of receiver tweakable security.
+
+In the case two, for any $s_b$,
+$$
+\Pr_{\mes_{\send}, (\tape_{\rec},b,\aux)}[f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b,\aux)=s_b\mid \mes_{\rec}=f_{\rec}(\tape_{\rec},b,\aux)]<\frac{3}{4}.
+$$
+Similar as in the proof of Lemma~\ref{lem:nosendtweak}, we argue that a malicious sender can tweak the output distribution of $(s_0,s_1)$. Due to the similarity, we only exhibit a brief version. Again we hardwire a PRF key $\key$ for a PRF with a single output bit. Given $\mes_{\rec}$, the malicious sender samples two random tapes $\tape_{\send, 1}$ and $\tape_{\send,2}$, computes for all $i\in[2]$ $(s_{0,i},s_{0,i})=f_{\OT,\send}(\tape_{\send,i},\mes_{\rec})$. If $\PRF_{\key}(s_{0,1},s_{1,1})=0$ output $(s_{0,1},s_{1,1})$ and send $\mes_{\send,1}=f_{\send}(\tape_{\send,1},\mes_{\rec})$ to \rec. Otherwise output $(s_{0,2},s_{1,2})$ and send $\mes_{\send,2}=f_{\send}(\tape_{\send,2},\mes_{\rec})$ to \rec. This way, $\Pr_{\key}(s_0,s_1)=0$ holds for the malicious sender's output $(s_0,s_1)$ with probability 
+\begin{eqnarray*}
+\lefteqn{\Pr[\PRF_{\key}(s_0,s_1)=0]}\\
+&=&\Pr[\PRF_{\key}(s_{0,1},s_{1,1})=0]+\Pr[\PRF_{\key}(s_{0,1},s_{1,1})=1\wedge\PRF_{\key}(s_{0,2},s_{1,2})=0]\\
+&\geq&  \left(\frac{1}{2}-\epsilon_{\PRF}\right)+\left(\frac{1}{2}+\epsilon_{\PRF}\right)\cdot\frac{3}{8}\left(\frac{1}{2}-\epsilon_{\PRF}\right)\\
+&=& \frac{1}{2}+\frac{1}{32}-\negl,
+\end{eqnarray*}
+unless one breaks the security of the prf. As previously, this constitutes an attack against the receiver tweakable security.
+\end{proof}
