@@ -59,23 +59,36 @@ A two message OT where the receiver sends its message first has the following st
 
 We distinguish two cases. In case one,  we assume that \rec is committed to $s_b$ given $\mes_{\rec}$, i.e. there is a $s_b$ such that
 $$
-\Pr_{\mes_{\send}, (\tape_{\rec},b,\aux)}[f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b,\aux)=s_b\mid \mes_{\rec}=f_{\rec}(\tape_{\rec},b,\aux)]\geq\frac{3}{4}.
+\Pr_{\mes_{\send}, (\tape_{\rec},b,\aux)}[f_{\OT,\rec}(\tape_{\rec},\mes_{\send},b,\aux)=s_b\mid \mes_{\rec}=f_{\rec}(\tape_{\rec},b,\aux)]=\frac{3}{4}+\alpha,
 $$
-Further, $s_{\overline b}$ should not be determined by $\mes_{\rec}$. I.e. if there is a $s_{\overline b}$ s.t. 
+for $\alpha\geq 0$.
+Further, $s_{\overline b}$ should not be determined by $\mes_{\rec}$. Let $\ell$ be the length of $s_0$, $s_1$, then if there is a $s_{\overline b}$ s.t. 
 $$
-\Pr_{\tape_{\send}}[s_{\overline b}\text{ is output of }f_{\OT,\send}(\tape_{\send},\mes_{\rec})\text{ for bit }\overline b]=\frac{1}{2}+\epsilon,
+\Pr_{\tape_{\send}}[s_{\overline b}\text{ is output of }f_{\OT,\send}(\tape_{\send},\mes_{\rec})\text{ for bit }\overline b\mid \mes_{\rec}]=\frac{1}{2^\ell}+\epsilon,
 $$
-then a malicious receiver can sample $\tape_{\send}$ and compute $f_{\OT,\send}(\tape_{\send},\mes_{\rec})$ to learn $s_{\overline b}$ with probability $\frac{1}{2}+\epsilon-(1-\delta)$, where OT is $\delta=1-\negl$ correct. Since the ideal primitive samples $s_{\overline b}$ at uniform, the malicious receiver breaks the OT with probability $\epsilon-\negl$. Therefore, $\epsilon=\negl$. 
+then a malicious receiver can sample $\tape_{\send}$ and compute $f_{\OT,\send}(\tape_{\send},\mes_{\rec})$ to learn $s_{\overline b}$ with probability $\frac{1}{2^\ell}+\epsilon-(1-\delta)$, where OT is $\delta=1-\negl$ correct. Since the ideal primitive samples $s_{\overline b}$ at uniform, the malicious receiver breaks the OT with probability $\epsilon-\negl$. Therefore, $\epsilon=\negl$. 
 
 But now, a malicious sender can sample two random tapes $\tape_{\send,1}$, $\tape_{\send,2}$
-and compute for all $i\in[2]$, $(s_{0,i},s_{1,i})=f_{\OT,\send}(\tape_{\send,i},\mes_{\rec})$ and checks for all $i\in\bits$ whether $s_{i,1}=s_{i,2}$. It outputs a random $b'$ if it holds for both or no $i\in\bits$, otherwise it outputs $b'$ such that $s_{b',1}=s_{b',2}$. Then,
+and compute for all $i\in[2]$, $(s_{0,i},s_{1,i})=f_{\OT,\send}(\tape_{\send,i},\mes_{\rec})$ and checks for all $i\in\bits$ whether $s_{i,1}=s_{i,2}$. It outputs a random $b'$ if it holds for both or no $i\in\bits$, otherwise it outputs $b'$ such that $s_{b',1}=s_{b',2}$. It holds that
+$$
+\Pr[s_{b,1}=s_{b,2}]= \left(\frac{3}{4}+\alpha\right)^2+\left(\frac{1}{4}-\alpha\right)^2\frac{1}{2^\ell-1}\\
+&\geq& \frac{9}{16}
+$$
+%\frac{9}{16}+\frac{1}{16(n-1)}+\frac{3(n-1)+1}{2(n-1)}\alpha+\frac{n}{n-1}\alpha^2
+and
+$$
+\Pr[s_{\overline{b},1}=s_{\overline{b},2}]&\geq& \frac{1}{2^\ell}-\epsilon.
+$$
+Therefore,
 \begin{eqnarray*}
 \lefteqn{\Pr[b=b']}\\
 &=&\frac{1}{2}\Pr[\nexists! i:s_{i,1}= s_{i,2}]+\Pr[s_{b,1}=s_{b,2}\wedge s_{\overline b,1}\neq s_{\overline b,2}]-(1-\delta)\\
-&\geq& \frac{4}{16}+\frac{1}{4}\epsilon^2+\frac{5}{16}-\frac{5}{4}\epsilon^2-(1-\delta) =\frac{1}{2}+\frac{1}{16}-\negl
-,
+&\geq& \frac{2^\ell-1}{2^{\ell+1}}-\frac{2^\ell-2}{2^{\ell+1}}\Pr[s_{b,1}=s_{b,2}]+\frac{2^\ell-1}{2^\ell}\Pr[s_{b,1}=s_{b,2}]
+-\negl\\
+&\geq & \frac{2^{\ell}-1}{2^{\ell+1}}+\frac{2^{\ell}}{2^{\ell+1}}\frac{9}{16}-\negl\geq
+\frac{1}{2}+\frac{1}{32}-\frac{1}{2^{\ell+1}}+\frac{1}{4}-\negl
 \end{eqnarray*}
-where we apply a union bound to argue that the outputs are correct and corresponds to the receivers choice. Since in the ideal model, an adversary can guess $b$ only with probability $\frac{1}{2}$, this constitutes a break of receiver tweakable security.
+where we apply a union bound to argue that the outputs are correct and corresponds to the receivers choice. Given that $\ell\geq 1$, the malicious sender guesses $b$ correctly with at least probability $\frac{1}{2}+\frac{1}{32}-\negl$. Since in the ideal model, an adversary can guess $b$ only with probability $\frac{1}{2}$, this constitutes a break of receiver tweakable security.
 
 In the case two, for any $s_b$,
 $$
