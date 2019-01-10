@@ -1,19 +1,112 @@
 
-\section{Two-Round OT Extension}
+% IKNP03 https://www.iacr.org/archive/crypto2003/27290145/27290145.pdf
+% Nie07  "Extending Oblivious Transfers Efficiently How to get Robustness Almost for Free"
+% KOS15  https://eprint.iacr.org/2015/546.pdf
+% OOS16  https://eprint.iacr.org/2016/933.pdf
+
+\newcommand{\rr}{\ensuremath{\boldsymbol{r}}}
+\renewcommand{\tt}{\ensuremath{\boldsymbol{t}}}
+\newcommand{\ww}{\ensuremath{\boldsymbol{w}}}
+\newcommand{\cc}{\ensuremath{\boldsymbol{c}}}
+\newcommand{\uu}{\ensuremath{\boldsymbol{u}}}
+\newcommand{\qq}{\ensuremath{\boldsymbol{q}}}
+\newcommand{\bb}{\ensuremath{\boldsymbol{b}}}
+\newcommand{\vv}{\ensuremath{\boldsymbol{v}}}
+\newcommand{\nc}{\ensuremath{{n_\mathcal{C}}}}
+\newcommand{\kc}{\ensuremath{{k_\mathcal{C}}}}
+\newcommand{\dc}{\ensuremath{{d_\mathcal{C}}}}
+
+\section{OT Extension}
 
 
+In this section we explore how endemic OT can be employed to achieve more efficient 1-out-of-$N$ OT extension along with presenting two new attacks and fixes of the uniform\footnote{\cite{KOS15, OOS16} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$} OT extension protocols\cite{KOS15, OOS16} which are derived from the seminal black-box (sender chosen) protocol of Ishia, Kilian, Nissim and Petrank\cite{IKNP03}. Our new endemic OT protocol of \sectionref{sec:endemicOT} can be used to \emph{securely} run the protocols in two rounds (including the endemic OT round) while satisfies the Receiver Tweakable Security notion (\definitionref{def:otSec}) or realize the Receiver Chosen Ideal OT (\definitionref{def:ot}). We further show with an extra round the \cite{KOS15, OOS16} protocols realize either the Uniform or Sender Chosen Ideal OT via the \figureref{fig:uniformOT},\ref{fig:protoSendOT} transformations. The state of art (\cite{OOS16,KOS15} extension with \cite{simplestOT} base OTs) requires five rounds of communication. More seriously, we show two independent ppt adversary that can each distinguish either of these extension protocol with probability $1-2^{-\kappa}$ in running time $O(\kappa)$. The central oversight derives from insufficient requirements on the base OT protocol.
 
+The functionality of 1-out-of-$N$ OT extension ...
+
+We begin by reviewing the protocol of Orr\'u, Orsini and Scholl\cite{OOS16} with some cosmetic differences to aid presentation. \figureref{fig:otExt} describes the \cite{OOS16} protocol when $\O^*_{1,2},\O^{\textsf{chllng}}$ are implemented as follows.  Let $\O^*_{1,2}:=\O^\send_{1,2}$ from \definitionref{def:ot} where $\rec$ inputs uniformly random $\tt^j_0,\tt^j_1$, \send inputs $\bb\gets\{0,1\}^\nc$ and $\O^{\textsf{chllng}}:=\Pi^{\textsf{chllng}}$. Looking forward, of these two specification both attacks derive from the use of $\O^*_{1,2}:=\O^\send_{1,2}$. 
+
+...
+
+\begin{lemma}
+	Let $s$
+\end{lemma}
 
 
 
 \begin{figure}[t]
-	\framebox{\begin{minipage}{0.95\linewidth}
-			Input: The sender \send has no input and the  receiver \rec has input $\set\subseteq [n]$ of size $k$.
+	\framebox{\begin{minipage}{0.95\linewidth}\small
+			\textsc{Parameters:} $\kappa$ is the computational security parameter. $m$ denotes the number of OTs. $N$ denotes the number of messages each OT has. $\mathcal{C}$ is an $[\nc,\kc,\dc]$ binary linear code such that $\kc=\log_2 N$ and $\dc\geq \kappa$.\\
+			\textsc{Requirements:} $\H : [m] \times \mathbb{F}_2^\nc \rightarrow \mathbb{F}_2^\kappa$ 
+			%and $\H' : \mathbb{F}^{(m+\kappa)\times \nc}_2 \rightarrow \mathbb{F}^{m\times \kappa}_2$ are 
+			is a random oracle. % and $\PRG : \{0,1\}^{\kappa} \rightarrow \{0,1\}^{m+\kappa}$ is a pseudorandom generator. 
+			$\O^{*}_{1,2}$ is an 1-out-of-2 OT oracle \textcolor{red}{satisfying the Receiver Tweakable Security notion (e.g. $\O^\rec_{1,2}$ \definitionref{def:ot}) with strings in  $\{0,1\}^{m'}$}.
+			$\O^{\textsf{chllng}} : \mathbb{F}^{(m+s)\times \nc}_2 \rightarrow \mathbb{F}^{m\times s}_2$ is an oracle that returns a challenge string to both parties. Let $m'=m+s$.
+			\\
+			
+			\textbf{Input:} Both parties input $\nc$  instances of $\O^{*}_{1,2}$  where \send takes the role of the receiver. That is, \send inputs a uniformly sampled $\bb\in\{0,1\}^\nc$ and the strings $ \{\tt^j_{b_j}\}_{j\in [\nc]}$. \rec inputs $\{(\tt^j_0,\tt^j_1)\}_{j\in [\nc]}$. Let $T_0\in \mathbb{F}^{m'\times \nc}_2$ denote the matrix formed by concatenating the column vectors $\tt^0_0||...||\tt^\nc_0$. \\
+			
+			\textbf{Extend:} 
 			\begin{enumerate}
-				\item 
+%				\item \rec constructs matrices $T_0,T_1\in \mathbb{F}^{m'\times \nc}_2$ from the seeds $\{(\rr^j_0,\rr^j_1)\}_{j\in [\nc]}$ so that the respective columns are:
+%				$$
+%					\tt^j_0 := \PRG(\rr^j_0)\in \mathbb{F}^{m'}_2,\qquad \tt^j_1 := \PRG(\rr^j_1)\in \mathbb{F}^{m'}_2,\qquad \forall j\in[\nc]
+%				$$
+%				In the same way \send produces $\tt^j_{b_j}$, for each $j\in[\nc]$. Summarizing, \rec holds $\{(\tt^j_0,\tt^j_1)\}_{j\in[\nc]}$ and \send holds $\{\tt^j_{b_j}\}_{j\in[\nc]}$.
+%				
+				\item \rec samples random $\ww_{m+\ell}\gets \mathbb{F}^\kc_2$, for $\ell\in[s]$, and then constructs a matrix $C\in\mathbb{F}^{m'\times \nc}_2$ such that each row $\cc_i$ is the codeword $\mathcal{C}(\ww_i)$. Then, \rec sends to \send the values
+				$$
+					\uu^j :=\tt^j_0 +\tt^j_1+\cc^j, \qquad \forall j\in[\nc],
+				$$
+				where $\cc^j$ is the $j$-th column of $C$.
+				
+				\item \send receives $\uu^j\in\mathbb{F}^{m'}_2$ and computes
+				$$
+					\qq^j := b_j \cdot \uu^j +\tt^j_{b_j} = b_j\cdot \cc^j+\tt^j_0,\qquad \forall j\in[\nc]
+				$$
+				that form the columns of an $(m'\times \nc)$ matrix $Q$. Denoting the rows of $T_0, Q$ by $\tt_i,\qq_i$, \rec now holds $\cc_i,\tt_i$ and \send holds $\bb, \qq_i$ so that 
+				$$
+					\qq_i = \cc_i\odot \bb+\tt_i,\qquad \forall i\in[m'].
+				$$
+				
+				\item \emph{Consistency check:}
+				\begin{itemize}
+					\item Both parties query the challenge oracle $\O^{\textsf{chllng}}$ on input $u^j$ for $j\in[\nc]$  which samples and returns $X=\{(x_1^{\ell}, ...,x_m^{\ell} )\in \mathbb{F}^m_2\}_{\ell\in[s]}$ % := H'(\uu^1|| ... || \uu^\nc).
+					to both parties.
+					
+					\item \rec computes and sends, for $\ell \in[s]$:
+					$$
+						\widehat \tt^{\ell} := \sum_{i\in[m]} \tt_i \cdot x_i^\ell + \tt_{m+\ell}, \qquad \widehat \ww^\ell := \sum_{i\in[m]} \ww_i \cdot x_i^\ell + \ww_{m+\ell}
+					$$
+					
+					\item \send computes $\widehat \qq^\ell := \sum_{i\in[m]} \qq_i \cdot x^\ell_i + \qq_{m+\ell}$, and checks that:
+					$$
+						\widehat\tt^\ell + \qq^\ell = \mathcal{C}(\widehat\ww^\ell) \odot \bb, \qquad \forall\ell\in[s].
+					$$
+					If the check fails, \send sends $\textsf{Abort}$, and otherwise continues.
+				\end{itemize}
 			\end{enumerate}
+		
+		\textbf{Output:} \send outputs $\vv_{\ww,i}:=\H(i,\qq_i+\mathcal{C}(\ww)\odot \bb), \forall i\in[m]$ and $\ww\in S_i$. \rec outputs $\vv_{\ww,i}:= \H(i,\tt_i), \forall i\in[m]$.
 	\end{minipage}}
-	\caption{ Uniform 1-out-of-2 OT extension Protocol $\Pi^{\textsf{ext}}$ in the $\O^{e}_{1,2}$ hybrid (\definitionref{def:ot}).}
+	\caption{ Two round Receiver Tweakable 1-out-of-$N$ OT Extension from $\O^*_{0,1}:=$(\definitionref{def:ot}).}
 	\label{fig:otExt}
 \end{figure}
+
+
+\begin{figure}[t]
+	\framebox{\begin{minipage}{0.95\linewidth}\small
+			\textsc{Parameters:} $\lambda$ is the statistical security parameter.
+			
+			\textbf{Inputs:} \send inputs $U\in\mathbb{F}^{(m+\lambda)\times n}_2$ and \rec inputs $U'$.
+			\begin{enumerate}
+				\item \send uniformly samples $X\gets \mathbb{F}^{m\times n}_2$ and sends it to \rec.
+				\item Both parties output $X$.
+			\end{enumerate}
+	\end{minipage}}
+	\caption{ Challenge Protocol $\Pi^\textsf{chllng}$ implementing $\O^\textsf{chllng}$.}
+	\label{fig:OChallenge}
+\end{figure}
+
+\subsection{OT Extension Attack}
+
 

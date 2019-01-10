@@ -74,13 +74,23 @@ where $\O_{\langle \A,\B\rangle}$ outputs on the $i$-th query a transcript $\T_i
 
 
 \begin{definition}[Ideal $k$-out-of-$n$ Oblivious Transfer]\label{def:ot}
-An \emph{ideal $k$-out-of-$n$ oblivious transfer} is an oracle that interacts with two parties, a sender \send and a receiver \rec. It takes a subset  $\set\subseteq[n]$ of size $k$ from \rec. We distinguish four methods for choosing the strings $s_1,...,s_n\in \{0,1\}^\ell$. In all cases, the oracle concludes by sends $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in\set}$ to \rec.  The methods are:
+An \emph{ideal $k$-out-of-$n$ oblivious transfer} is an oracle that interacts with two parties, a sender \send and a receiver \rec. Let $\set\subseteq[n]$ of size $k$ and  $s_1,...,s_n\in \{0,1\}^\ell$. The oracle concludes by sending $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in\set}$ to \rec.
+
+We distinguish four methods for choosing the strings $s_1,...,s_n\in \{0,1\}^\ell$:
 \begin{description}
-\item[Sender Chosen Ideal OT:] We refer to this oracle as $\OOT^{\send}$. $\send$ chooses $(s_i)_{i\in[n]}$ and sends it to $\OOT^{\send}$. 
-\item[Receiver Chosen Ideal OT:] We refer to this oracle as  $\OOT^{\rec}$. \rec chooses $(s_i)_{i\in\set}$ and sends it to  $\OOT^{\rec}$.  $\OOT^{\rec}$ samples the undefined strings $(s_i)_{i\in[n]}\setminus(s_i)_{i\in\set}$ uniformly at random.  
-\item[Uniform Ideal OT:] We refer to this oracle as  $\OOT^{u}$. $\OOT^{u}$ samples $(s_i)_{i\in[n]}$ uniformly at random and sends $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in\set}$ to \rec.  
-\item[Endemic Ideal OT:] We refer to this oracle as  $\OOT^{e}$. If $\send$ is corrupt, $\OOT^{e}$ receives the strings $(s_i)_{i\in[n]}$ from $\send$. Otherwise, if $\rec$ is corrupt, $\OOT^{e}$ receives $(s_i)_{i\in\set}$ from $\rec$. Any undefined $s_i$ for $i\in [n]$ are sampled uniformly at random by $\OOT^{e}$. 
+\item[Sender Chosen Message:] $\send$ sends $(m_i)_{i\in[n]}$ to the oracle which defines $s_i:=m_i$.
+\item[Receiver Chosen Message:] \rec sends $(m_i)_{i\in[k]}$ to the oracle which defines $s_{\set_i}:=m_i$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in\set\setminus[n]$.
+\item[Uniform Message:] The oracle uniformly samples $s_i\gets\{0,1\}^{\ell}$ for $i\in[n]$.  
+\item[Endemic Ideal OT:] If $\send$ is corrupt, then $\send$ sends $(m_i)_{i\in[n]}$ to the oracle which defines $s_i:=m_i$.
+If \rec is corrupt, \rec sends $(m_i)_{i\in[k]}$ to the oracle which defines $s_{\set_i}:=m_i$ for $i\in[k]$. Any undefined $s_i$ for $i\in [n]$ are sampled uniformly at random from $\{0,1\}^\ell$.
 \end{description}
+
+We distinguish two methods for choosing the set $\set\in[n]$ of size $k$:
+\begin{description}
+	\item[Receiver Selection:] \rec sends the set $\set$ to the oracle.
+	\item[Uniform Selection:] The oracle uniformly samples $\set\gets\mathbb{P}([n])$ s.t. $|\set|=k$.
+\end{description}
+
 \end{definition}
 
 \begin{definition}[$k$ out of $n$ Oblivious Transfer ($\OT_{k,n}$)]\label{def:otSec}
@@ -109,3 +119,4 @@ We distinguish four different security notions.
 \begin{remark}
 Uniform security is the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic security gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can potentially choose the strings $(s_i)_{i\in\set}$.
 \end{remark}
+
