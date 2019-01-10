@@ -71,12 +71,12 @@ But now, a malicious sender can sample two random tapes $\tape_{\send,1}$, $\tap
 and compute for all $i\in[2]$, $(s_{0,i},s_{1,i})=f_{\OT,\send}(\tape_{\send,i},\mes_{\rec})$ and checks for all $i\in\bits$ whether $s_{i,1}=s_{i,2}$. It outputs a random $b'$ if it holds for both or no $i\in\bits$, otherwise it outputs $b'$ such that $s_{b',1}=s_{b',2}$. It holds that
 $$
 \Pr[s_{b,1}=s_{b,2}]= \left(\frac{3}{4}+\alpha\right)^2+\left(\frac{1}{4}-\alpha\right)^2\frac{1}{2^\ell-1}\\
-&\geq& \frac{9}{16}
+\geq \frac{9}{16}
 $$
 %\frac{9}{16}+\frac{1}{16(n-1)}+\frac{3(n-1)+1}{2(n-1)}\alpha+\frac{n}{n-1}\alpha^2
 and
 $$
-\Pr[s_{\overline{b},1}=s_{\overline{b},2}]&\geq& \frac{1}{2^\ell}-\epsilon.
+\Pr[s_{\overline{b},1}=s_{\overline{b},2}]\geq \frac{1}{2^\ell}-\epsilon.
 $$
 Therefore,
 \begin{eqnarray*}
