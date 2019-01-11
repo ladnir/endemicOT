@@ -1,4 +1,78 @@
 \section{Instantiations}
+\newcommand{\Z}{\ensuremath{\mathbb Z}\xspace}
+
+\subsection{Instantiation from DDH}
+
+In this subsection we use a group \G of prime order $p$ and $g$ is a generator or \G. For simplicity, we use the bracket notation $[a]$ to denote $g^a$, inparticular $[1]:=g$. For vector $\vec{a}=(a_1,\ldots,a_n)$, we use $[\vec{a}]$ to denote $([a_1],\ldots,[a_n])$. We use the same notation, i.e. $[A]$, also for a matrix $A$.
+
+\begin{definition}[Decisional Diffie-Hellman (DDH) Assumption]
+For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
+$$
+|\Pr[\D(1^\sec,[1],[a],[b],[ab])=1]-\Pr[D(1^\sec,g,[a],[b],[c])=1]|=\negl,
+$$
+where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$.
+\end{definition}
+
+\begin{definition}[$n$ Multi-Instance DDH Assumption]
+For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
+$$
+|\Pr[\D(1^\sec,[1],[\vec{a}],[b],[\vec{a}b])=1]-\Pr[D(1^\sec,[1],[\vec{a}],[b],[\vec{c}])=1]|=\negl,
+$$
+where $\vec{a}\leftarrow\Z_p^n$, $b\leftarrow\Z_p$ and $\vec{c}\leftarrow\Z_p^n$.
+\end{definition}
+
+\begin{lemma}
+Let DDH be secure over \G except advantage $\epsilon$, then $n$ multi-instance DDH is secure over \G except at most advantage $n\epsilon$.
+\end{lemma}
+
+\begin{proof}
+This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as the distribution over $[\vec{a}],[b],[\vec{c}]$, where for all $j\leq i$, $c_j=a_jb$ and for $j>i$, $c_j\leftarrow\Z_p$. If $\D$ distinguishes hybrid $\hyb_i$ from $\hyb_{i+1}$, it breaks the DDH assumption over \G.
+\end{proof}
 
 
-Talk about how we can instantiate using DDH and LWE.
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\node [anchor=west] at (2,5) {\A:};
+\node [anchor=west] at (7,5) {\B:};
+\node [anchor=west] at (2,4.5){$a\leftarrow\Z_p$};
+\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_{\A}:=[a]$}(6.75,4.5);
+\node [anchor=west] at (7,4.5){$b\leftarrow\Z_p$};
+\draw [thick, <-] (3.75,4.35)-- node [midway,below]{$\mes_{\B}:=[b]$}(6.75,4.35);
+\node [anchor=west] at (2,4) {$\key_\A=\mes_{\B}^a$};
+\node [anchor=west] at (7,4) {$\key_\B=\mes_{\A}^b$};
+\end{tikzpicture}
+\label{fig:DH}
+\caption{The figure shows the Diffie-Hellman key exchange. Correctness follows from $\key_\A=[ab]=\key_{\B}$.}
+\end{figure}
+
+\begin{lemma}\label{lem:DDH}
+Let $Q$ and $n$ be polynomial in $\sec$.
+The Diffie-Hellman key exchange over \G is unconditionally $Q$ multi-instance uniform. Further, let the $n$ multi-instance DDH assumption hold over group \G except with advantage $\epsilon$, then the Diffie-Hellman key exchange is $(Q,n)$ one-round multi-instance key indistinguishable except advantage $\epsilon-\negl$. 
+\end{lemma}
+
+\begin{proof}
+The distribution of $[a]$ over \G is uniform, therefore 
+$$
+|\Pr[\D^{\O_{\A}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=0,
+$$
+even against an unbounded $\D$. Hence, the Diffie-Hellman key exchange is unconditional $Q$ multi-instance uniform.
+
+For proving the second part of the lemma, we construct a ppt distinguisher \D that breaks $n$ multi-instance DDH assumption given a ppt distinguisher $\D_\key$ that breaks the $(Q,n)$ multi-instance key indistinguishability of the Diffie-Hellman key exchange. $\D$ receives a challenge $[\vec{a}],[b],[\vec{c}]$, sets $\mes_{\B}:=[b]$ and invokes $\D_{\key}$ on input $\mes_{\B}$. On the $j$-th query of $\D_{\key}$ to $\O_{\A}$, \D samples $\vec{r}_j\leftarrow\Z_p^{n+1}$ and responds with $\mes_{\A,j}:=[\langle (\vec{a},1),\vec{r}_j\rangle]=[a_1]^{r_{j,1}}\cdot[a_2]^{r_{j,2}}\ldots[a_n]^{r_{j,n}}\cdot[r_{j,n+1}]$. When $\D_{\key}$ queries $\O_{\key}$ for key $\key_j$, \D responds with $\key_j:=[\langle\vec{c},\vec{r}_j\rangle]=[c_1]^{r_{j,1}}\cdot[c_2]^{r_{j,2}}\ldots[c_n]^{r_{j,n}}\cdot[b]^{r_{j,n+1}}$. In the end, $\D$ outputs the output of $\D_{\key}$.
+
+It is easy to see that $\O_{\A}$ has the correct output distribution. $r_{j,n+1}$ is uniform over $\Z_p$ and hence $\mes_{\A,j}$ is. Further, conditioned on $\mes_{\A,j}$, $r_{j,1},\ldots,r_{j,n}$ are uniform. Given that $\vec{c}=\vec{a}b$, the output
+$$
+\key_j=[\langle\vec{c},\vec{r}_j\rangle]\cdot[b]^{r_{j,n+1}}=[\langle\vec{a}b,\vec{r}_j\rangle]\cdot[b]^{r_{j,n+1}}=[\langle(\vec{a},1),\vec{r}_j\rangle]^b=\mes_{\A,j}^b
+$$
+of $\O_{\key}$ is also distributed correctly. In case that $\vec{c}$ is uniform, we need to show that all the $n$ outputs of $\O_{\key}$, $\vec{\key}=\key_1,\ldots,\key_n$ are uniform. Let $\mes_i$ be the message $\mes_{\A,j}$ and $\vec{t}_i$ the randomness $\vec{r}_j$ that corresponds to $\key_i$. Since $\vec{c}$ is uniform and $\vec{\key}=[\vec{c}\cdot T]$, where $T$ is the matrix with $i$-th column $\vec{t}_i$, $\vec{\key}$ is uniform if $T$ is invertible. Since $r_{j,1},\ldots,r_{j,n}$ are uniform given $\mes_{\A,j}$ so is $T$. For a uniform $T$ over $\Z_p^{n\times n}$, the probability that $T$ is invertible is that all the rows are linear independent, i.e. 
+$$
+\Pr[T\text{ invertible}]= \frac{1}{p^{n^2}}\prod_{i=0}^{n-1}(p^n-p^i)\geq\left(1-\frac{1}{p}\right)^n\geq 1-\negl.
+$$ 
+Therefore, except with negligible probability, $\D$ has the same advantage in breaking $n$ multi-instance DDH as $\D_{\key}$ has in breaking $(Q,n)$ one-round multi-instance key indistinguishability .
+\end{proof}
+
+Using Theorem~\ref{thm:KAtoOT} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
+
+\begin{corollary}
+When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting OT is statistically secure against a malicious sender and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+\end{corollary}
