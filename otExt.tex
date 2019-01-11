@@ -19,7 +19,7 @@
 \section{OT Extension}
 
 
-In this section we explore how endemic OT can be employed to achieve more efficient 1-out-of-$N$ OT extension along with presenting two new attacks and fixes of the uniform\footnote{\cite{KOS15, OOS16} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$} OT extension protocols\cite{KOS15, OOS16} which are derived from the seminal black-box (sender chosen) protocol of Ishia, Kilian, Nissim and Petrank\cite{IKNP03}. Our new endemic OT protocol of \sectionref{sec:endemicOT} can be used to \emph{securely} run the protocols in two rounds (including the endemic OT round) while satisfies the Receiver Tweakable Security notion (\definitionref{def:otSec}) or realize the Receiver Chosen Ideal OT (\definitionref{def:ot}). We further show with an extra round the \cite{KOS15, OOS16} protocols realize either the Uniform or Sender Chosen Ideal OT via the \figureref{fig:uniformOT},\ref{fig:protoSendOT} transformations. The state of art (\cite{OOS16,KOS15} extension with \cite{simplestOT} base OTs) requires five rounds of communication. More seriously, we show two independent ppt adversary that can each distinguish either of these extension protocol with probability $1-2^{-\kappa}$ in running time $O(\kappa)$. The central oversight derives from insufficient requirements on the base OT protocol.
+In this section we explore how endemic OT can be employed to achieve more efficient 1-out-of-$N$ OT extension along with presenting two new attacks and fixes of the uniform\footnote{\cite{KOS15, OOS16} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$} OT extension protocols\cite{KOS15, OOS16} which are derived from the seminal black-box (sender chosen) protocol of Ishia, Kilian, Nissim and Petrank\cite{IKNP03}. Our new endemic OT protocol of \sectionref{sec:endemicOT} can be used to \emph{securely} run the protocols in two rounds (including the endemic OT round) while satisfies the Receiver Tweakable Security notion (\definitionref{def:otSec}) or realize the Receiver Chosen Ideal OT (\definitionref{def:ot}). We further show with an extra round the \cite{KOS15, OOS16} protocols realize either the Uniform or Sender Chosen Ideal OT via the \figureref{fig:uniformOT}, \ref{fig:protoSendOT} transformations. The state of art (\cite{OOS16,KOS15} extension with \cite{simplestOT} base OTs) requires five rounds of communication. More seriously, we show two independent ppt adversary that can each distinguish either of these extension protocol with probability $1-2^{-\kappa}$ in running time $O(\kappa)$. The central oversight derives from insufficient requirements on the base OT protocol.
 
 The functionality of 1-out-of-$N$ OT extension ...
 
@@ -27,9 +27,43 @@ We begin by reviewing the protocol of Orr\'u, Orsini and Scholl\cite{OOS16} with
 
 ...
 
-\begin{lemma}
-	Let $s$
+\begin{definition}\label{def:OOS}
+	Let $\Pi^{\textsf{OOS}}$ be the protocol of \figureref{fig:otExt} where $\O^{\textsf{chllng}}:=\Pi^{\textsf{chllng}}$ (\figureref{fig:OChallenge}) and $\OOT^*$ is implemented as follows: the parties execute $\OOT^\send$ where both parties provide uniformly sampled inputs, i.e.  \cite[Protocol 2]{OOS16}.
+\end{definition}
+
+
+
+\subsection{OT Extension Attacks}
+
+
+\begin{lemma} 
+	Then there exists a ppt adversary $\Adv$ and distinguisher $D$ such that for any $\Adv'$ 
+	$$
+		|\Pr[D((\Adv, \rec)_{\langle\Adv,\rec\rangle})=1]-\Pr[D((\Adv', \rec)_{\langle\Adv',\O^{\E}_{\textsf{OT,\send}}\rangle})=1]|=1-\negl
+	$$
+	where $\langle\Adv,\rec\rangle$ is the $\Pi^{\textsf{OOS}}$ protocol (\definitionref{def:OOS}), $\O^{\E}_{\textsf{OT,\send}}$ is the \send's side output within the view of $\OOT^{\E}$ and all algorithms additionally receive input $1^\kappa$. 
 \end{lemma}
+\begin{proof} 
+	For simplicity let $N=2$ and $m=\kappa$. We define $\Adv$ as follows. $\Adv$ plays the role of \send and replaces the input to $\OOT^\send$, the receiver input, with the string $b:=\{0\}^\nc$. \Adv outputs the matrix $Q$.
+	
+	We define $D$ as follows. $D$ samples the selection bits $x_1,...,x_m\gets\{0,1\}$ and sends them to \rec. $D$ executes $\Adv$ who outputs $Q$ and \rec outputs $\vv_{x_1,1},...,\vv_{x_m,m}$. If $\vv_{x_i,i}=\H(i,\qq_i)$ for $i\in[m]$, output 1, otherwise 0. In the real interaction it clearly holds that $\Pr[D((\Adv, \rec)_{\langle\Adv,\rec\rangle})=1]=1$ since $\qq_i=\tt_i$.
+	
+	By definition $\Adv'$ is independent of $x_i$ and only receives the ideal outputs $(\vv_{0,i},\vv_{1,i})_{i\in [m]}$ (which $\Adv'$  samples and inputs to $\OOT^\E$). Therefore, it must hold that $\Pr[D((\Adv', \rec)_{\langle\Adv',\O^{\E}_{\textsf{OT,\send}}\rangle})=1]=2^{\kappa}$.
+\end{proof}
+
+
+\begin{lemma} 
+	Then there exists a ppt adversary $\Adv$ and distinguisher $D$ such that for any $\Adv'$ 
+	$$
+	|\Pr[D((\send, \Adv)_{\langle\send, \Adv\rangle})=1]-\Pr[D((\send, \Adv')_{\langle\O^{\U}_{\textsf{OT,\rec}}, \Adv'\rangle})=1]|=1-2^{-\kappa}
+	$$
+	where $\langle\send, \Adv\rangle$ is the $\Pi^{\textsf{OOS}}$ protocol (\definitionref{def:OOS}), $\O^{\U}_{\textsf{OT,\send}}$ is the \rec's side output within the view of $\OOT^{\U}$ and all algorithms additionally receive input $1^\kappa$. 
+\end{lemma}
+\begin{proof}
+	For simplicity let $N=2$ and $m=1$. We define $\Adv$ as follows. $\Adv$ plays the role of \rec and replaces the input to $\OOT^\send$, the sender input, with strings $\tt_0^j,\tt_1^j\in \{0\}^{m'}$ and then completes the protocol as normal.
+	
+	We define $D$ as follows. $D$ executes \send and \Adv with input $x_1=0$. \send outputs $(\vv_{0,1},\vv_{1,1})$ and $D$ outputs 1 if $\vv_{0,1}=\H(1, \{0\}^\nc)$ and 0 otherwise. In the real interaction it clearly holds that $\Pr[D((\send, \Adv)_{\langle\send, \Adv\rangle})=1]=1$. In the ideal interaction the honest \send will output a uniformly distributed $\vv_{0,1}\in\{0,1\}^\kappa$ which was sampled by $\OOT^{\U}$ and therefore $\Pr[D((\send, \Adv')_{\langle\O^{\U}_{\textsf{OT,\rec}}, \Adv'\rangle})=1]=2^{-\kappa}$.
+\end{proof}
 
 
 
@@ -39,14 +73,13 @@ We begin by reviewing the protocol of Orr\'u, Orsini and Scholl\cite{OOS16} with
 			\textsc{Requirements:} $\H : [m] \times \mathbb{F}_2^\nc \rightarrow \mathbb{F}_2^\kappa$ 
 			%and $\H' : \mathbb{F}^{(m+\kappa)\times \nc}_2 \rightarrow \mathbb{F}^{m\times \kappa}_2$ are 
 			is a random oracle. % and $\PRG : \{0,1\}^{\kappa} \rightarrow \{0,1\}^{m+\kappa}$ is a pseudorandom generator. 
-			$\O^{*}_{1,2}$ is an 1-out-of-2 OT oracle \textcolor{red}{satisfying the Receiver Tweakable Security notion (e.g. $\O^\rec_{1,2}$ \definitionref{def:ot}) with strings in  $\{0,1\}^{m'}$}.
-			$\O^{\textsf{chllng}} : \mathbb{F}^{(m+s)\times \nc}_2 \rightarrow \mathbb{F}^{m\times s}_2$ is an oracle that returns a challenge string to both parties. Let $m'=m+s$.
+		
+			$\O^{\textsf{chllng}} : \mathbb{F}^{(m+s)\times \nc}_2 \rightarrow \mathbb{F}^{m\times s}_2$ is an oracle that returns a challenge string to both parties. Let $m'=m+s$. 	$\OOT$ is an 1-out-of-2 OT oracle with output messages in $\mathbb{F}_2^{m'}$.
 			\\
 			
-			\textbf{Input:} Both parties input $\nc$  instances of $\O^{*}_{1,2}$  where \send takes the role of the receiver. That is, \send inputs a uniformly sampled $\bb\in\{0,1\}^\nc$ and the strings $ \{\tt^j_{b_j}\}_{j\in [\nc]}$. \rec inputs $\{(\tt^j_0,\tt^j_1)\}_{j\in [\nc]}$. Let $T_0\in \mathbb{F}^{m'\times \nc}_2$ denote the matrix formed by concatenating the column vectors $\tt^0_0||...||\tt^\nc_0$. \\
-			
-			\textbf{Extend:} 
 			\begin{enumerate}
+				\item Both parties invoke $\nc$  instances of $\OOT$  where \send takes the role of the receiver. \send receives $(\bb\in\{0,1\}^\nc, \{\tt^j_{b_j}\}_{j\in [\nc]})$. \rec receives $\{(\tt^j_0,\tt^j_1)\}_{j\in [\nc]}$. Let $T_0\in \mathbb{F}^{m'\times \nc}_2$ denote the matrix formed by concatenating the column vectors $\tt^0_0||...||\tt^\nc_0$. \\
+			
 %				\item \rec constructs matrices $T_0,T_1\in \mathbb{F}^{m'\times \nc}_2$ from the seeds $\{(\rr^j_0,\rr^j_1)\}_{j\in [\nc]}$ so that the respective columns are:
 %				$$
 %					\tt^j_0 := \PRG(\rr^j_0)\in \mathbb{F}^{m'}_2,\qquad \tt^j_1 := \PRG(\rr^j_1)\in \mathbb{F}^{m'}_2,\qquad \forall j\in[\nc]
@@ -80,7 +113,7 @@ We begin by reviewing the protocol of Orr\'u, Orsini and Scholl\cite{OOS16} with
 					
 					\item \send computes $\widehat \qq^\ell := \sum_{i\in[m]} \qq_i \cdot x^\ell_i + \qq_{m+\ell}$, and checks that:
 					$$
-						\widehat\tt^\ell + \qq^\ell = \mathcal{C}(\widehat\ww^\ell) \odot \bb, \qquad \forall\ell\in[s].
+						\widehat\tt^\ell + \widehat\qq^\ell = \mathcal{C}(\widehat\ww^\ell) \odot \bb, \qquad \forall\ell\in[s].
 					$$
 					If the check fails, \send sends $\textsf{Abort}$, and otherwise continues.
 				\end{itemize}
@@ -88,7 +121,7 @@ We begin by reviewing the protocol of Orr\'u, Orsini and Scholl\cite{OOS16} with
 		
 		\textbf{Output:} \send outputs $\vv_{\ww,i}:=\H(i,\qq_i+\mathcal{C}(\ww)\odot \bb), \forall i\in[m]$ and $\ww\in S_i$. \rec outputs $\vv_{\ww,i}:= \H(i,\tt_i), \forall i\in[m]$.
 	\end{minipage}}
-	\caption{ Two round Receiver Tweakable 1-out-of-$N$ OT Extension from $\O^*_{0,1}:=$(\definitionref{def:ot}).}
+	\caption{ 1-out-of-$N$ OT Extension.}
 	\label{fig:otExt}
 \end{figure}
 
@@ -106,7 +139,5 @@ We begin by reviewing the protocol of Orr\'u, Orsini and Scholl\cite{OOS16} with
 	\caption{ Challenge Protocol $\Pi^\textsf{chllng}$ implementing $\O^\textsf{chllng}$.}
 	\label{fig:OChallenge}
 \end{figure}
-
-\subsection{OT Extension Attack}
 
 

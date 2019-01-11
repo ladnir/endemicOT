@@ -214,6 +214,29 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \end{proof}
 
 
+\begin{figure}[t]
+	\framebox{\begin{minipage}{0.95\linewidth}
+			Input: The sender \send and receiver \rec have no input.
+			\begin{enumerate}
+				\item \label{step:uniformSelect_step1} \rec uniformly samples $\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$. \rec sends $\set'$ to $\OOT^{\E}$ and receives $(s_i')_{i\in \set'}$ in response. \send receives $(s_i')_{i\in [n]}$. 
+				\item \label{step:uniformSelect_step2} \send samples a random permutation $\pi : [n] \rightarrow [n]$ and sends it to \rec.
+				\item \label{step:uniformSelect_step3} \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(\set, (s_i)_{i\in\set})$ where $s_i:=s_{\pi(i)}'$ and $\set:=\{j \mid \exists i, j=\pi(i)\}$.
+			\end{enumerate}
+	\end{minipage}}
+	\caption{Uniform Selection $k$-out-of-$n$ OT protocol $\Pi^{\E u}$ in the $\OOT^{\E}$ hybrid.}
+	\label{fig:uniformSelect}
+\end{figure}
+
+
 \begin{lemma}
-	Let $s$
+	$\Pi^{\E u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Endemic Message OT $\OOT^{\E u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\E}$ hybrid.
 \end{lemma}
+
+
+\begin{proof}
+	\textcolor{red}{TODO}.
+\end{proof}
+
+\begin{remark}
+	\textcolor{red}{Make some statement about how the sample transformation applies to the other OT message security notions.}
+\end{remark}

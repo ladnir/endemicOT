@@ -112,27 +112,34 @@ This lemma follows for the same reason as Lemma~\ref{lem:keytomultkey}.
 
 
 \begin{definition}[Ideal $k$-out-of-$n$ Oblivious Transfer]\label{def:ot}
-An \emph{ideal $k$-out-of-$n$ oblivious transfer} is an oracle that interacts with two parties, a sender \send and a receiver \rec. Let $\set\subseteq[n]$ of size $k$ and  $s_1,...,s_n\in \{0,1\}^\ell$. The oracle concludes by sending $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in\set}$ to \rec.
+An \emph{ideal $k$-out-of-$n$ oblivious transfer} is an oracle that interacts with two parties, a sender \send and a receiver \rec. Let $\set\subseteq[n]$ of size $k$ and  $s_1,...,s_n\in \{0,1\}^\ell$. The oracle concludes by sending $(s_i)_{i\in[n]}$ to \send and $\set, (s_i)_{i\in\set}$ to \rec.
 
 We distinguish four methods for choosing the strings $s_1,...,s_n\in \{0,1\}^\ell$:
 \begin{description}
 \item[Sender Chosen Message:] $\send$ sends $(m_i)_{i\in[n]}$ to the oracle which defines $s_i:=m_i$.
 \item[Receiver Chosen Message:] \rec sends $(m_i)_{i\in[k]}$ to the oracle which defines $s_{\set_i}:=m_i$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in\set\setminus[n]$.
 \item[Uniform Message:] The oracle uniformly samples $s_i\gets\{0,1\}^{\ell}$ for $i\in[n]$.  
-\item[Endemic Ideal OT:] If $\send$ is corrupt, then $\send$ sends $(m_i)_{i\in[n]}$ to the oracle which defines $s_i:=m_i$.
+\item[Endemic Chosen Message:] If $\send$ is corrupt, then $\send$ sends $(m_i)_{i\in[n]}$ to the oracle which defines $s_i:=m_i$.
 If \rec is corrupt, \rec sends $(m_i)_{i\in[k]}$ to the oracle which defines $s_{\set_i}:=m_i$ for $i\in[k]$. Any undefined $s_i$ for $i\in [n]$ are sampled uniformly at random from $\{0,1\}^\ell$.
 \end{description}
 
-We distinguish two methods for choosing the set $\set\in[n]$ of size $k$:
+We distinguish two methods for choosing the set $\set\subseteq[n]$ of size $k$:
 \begin{description}
 	\item[Receiver Selection:] \rec sends the set $\set$ to the oracle.
 	\item[Uniform Selection:] The oracle uniformly samples $\set\gets\mathbb{P}([n])$ s.t. $|\set|=k$.
 \end{description}
 
+We denote the ideal oracles for Sender Chosen, Receiver Chosen, Uniform and Endemic Chosen Message with Receiver Selection as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. The oracles analogous for Uniform Selection are denoted as  $\OOT^{\send u}, \OOT^{\rec u},\OOT^{\U u},\OOT^{\E u}$, respectively.
+
 \end{definition}
 
+
+
+
+
 \begin{definition}[$k$ out of $n$ Oblivious Transfer ($\OT_{k,n}$)]\label{def:otSec}
-We call a protocol $\langle \send,\rec \rangle$ between two ppt parties, a sender \send and a receiver \rec, a \emph{$k$ out of $n$ oblivious transfer} if \rec has as input a set $\set\subset[n]$ of size $k$ and at the end, \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs $(s_i)_{i\in\set}$. For security, we require two properties with respect to an ideal OT \OOT.
+We call a protocol $\langle \send,\rec \rangle$ between two ppt parties, a sender \send and a receiver \rec, a \emph{$k$ out of $n$ oblivious transfer} if %\rec has as input a set $\set\subset[n]$ of size $k$ and 
+at the end, \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs $(s_i)_{i\in\set}$ and a set $\set\subset[n]$ s.t. $|\set|=k$. For security, we require two properties with respect to an ideal OT \OOT.
 \begin{description}
 \item[Security Against a Malicious Sender:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
 $$
@@ -145,13 +152,17 @@ $$
 $$
 where $\O_{\OT,\send}$ is  the \send's side output within the view of \OOT and all algorithms receive input $1^\sec$.
 \end{description}
-We distinguish four different security notions.
+
+
+\textcolor{red}{TODO: update this to incorporate ``Uniform Selection"} We distinguish four different message security notions.
 \begin{description}
-\item[Uniform Security:] The OT is secure with respect to $\OOT^u$.
+\item[Uniform Message Security:] The OT is secure with respect to $\OOT^\U$.
 \item[Sender Tweakable Security:] The OT is secure with respect to $\OOT^{\send}$.
 \item[Receiver Tweakable Security:] The OT is secure with respect to $\OOT^{\rec}$.
-\item[Endemic Security:] The OT is secure with respect to $\OOT^{e}$.
+\item[Endemic Message Security:] The OT is secure with respect to $\OOT^{e}$.
 \end{description}
+
+
 \end{definition}
 
 \begin{remark}
