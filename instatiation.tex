@@ -21,7 +21,7 @@ $$
 where $\vec{a}\leftarrow\Z_p^n$, $b\leftarrow\Z_p$ and $\vec{c}\leftarrow\Z_p^n$.
 \end{definition}
 
-\begin{lemma}
+\begin{lemma}\label{lem:DHuniform}
 Let DDH be secure over \G except advantage $\epsilon$, then $n$ multi-instance DDH is secure over \G except at most advantage $n\epsilon$.
 \end{lemma}
 
@@ -71,8 +71,79 @@ $$
 Therefore, except with negligible probability, $\D$ has the same advantage in breaking $n$ multi-instance DDH as $\D_{\key}$ has in breaking $(Q,n)$ one-round multi-instance key indistinguishability .
 \end{proof}
 
-Using Theorem~\ref{thm:KAtoOT} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
+Using Theorem~\ref{thm:KAtoOT}, Lemma~\ref{lem:DHuniform} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
 
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting OT is statistically secure against a malicious sender and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting OT is statistically secure against malicious senders making at most polynomially many random oracle queries and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+\end{corollary}
+
+\begin{remark}
+If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol in \figureref{fig:DH} and apply the transformation \figureref{fig:oneroundKAtoOT}, we receive a one-round endemically secure OT in the random oracle model based on the computational Diffie-Hellman assumption. Alternatively, one could also use the random oracle instead of a hardcore predicate to obtain longer OT strings. 
+\end{remark}
+
+\subsection{Instantiation based on Crystals-Kyber}
+\newcommand{\sk}{\ensuremath{\mathsf{sk}}\xspace}
+\newcommand{\pk}{\ensuremath{\mathsf{pk}}\xspace}
+\newcommand{\kyberc}{\ensuremath{\mathsf{c}}\xspace}
+\newcommand{\kybergen}{\ensuremath{\mathsf{Kyber.KeyGen}}\xspace}
+\newcommand{\kyberenc}{\ensuremath{\mathsf{Kyber.Enc}}\xspace}
+\newcommand{\kyberdec}{\ensuremath{\mathsf{Kyber.Dec}}\xspace}
+\newcommand{\kB}{\ensuremath{\mathcal{B}}\xspace}
+\newcommand{\kenc}{\ensuremath{\mathsf{Encode}}\xspace}
+\newcommand{\kdec}{\ensuremath{\mathsf{Decode}}\xspace}
+\newcommand{\kcom}{\ensuremath{\mathsf{Compress}}\xspace}
+\newcommand{\kdecom}{\ensuremath{\mathsf{Decompress}}\xspace}
+\newcommand{\kparse}{\ensuremath{\mathsf{Parse}}\xspace}
+\newcommand{\R}{\ensuremath{\mathcal R}\xspace}
+\newcommand{\LWE}{\ensuremath{\mathsf{LWE}}\xspace}
+\newcommand{\MLWE}{\ensuremath{\mathsf{MLWE}}\xspace}
+\newcommand{\mt}{\ensuremath{{\mathbf t}}\xspace}
+\newcommand{\cdt}{\ensuremath{\tilde{\mt}}\xspace}
+\newcommand{\kLWE}{\ensuremath{k_{\LWE}}\xspace}
+\newcommand{\nLWE}{\ensuremath{n_{\LWE}}\xspace}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\node [anchor=west] at (-0.75,5) {\A:};
+\node [anchor=west] at (7,5) {\B:};
+\node [anchor=west] at (-0.75,4.5){$(\sk,\pk)\leftarrow\kybergen()$};
+\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_\A:=\pk$}(6.75,4.5);
+\node [anchor=west] at (7,4.5){$\key_{\B}\leftarrow\kB^{32},\tape_\B\leftarrow\kB^{32}$};
+\node [anchor=west] at (7,4){$\mes_\B=\kyberenc(\pk, \key_{\B},\tape_\B)$};
+\draw [thick, <-] (3.75,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
+\node [anchor=west] at (-0.75,3.5) {$\key_\A=\kyberdec(\sk,\mes_\B)$};
+\node [anchor=west] at (7,3.5) {$\key_\B$};
+\end{tikzpicture}
+\label{fig:Kyber}
+\caption{The figure shows a Kyber based key agreement protocol between parties \A and \B.}
+\end{figure}
+
+\begin{definition}[Crystals-Kyber CPAPKE]
+\emph{ Crystals-Kyber CPAPKE} is a correct and CPA secure public key encryption based on the Module LWE (\MLWE) assumption. We follow the specifications of Kyber, in which $\kB$ denotes the  set $\{0,1,\ldots,255\}$. Kyber is parameterized by parameters $d_t=11$, $\nLWE=256$, $\kLWE\in\{2,3,4\}$, $q=7681$ and ring $\R_q=\Z_q[X]/(X^{\nLWE}+1)$. 
+
+$(\kybergen,\kyberenc,\kyberdec)$ have the following syntax. 
+\begin{description}
+\item[$\kybergen$:] Outputs a secret and public key pair $\pk,\sk$, where $\pk=(\cdt,\rho)\in\kB^{\frac{\kLWE\nLWE d_t}{8}}\times\kB^{32}$.
+\item[$\kyberenc$:] Takes as input a public key $\pk$, a message $\mes\in\kB^{32}$ and random coins $\tape\in\kB^{32}$. It outputs a ciphertext $\kyberc$.
+\item[$\kyberdec$:] Takes as input secret key $\sk$ and a ciphertext $\kyberc$. It outputs a message $\mes$.
+\end{description}
+Further, Crystals-Kyber specifies the following algorithms.
+\begin{description}
+\item[$\kdec_\ell$:] Takes a an element in $\kB^{32\ell}$ and maps it to $\R_q$. The inverse operation is $\kenc_\ell$.
+\item[$\kcom_q(*,d)$:] Takes a an element in $\R_q$ and maps it to a polynomial with coefficients in $\Z_{2^d}$. The inverse operation is $\kdecom_q(*,d)$.
+\item[$\kparse$:] Takes a uniform byte stream in $\kB^{*}$ and maps it to a uniform element in $\R_q$.
+\end{description}
+\end{definition}
+
+It is important to know, that $\cdt:=\kenc_{d_t}(\kcom_q(\mt, d_t)$, where $\mt$ is computationally indistinguishable from a uniform element in $\R_q^{\kLWE}$ based on the \MLWE assumption. In the following, we will choose $d_t=13$ such that $q<2^{d_t}$ and no compression takes place. This will help us to avoid complications and does not decrease efficiency besides a sligthly larger public key $\pk$. Further, we will keep component $\rho$ of $\pk$ consistent between all $\pk$ used in a single $1$ out of $n$ OT.
+
+In order to instantiate our framework, we need to define a group operation $\pk\oplus\pk$ and a hash functions that maps to a uniform $\cdt$ component of $\pk$, i.e. a uniform element in $\R_q^{\kLWE}$. For the latter, we use a hash function that produces an output bit stream, which is in $\kB^{*}$, and use $\kLWE$ different parts of the stream and apply $\kparse$ to the $\kLWE$ streams to obtain a (pseudo) uniform element in $\R_q^{\kLWE}$ whenever the bit streams are (pseudo) uniform.
+
+We define the group operation $\pk_1\oplus\pk_2$, by mapping $\pk_1=(\cdt_1,\rho)$, $\pk_2=(\cdt_2,\rho)$ to $\pk_3=(\cdt_3, \rho)$, where $\cdt_3=\kenc_{13}(\kdec_{13}(\cdt_1)+\kdec_{13}(\cdt_2))$ and $+$ is the addition in $\R_q^{\kLWE}$. $\ominus$ is defined correspondingly. 
+
+By using Theorem~\ref{thm:KAtoOT}, Lemma~\ref{lem:multuniform} and Lemma~\ref{lem:keytomultkey}, we get the following corollary.
+ 
+\begin{corollary}
+When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Crystals-Kyber, then in the programmable random oracle model the resulting OT is secure against a malicious sender except advantage $Q\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}

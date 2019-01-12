@@ -84,7 +84,7 @@ where $\mes_{\B}\leftarrow\B(\tape_{\B})$ for uniform $\tape_{\B}$. $\O_{\A}$ ou
 \end{definition}
 
  
-\begin{lemma}
+\begin{lemma}\label{lem:multuniform}
 Let \UKA be uniform except probability $\epsilon$, then it is $Q$ multi-instance uniform except at most probability $Q\epsilon$.
 \end{lemma}
 \begin{proof}
@@ -99,7 +99,7 @@ Let \UKA be key indistinguishable except probability $\epsilon$, then it is $(Q,
 Again, we use a hybrid argument over hybrids $\hyb_i$. In $\hyb_i$, $(\mes_{\A,j},\mes_{\B,j}),\key_j$ is sampled from $\O_{\langle \A,\B\rangle}\times\O_u$ for $j\leq i$ and from $\O_{\langle \A,\B\rangle}\times\O_\key$ for $j>i$. If one distinguishes $\hyb_i$ from $\hyb_{i+1}$ for some $i$, one breaks the key indistinguishability. 
 \end{proof}
 
-\begin{lemma}
+\begin{lemma}\label{lem:oneroundkeytomultkey}
 Let a one-round \UKA be key indistinguishable except probability $\epsilon$, then it is $(Q,n)$ one-round multi-instance key indistinguishable except at most probability $Q\epsilon$. 
 \end{lemma}
 
