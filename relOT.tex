@@ -13,11 +13,12 @@
 \draw [-implies,double equal sign distance] (U) -- (RC);
 \draw [-implies,double equal sign distance] (SC) -- (E);
 \draw [-implies,double equal sign distance] (RC) -- (E);
-\draw [->, thick] (U) -- (TC);
-\draw [->, thick] (E) --(5,2.5)-- (U);
-\draw [-, thick] (5,2.5)-- (TC);
-\draw [->, thick] (E) .. controls (1,0.75) .. (SC);
-\draw [->, thick] (E) .. controls (7,0.75) .. (RC);
+\draw [->, thick] (U) to [out=240,in=60] (TC);
+\draw [-, thick] (E) to [out=60,in=270] (5,2);
+\draw [->, thick] (5,2) to [out=90,in=300] (U);
+\draw [-, thick] (TC) to [out=0,in=180] (5,2);
+\draw [->, thick] (E) to [out=180,in=270] (SC);
+\draw [->, thick] (E) to [out=0,in=270] (RC);
 \end{tikzpicture}
 \label{fig:OTrelations}
 \caption{
