@@ -129,7 +129,7 @@ If \rec is corrupt, \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1
 
 The oracle is publicly parameterized by one of the following selection methods:
 \begin{description}
-	\item[] \textsc{Receiver Selection:} \rec sends the circuit $\mathcal{S}:[n]\rightarrow\{0,1\}$ to the oracle which defines $\set:=\{i \mid \mathcal{S}(i)=1\}$.
+	\item[] \textsc{Receiver Selection:} \rec sends the circuit $\mathcal{S}:[n]\rightarrow\{0,1\}$ to the oracle where the support of $\mathcal{S}$ is of size $k$. The oracle defines $\set:=\{i \mid \mathcal{S}(i)=1\}$.
 	\item[] \textsc{Uniform Selection:} The oracle uniformly samples $\set\gets\mathbb{P}([n])$ s.t. $|\set|=k$.
 \end{description}
 
