@@ -13,6 +13,7 @@ A \emph{random oracle} over a set of domains and an image is a collection of fun
 
 \begin{figure}[h!]
 \centering
+\framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (0,5) {\A:};
 \node [anchor=west] at (7,5) {\B:};
@@ -23,6 +24,7 @@ A \emph{random oracle} over a set of domains and an image is a collection of fun
 \node [anchor=west] at (0,3.5) {$\key_\A=\EK(\tape_\A,\mes_\B)$};
 \node [anchor=west] at (7,3.5) {$\key_\B=\EK(\tape_\B,\mes_\A)$};
 \end{tikzpicture}
+}
 \label{fig:UKA}
 \caption{The figure shows a key agreement protocol between parties \A and \B with random tapes $\tape_\A$ and $\tape_\B$. For correctness, we require $\key_\A=\key_\B$.}
 \end{figure}

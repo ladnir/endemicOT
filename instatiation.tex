@@ -32,6 +32,9 @@ This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as t
 
 \begin{figure}[h!]
 \centering
+\framebox{
+\begin{minipage}{0.85\linewidth}
+\centering
 \begin{tikzpicture}
 \node [anchor=west] at (2,5) {\A:};
 \node [anchor=west] at (7,5) {\B:};
@@ -42,6 +45,8 @@ This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as t
 \node [anchor=west] at (2,4) {$\key_\A=\mes_{\B}^a$};
 \node [anchor=west] at (7,4) {$\key_\B=\mes_{\A}^b$};
 \end{tikzpicture}
+\end{minipage}
+}
 \label{fig:DH}
 \caption{The figure shows the Diffie-Hellman key exchange. Correctness follows from $\key_\A=\lb  ab\rb=\key_{\B}$.}
 \end{figure}
@@ -86,17 +91,19 @@ If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol 
 
 \begin{figure}[h!]
 \centering
+\framebox{
 \begin{tikzpicture}
-\node [anchor=west] at (-0.75,5) {\A:};
+\node [anchor=west] at (-0.25,5) {\A:};
 \node [anchor=west] at (7,5) {\B:};
-\node [anchor=west] at (-0.75,4.5){$(\sk,\pk)\leftarrow\kybergen()$};
-\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_\A:=\pk$}(6.75,4.5);
+\node [anchor=west] at (-0.25,4.5){$(\sk,\pk)\leftarrow\kybergen()$};
+\draw [thick, ->] (4.25,4.5)-- node [midway,above]{$\mes_\A:=\pk$}(6.75,4.5);
 \node [anchor=west] at (7,4.5){$\key_{\B}\leftarrow\kB^{32},\tape_\B\leftarrow\kB^{32}$};
 \node [anchor=west] at (7,4){$\mes_\B=\kyberenc(\pk, \key_{\B},\tape_\B)$};
-\draw [thick, <-] (3.75,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
-\node [anchor=west] at (-0.75,3.5) {$\key_\A=\kyberdec(\sk,\mes_\B)$};
+\draw [thick, <-] (4.25,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
+\node [anchor=west] at (-0.25,3.5) {$\key_\A=\kyberdec(\sk,\mes_\B)$};
 \node [anchor=west] at (7,3.5) {$\key_\B$};
 \end{tikzpicture}
+}
 \label{fig:Kyber}
 \caption{The figure shows a Kyber based key agreement protocol between parties \A and \B.}
 \end{figure}

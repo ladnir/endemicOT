@@ -5,31 +5,34 @@
 
 \begin{figure}[h!]
 \centering
+\framebox{
 \begin{tikzpicture}
-\node [anchor=west] at (-1,5) {Sender:};
+\node [anchor=west] at (-0.5,5) {Sender:};
 \node [anchor=west] at (7,5) {Receiver$(\i\in[n])$:};
 \node [anchor=west] at (7,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
 \node [anchor=west] at (7,4){$\tape_\A\leftarrow\bits^*$};
 \node [anchor=west] at (7,3.5){$\mes_\A\leftarrow \UKA.\A(\tape_\A)$};
 \node [anchor=west] at (7,3){$r_{\i}:=\mes_\A\ominus\H((r_j)_{j\in[n]\setminus\{\i\}})$};
 \draw [thick, <-] (4.75,3)-- node [midway,above]{$(r_j)_{j\in[n]}$}(6.75,3);
-\node [anchor=west] at (-1,3){$\forall j\in[n]:$};
-\node [anchor=west] at (-1,2.5){$\quad\mes_{\A,j}:=r_j\oplus\H((r_\ell)_{\ell\in[n]\setminus\{j\}})$};
-\node [anchor=west] at (-1,2){$\quad\tape_{\B,j}\leftarrow\bits^*$};
-\node [anchor=west] at (-1,1.5){$\quad\mes_{\B,j}\leftarrow\UKA.\B(\tape_{\B,j},\mes_{\A,j})$};
+\node [anchor=west] at (-0.5,3){$\forall j\in[n]:$};
+\node [anchor=west] at (-0.5,2.5){$\quad\mes_{\A,j}:=r_j\oplus\H((r_\ell)_{\ell\in[n]\setminus\{j\}})$};
+\node [anchor=west] at (-0.5,2){$\quad\tape_{\B,j}\leftarrow\bits^*$};
+\node [anchor=west] at (-0.5,1.5){$\quad\mes_{\B,j}\leftarrow\UKA.\B(\tape_{\B,j},\mes_{\A,j})$};
 \draw [thick, ->] (4.75,1.5)-- node [midway,above]{$(\mes_{\B,j})_{j\in[n]}$}(6.75,1.5);
 \node [anchor=west] at (7,0.5) {$\key_{\A,\i}:=\UKA.\EK(\tape_\A,\mes_{\B,\i})$};
-\node [anchor=west] at (-1,1) {$\forall j\in[n]$};
-\node [anchor=west] at (-1,0.5) {$\quad\key_{\B,j}:=\UKA.\EK(\tape_{\B,j},\mes_{\A,j})$};
+\node [anchor=west] at (-0.5,1) {$\forall j\in[n]$};
+\node [anchor=west] at (-0.5,0.5) {$\quad\key_{\B,j}:=\UKA.\EK(\tape_{\B,j},\mes_{\A,j})$};
 \end{tikzpicture}
+}
 \caption{The figure depicts a $1$ out of $n$ oblivious transfer using as a building block a \UKA and a random oracle $\H:\G^{n-1}\rightarrow\G$, where \G is a group with group operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds.}
 \label{fig:KAtoOT}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
+\framebox{
 \begin{tikzpicture}
-\node [anchor=west] at (-1,5) {Sender:};
+\node [anchor=west] at (-0.5,5) {Sender:};
 \node [anchor=west] at (7,5) {Receiver$(\i\in[n])$:};
 \node [anchor=west] at (7,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
 \node [anchor=west] at (7,4){$\tape_\A\leftarrow\bits^*$};
@@ -37,13 +40,14 @@
 \node [anchor=west] at (7,3){$r_{\i}:=\mes_\A\ominus\H((r_j)_{j\in[n]\setminus\{\i\}})$};
 \draw [thick, ->] (4.75,3.15)-- node [midway,above]{$\mes_{\B}$}(6.75,3.15);
 \draw [thick, <-] (4.75,3)-- node [midway,below]{$(r_j)_{j\in[n]}$}(6.75,3);
-\node [anchor=west] at (-1,3){$\forall j\in[n]:$};
-\node [anchor=west] at (-1,2.5){$\quad\mes_{\A,j}:=r_j\oplus\H((r_\ell)_{\ell\in[n]\setminus\{j\}})$};
-\node [anchor=west] at (-1,4.5){$\tape_{\B}\leftarrow\bits^*$};
-\node [anchor=west] at (-1,4){$\mes_{\B}\leftarrow\UKA.\B(\tape_{\B})$};
+\node [anchor=west] at (-0.5,3){$\forall j\in[n]:$};
+\node [anchor=west] at (-0.5,2.5){$\quad\mes_{\A,j}:=r_j\oplus\H((r_\ell)_{\ell\in[n]\setminus\{j\}})$};
+\node [anchor=west] at (-0.5,4.5){$\tape_{\B}\leftarrow\bits^*$};
+\node [anchor=west] at (-0.5,4){$\mes_{\B}\leftarrow\UKA.\B(\tape_{\B})$};
 \node [anchor=west] at (7,2) {$\key_{\A,\i}:=\UKA.\EK(\tape_\A,\mes_{\B})$};
-\node [anchor=west] at (-1,2) {$\quad\key_{\B,j}:=\UKA.\EK(\tape_{\B},\mes_{\A,j})$};
+\node [anchor=west] at (-0.5,2) {$\quad\key_{\B,j}:=\UKA.\EK(\tape_{\B},\mes_{\A,j})$};
 \end{tikzpicture}
+}
 \caption{The figure depicts a $1$ out of $n$ oblivious transfer using as a building block a one-round \UKA and a random oracle $\H:\G^{n-1}\rightarrow\G$, where \G is a group with group operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds.}
 \label{fig:oneroundKAtoOT}
 \end{figure}
