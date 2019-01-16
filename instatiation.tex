@@ -3,12 +3,12 @@
 
 \subsection{Instantiation from DDH}
 
-In this subsection we use a group \G of prime order $p$ and $g$ is a generator or \G. For simplicity, we use the bracket notation $[a]$ to denote $g^a$, inparticular $[1]:=g$. For vector $\vec{a}=(a_1,\ldots,a_n)$, we use $[\vec{a}]$ to denote $([a_1],\ldots,[a_n])$. We use the same notation, i.e. $[A]$, also for a matrix $A$.
+In this subsection we use a group \G of prime order $p$ and $g$ is a generator or \G. For simplicity, we use the bracket notation $\lb a\rb$ to denote $g^a$, inparticular $\lb 1\rb:=g$. For vector $\vec{a}=(a_1,\ldots,a_n)$, we use $\lb \vec{a}\rb$ to denote $(\lb a_1\rb,\ldots,\lb a_n\rb)$. We use the same notation, i.e. $\lb A\rb$, also for a matrix $A$.
 
 \begin{definition}[Decisional Diffie-Hellman (DDH) Assumption]
 For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
 $$
-|\Pr[\D(1^\sec,[1],[a],[b],[ab])=1]-\Pr[D(1^\sec,g,[a],[b],[c])=1]|=\negl,
+|\Pr\lb \D(1^\sec,\lb 1\rb,\lb a\rb,\lb b\rb,\lb ab\rb)=1\rb-\Pr\lb D(1^\sec,g,\lb a\rb,\lb b\rb,\lb c\rb)=1\rb|=\negl,
 $$
 where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$.
 \end{definition}
@@ -16,7 +16,7 @@ where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$.
 \begin{definition}[$n$ Multi-Instance DDH Assumption]
 For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
 $$
-|\Pr[\D(1^\sec,[1],[\vec{a}],[b],[\vec{a}b])=1]-\Pr[D(1^\sec,[1],[\vec{a}],[b],[\vec{c}])=1]|=\negl,
+|\Pr\lb \D(1^\sec,\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{a}b\rb)=1\rb-\Pr\lb D(1^\sec,\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb)=1\rb|=\negl,
 $$
 where $\vec{a}\leftarrow\Z_p^n$, $b\leftarrow\Z_p$ and $\vec{c}\leftarrow\Z_p^n$.
 \end{definition}
@@ -26,24 +26,29 @@ Let DDH be secure over \G except advantage $\epsilon$, then $n$ multi-instance D
 \end{lemma}
 
 \begin{proof}
-This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as the distribution over $[\vec{a}],[b],[\vec{c}]$, where for all $j\leq i$, $c_j=a_jb$ and for $j>i$, $c_j\leftarrow\Z_p$. If $\D$ distinguishes hybrid $\hyb_i$ from $\hyb_{i+1}$, it breaks the DDH assumption over \G.
+This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as the distribution over $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, where for all $j\leq i$, $c_j=a_jb$ and for $j>i$, $c_j\leftarrow\Z_p$. If $\D$ distinguishes hybrid $\hyb_i$ from $\hyb_{i+1}$, it breaks the DDH assumption over \G.
 \end{proof}
 
 
 \begin{figure}[h!]
 \centering
+\framebox{
+\begin{minipage}{0.85\linewidth}
+\centering
 \begin{tikzpicture}
 \node [anchor=west] at (2,5) {\A:};
 \node [anchor=west] at (7,5) {\B:};
 \node [anchor=west] at (2,4.5){$a\leftarrow\Z_p$};
-\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_{\A}:=[a]$}(6.75,4.5);
+\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_{\A}:=\lb  a\rb$}(6.75,4.5);
 \node [anchor=west] at (7,4.5){$b\leftarrow\Z_p$};
-\draw [thick, <-] (3.75,4.35)-- node [midway,below]{$\mes_{\B}:=[b]$}(6.75,4.35);
+\draw [thick, <-] (3.75,4.35)-- node [midway,below]{$\mes_{\B}:=\lb  b\rb$}(6.75,4.35);
 \node [anchor=west] at (2,4) {$\key_\A=\mes_{\B}^a$};
 \node [anchor=west] at (7,4) {$\key_\B=\mes_{\A}^b$};
 \end{tikzpicture}
+\end{minipage}
+}
 \label{fig:DH}
-\caption{The figure shows the Diffie-Hellman key exchange. Correctness follows from $\key_\A=[ab]=\key_{\B}$.}
+\caption{The figure shows the Diffie-Hellman key exchange. Correctness follows from $\key_\A=\lb  ab\rb=\key_{\B}$.}
 \end{figure}
 
 \begin{lemma}\label{lem:DDH}
@@ -52,21 +57,21 @@ The Diffie-Hellman key exchange over \G is unconditionally $Q$ multi-instance un
 \end{lemma}
 
 \begin{proof}
-The distribution of $[a]$ over \G is uniform, therefore 
+The distribution of $\lb a\rb$ over \G is uniform, therefore 
 $$
-|\Pr[\D^{\O_{\A}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=0,
+|\Pr\lb \D^{\O_{\A}}(1^{\sec})\rb=1\rb-Pr\lb \D^{\O_{u}}(1^{\sec})=1\rb|=0,
 $$
 even against an unbounded $\D$. Hence, the Diffie-Hellman key exchange is unconditional $Q$ multi-instance uniform.
 
-For proving the second part of the lemma, we construct a ppt distinguisher \D that breaks $n$ multi-instance DDH assumption given a ppt distinguisher $\D_\key$ that breaks the $(Q,n)$ multi-instance key indistinguishability of the Diffie-Hellman key exchange. $\D$ receives a challenge $[\vec{a}],[b],[\vec{c}]$, sets $\mes_{\B}:=[b]$ and invokes $\D_{\key}$ on input $\mes_{\B}$. On the $j$-th query of $\D_{\key}$ to $\O_{\A}$, \D samples $\vec{r}_j\leftarrow\Z_p^{n+1}$ and responds with $\mes_{\A,j}:=[\langle (\vec{a},1),\vec{r}_j\rangle]=[a_1]^{r_{j,1}}\cdot[a_2]^{r_{j,2}}\ldots[a_n]^{r_{j,n}}\cdot[r_{j,n+1}]$. When $\D_{\key}$ queries $\O_{\key}$ for key $\key_j$, \D responds with $\key_j:=[\langle\vec{c},\vec{r}_j\rangle]=[c_1]^{r_{j,1}}\cdot[c_2]^{r_{j,2}}\ldots[c_n]^{r_{j,n}}\cdot[b]^{r_{j,n+1}}$. In the end, $\D$ outputs the output of $\D_{\key}$.
+For proving the second part of the lemma, we construct a ppt distinguisher \D that breaks $n$ multi-instance DDH assumption given a ppt distinguisher $\D_\key$ that breaks the $(Q,n)$ multi-instance key indistinguishability of the Diffie-Hellman key exchange. $\D$ receives a challenge $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, sets $\mes_{\B}:=\lb b\rb$ and invokes $\D_{\key}$ on input $\mes_{\B}$. On the $j$-th query of $\D_{\key}$ to $\O_{\A}$, \D samples $\vec{r}_j\leftarrow\Z_p^{n+1}$ and responds with $\mes_{\A,j}:=\lb \langle (\vec{a},1),\vec{r}_j\rangle\rb=\lb a_1\rb^{r_{j,1}}\cdot\lb a_2\rb^{r_{j,2}}\ldots\lb a_n\rb^{r_{j,n}}\cdot\lb r_{j,n+1}\rb$. When $\D_{\key}$ queries $\O_{\key}$ for key $\key_j$, \D responds with $\key_j:=\lb \langle\vec{c},\vec{r}_j\rangle\rb=\lb c_1\rb^{r_{j,1}}\cdot\lb c_2\rb^{r_{j,2}}\ldots\lb c_n\rb^{r_{j,n}}\cdot\lb b\rb^{r_{j,n+1}}$. In the end, $\D$ outputs the output of $\D_{\key}$.
 
 It is easy to see that $\O_{\A}$ has the correct output distribution. $r_{j,n+1}$ is uniform over $\Z_p$ and hence $\mes_{\A,j}$ is. Further, conditioned on $\mes_{\A,j}$, $r_{j,1},\ldots,r_{j,n}$ are uniform. Given that $\vec{c}=\vec{a}b$, the output
 $$
-\key_j=[\langle\vec{c},\vec{r}_j\rangle]\cdot[b]^{r_{j,n+1}}=[\langle\vec{a}b,\vec{r}_j\rangle]\cdot[b]^{r_{j,n+1}}=[\langle(\vec{a},1),\vec{r}_j\rangle]^b=\mes_{\A,j}^b
+\key_j=\lb \langle\vec{c},\vec{r}_j\rangle\rb\cdot\lb b\rb^{r_{j,n+1}}=\lb \langle\vec{a}b,\vec{r}_j\rangle\rb\cdot\lb b\rb^{r_{j,n+1}}=\lb \langle(\vec{a},1),\vec{r}_j\rangle\rb^b=\mes_{\A,j}^b
 $$
-of $\O_{\key}$ is also distributed correctly. In case that $\vec{c}$ is uniform, we need to show that all the $n$ outputs of $\O_{\key}$, $\vec{\key}=\key_1,\ldots,\key_n$ are uniform. Let $\mes_i$ be the message $\mes_{\A,j}$ and $\vec{t}_i$ the randomness $\vec{r}_j$ that corresponds to $\key_i$. Since $\vec{c}$ is uniform and $\vec{\key}=[\vec{c}\cdot T]$, where $T$ is the matrix with $i$-th column $\vec{t}_i$, $\vec{\key}$ is uniform if $T$ is invertible. Since $r_{j,1},\ldots,r_{j,n}$ are uniform given $\mes_{\A,j}$ so is $T$. For a uniform $T$ over $\Z_p^{n\times n}$, the probability that $T$ is invertible is that all the rows are linear independent, i.e. 
+of $\O_{\key}$ is also distributed correctly. In case that $\vec{c}$ is uniform, we need to show that all the $n$ outputs of $\O_{\key}$, $\vec{\key}=\key_1,\ldots,\key_n$ are uniform. Let $\mes_i$ be the message $\mes_{\A,j}$ and $\vec{t}_i$ the randomness $\vec{r}_j$ that corresponds to $\key_i$. Since $\vec{c}$ is uniform and $\vec{\key}=\lb \vec{c}\cdot T\rb$, where $T$ is the matrix with $i$-th column $\vec{t}_i$, $\vec{\key}$ is uniform if $T$ is invertible. Since $r_{j,1},\ldots,r_{j,n}$ are uniform given $\mes_{\A,j}$ so is $T$. For a uniform $T$ over $\Z_p^{n\times n}$, the probability that $T$ is invertible is that all the rows are linear independent, i.e. 
 $$
-\Pr[T\text{ invertible}]= \frac{1}{p^{n^2}}\prod_{i=0}^{n-1}(p^n-p^i)\geq\left(1-\frac{1}{p}\right)^n\geq 1-\negl.
+\Pr\lb T\text{ invertible}\rb= \frac{1}{p^{n^2}}\prod_{i=0}^{n-1}(p^n-p^i)\geq\left(1-\frac{1}{p}\right)^n\geq 1-\negl.
 $$ 
 Therefore, except with negligible probability, $\D$ has the same advantage in breaking $n$ multi-instance DDH as $\D_{\key}$ has in breaking $(Q,n)$ one-round multi-instance key indistinguishability .
 \end{proof}
@@ -82,45 +87,29 @@ If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol 
 \end{remark}
 
 \subsection{Instantiation based on Crystals-Kyber}
-\newcommand{\sk}{\ensuremath{\mathsf{sk}}\xspace}
-\newcommand{\pk}{\ensuremath{\mathsf{pk}}\xspace}
-\newcommand{\kyberc}{\ensuremath{\mathsf{c}}\xspace}
-\newcommand{\kybergen}{\ensuremath{\mathsf{Kyber.KeyGen}}\xspace}
-\newcommand{\kyberenc}{\ensuremath{\mathsf{Kyber.Enc}}\xspace}
-\newcommand{\kyberdec}{\ensuremath{\mathsf{Kyber.Dec}}\xspace}
-\newcommand{\kB}{\ensuremath{\mathcal{B}}\xspace}
-\newcommand{\kenc}{\ensuremath{\mathsf{Encode}}\xspace}
-\newcommand{\kdec}{\ensuremath{\mathsf{Decode}}\xspace}
-\newcommand{\kcom}{\ensuremath{\mathsf{Compress}}\xspace}
-\newcommand{\kdecom}{\ensuremath{\mathsf{Decompress}}\xspace}
-\newcommand{\kparse}{\ensuremath{\mathsf{Parse}}\xspace}
-\newcommand{\R}{\ensuremath{\mathcal R}\xspace}
-\newcommand{\LWE}{\ensuremath{\mathsf{LWE}}\xspace}
-\newcommand{\MLWE}{\ensuremath{\mathsf{MLWE}}\xspace}
-\newcommand{\mt}{\ensuremath{{\mathbf t}}\xspace}
-\newcommand{\cdt}{\ensuremath{\tilde{\mt}}\xspace}
-\newcommand{\kLWE}{\ensuremath{k_{\LWE}}\xspace}
-\newcommand{\nLWE}{\ensuremath{n_{\LWE}}\xspace}
+ 
 
 \begin{figure}[h!]
 \centering
+\framebox{
 \begin{tikzpicture}
-\node [anchor=west] at (-0.75,5) {\A:};
+\node [anchor=west] at (-0.25,5) {\A:};
 \node [anchor=west] at (7,5) {\B:};
-\node [anchor=west] at (-0.75,4.5){$(\sk,\pk)\leftarrow\kybergen()$};
-\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_\A:=\pk$}(6.75,4.5);
+\node [anchor=west] at (-0.25,4.5){$(\sk,\pk)\leftarrow\kybergen()$};
+\draw [thick, ->] (4.25,4.5)-- node [midway,above]{$\mes_\A:=\pk$}(6.75,4.5);
 \node [anchor=west] at (7,4.5){$\key_{\B}\leftarrow\kB^{32},\tape_\B\leftarrow\kB^{32}$};
 \node [anchor=west] at (7,4){$\mes_\B=\kyberenc(\pk, \key_{\B},\tape_\B)$};
-\draw [thick, <-] (3.75,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
-\node [anchor=west] at (-0.75,3.5) {$\key_\A=\kyberdec(\sk,\mes_\B)$};
+\draw [thick, <-] (4.25,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
+\node [anchor=west] at (-0.25,3.5) {$\key_\A=\kyberdec(\sk,\mes_\B)$};
 \node [anchor=west] at (7,3.5) {$\key_\B$};
 \end{tikzpicture}
+}
 \label{fig:Kyber}
 \caption{The figure shows a Kyber based key agreement protocol between parties \A and \B.}
 \end{figure}
 
 \begin{definition}[Crystals-Kyber CPAPKE]
-\emph{ Crystals-Kyber CPAPKE} is a correct and CPA secure public key encryption based on the Module LWE (\MLWE) assumption. We follow the specifications of Kyber, in which $\kB$ denotes the  set $\{0,1,\ldots,255\}$. Kyber is parameterized by parameters $d_t=11$, $\nLWE=256$, $\kLWE\in\{2,3,4\}$, $q=7681$ and ring $\R_q=\Z_q[X]/(X^{\nLWE}+1)$. 
+\emph{ Crystals-Kyber CPAPKE} is a correct and CPA secure public key encryption based on the Module LWE (\MLWE) assumption. We follow the specifications of Kyber, in which $\kB$ denotes the  set $\{0,1,\ldots,255\}$. Kyber is parameterized by parameters $d_t=11$, $\nLWE=256$, $\kLWE\in\{2,3,4\}$, $q=7681$ and ring $\R_q=\Z_q\lb X\rb/(X^{\nLWE}+1)$. 
 
 $(\kybergen,\kyberenc,\kyberdec)$ have the following syntax. 
 \begin{description}
@@ -145,5 +134,5 @@ We define the group operation $\pk_1\oplus\pk_2$, by mapping $\pk_1=(\cdt_1,\rho
 By using \theoremref{thm:KAtoOT}, \lemmaref{lem:multuniform} and \lemmaref{lem:keytomultkey}, we get the following corollary.
  
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Crystals-Kyber, then in the programmable random oracle model the resulting OT is secure against a malicious sender except advantage $Q\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Crystals-Kyber, then in the programmable random oracle model the resulting OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}

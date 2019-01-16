@@ -1,0 +1,59 @@
+\section{All But One OT from Key Agreement}\label{sec:allbutone}
+
+In this section we show how to use the techniques in \namedref{Section}{sec:endemicOT} to construct an all but one, i.e. $n-1$ out of $n$, OT. We show the protocol in \figureref{fig:allbutone} and give a state the achieved security in \namedref{Lemma}{lem:allbutone} without giving a detailed proof. Security follows from the same reasoning as in \namedref{Section}{sec:endemicOT}.
+
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+\node [anchor=west] at (-1,5) {Sender:};
+\node [anchor=west] at (7,5) {Receiver$(\i\in[n])$:};
+\node [anchor=west] at (7,4.5){$r_{i}\leftarrow\G$};
+\node [anchor=west] at (7,4){for $j=1$ to $n-1$};
+\node [anchor=west] at (7,3.5){$\quad\ell_{j}:=(i+j\bmod n) +1$};
+\node [anchor=west] at (7,3){$\quad\tape_{\A,\ell_j}\leftarrow\bits^*$};
+\node [anchor=west] at (7,2.5){$\quad\mes_{\A,\ell_j}\leftarrow \UKA.\A(\tape_{\A,\ell_j})$};
+\node [anchor=west] at (7,2){$\quad r_{\ell_j}:=\mes_{\A,\ell_j}\ominus\H(r_{\ell_{j-1}})$};
+\draw [thick, <-] (4.75,2)-- node [midway,above]{$(r_j)_{j\in[n]}$}(6.75,2);
+\node [anchor=west] at (-1,2){$\forall j\in[n]:$};
+\node [anchor=west] at (-1,1.5){$\quad\mes_{\A,j}:=r_j\oplus\H(r_{(j-2\bmod n)+1})$};
+\node [anchor=west] at (-1,1){$\quad\tape_{\B,j}\leftarrow\bits^*$};
+\node [anchor=west] at (-1,0.5){$\quad\mes_{\B,j}\leftarrow\UKA.\B(\tape_{\B,j},\mes_{\A,j})$};
+\draw [thick, ->] (4.75,0.5)-- node [midway,above]{$(\mes_{\B,j})_{j\in[n]}$}(6.75,0.5);
+\node [anchor=west] at (7,0) {$\forall j\in[n]\setminus\{\i\}$}; 
+\node [anchor=west] at (7,-0.5) {$\key_{\A,j}:=\UKA.\EK(\tape_\A,\mes_{\B,j})$};
+\node [anchor=west] at (-1,0) {$\forall j\in[n]$};
+\node [anchor=west] at (-1,-0.5) {$\quad\key_{\B,j}:=\UKA.\EK(\tape_{\B,j},\mes_{\A,j})$};
+\end{tikzpicture} 
+\caption{The figure shows a $n-1$ out of $n$ oblivious transfer using as a building block a \UKA and a random oracle $\H:\G\rightarrow\G$, where \G is a group with group operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds. The scheme can be transformed in the same way in a one-round scheme given a one-round \UKA as in the $1$ out of $n$ OT case in \namedref{Section}{sec:endemicOT}.}
+\label{fig:allbutone}
+\end{figure}
+ 
+\begin{lemma}\label{lem:allbutone}
+Given a correct and secure \UKA scheme, then the $n-1$ out of $n$ oblivious transfer in  \figureref{fig:allbutone} is an Endemic $\OT_{n-1,n}$ in the programmable random oracle model. 
+\end{lemma}
+
+\begin{proof}
+The proof is very similar to the security proof of the $1$ out of $n$ OT. In fact, the proof is even simpler since the random oracle receives only a single $r$ as input and for a malicious receiver, distinguishing a single string, i.e. $\key_{i}$, needs to be hard. This even removes some of the complications of the previous proof. In the following, we state the claims, which only require small adaptations to the claims of the previous proofs. For this reason, we do not give their proofs here. 
+
+Security against a malicious sender follows by the claim below. 
+\begin{claim}\label{claim:malsender}
+Given a $\delta$ correct and $\epsilon$ uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+$$
+|\Pr[\D((\Adv,\rec)_{\langle \Adv, \rec\rangle})=1] -\Pr[\D( (\Adv', \O_{\OT, \rec}^\send)_{\langle \Adv', \OOT^\send\rangle})=1]|\leq \epsilon+(1-\delta),
+$$
+where $\O_{\OT, \rec}^\send$ is the \rec's side output within the view of $\OOT^\send$ and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+\end{claim}
+
+
+By a second claim, the protocol is secure against a malicious receiver.
+\begin{claim}\label{claim:malreceiver}
+Given a $\delta$ correct, $\epsilon_u$ $Q$ multi-instance uniform, $\epsilon_k$ $(Q,1)$ multi-instance key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+$$
+|\Pr[\D((\send, \Adv)_{\langle \send, \Adv\rangle})=1] -\Pr[\D((\O_{\OT,\send}^\rec,\Adv')_{\langle \OOT^\rec , \Adv' \rangle})=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
+$$
+where $\O_{\OT,\send}^\rec$ is  the \send's side output within the view of $\OOT^\rec$ and all algorithms receive input $1^\sec$.
+\end{claim}
+
+\end{proof}
+
