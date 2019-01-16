@@ -13,7 +13,7 @@
 \draw [-implies,double equal sign distance] (U) -- (RC);
 \draw [-implies,double equal sign distance] (SC) -- (E);
 \draw [-implies,double equal sign distance] (RC) -- (E);
-\draw [->, thick] (U) to [out=240,in=60] (TC);
+\draw [->, thick] (U) to [out=240,in=90] (TC);
 \draw [-, thick] (E) to [out=60,in=270] (5,2);
 \draw [->, thick] (5,2) to [out=90,in=300] (U);
 \draw [-, thick] (TC) to [out=0,in=180] (5,2);
@@ -306,6 +306,23 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 
 
 \begin{figure}[t]
+\centering
+\framebox{
+\begin{tikzpicture}
+\node [anchor=west] at (0,5) {Sender:};
+\node [anchor=west] at (7.5,5) {Receiver:};
+\draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
+\node at (5.25,4.125){$\O^{e}_{k,n}$};
+\node [anchor=west] at (7.5,4.5){$\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$};
+\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set'$}(7.25,4.5);
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set'}$}(7.25,3.85);
+\node [anchor=west] at (0,3.5) {$\pi\leftarrow\Pi([n])$};
+\draw [thick, ->] (3.25,3)-- node [midway, above]{$\pi$} (7.25,3);
+\draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+\node [anchor=west] at (0,2.5) {output $(m_i)_{i\in[k]}$};
+\node [anchor=west] at (7.5,2.5) {output $(m_i)_{i\in[k]}$};
+\end{tikzpicture}
+}
 	\framebox{\begin{minipage}{0.95\linewidth}
 			Input: The sender \send and receiver \rec have no input.
 			\begin{enumerate}
@@ -314,7 +331,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 				\item \label{step:uniformSelect_step3} \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(\set, (s_i)_{i\in\set})$ where $s_i:=s_{\pi(i)}'$ and $\set:=\{j \mid \exists i, j=\pi(i)\}$.
 			\end{enumerate}
 	\end{minipage}}
-	\caption{Uniform Selection $k$-out-of-$n$ OT protocol $\Pi^{\E u}$ in the $\OOT^{\E}$ hybrid.}
+	\caption{Uniform Selection $k$-out-of-$n$ OT protocol $\Pi^{\E u}$ in the $\OOT^{\E}$ hybrid. $\Pi([n])$ is the set of permutations over $[n]$}
 	\label{fig:uniformSelect}
 \end{figure}
 
