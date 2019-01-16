@@ -126,7 +126,9 @@ The oracle is publicly parameterized by one of the following message sampling me
  
 \item[] \textsc{Endemic Chosen Message:} If $\send$ is corrupt, then $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the oracle which defines $s_i:=\mathcal{M}(i)$.
 
-If \rec is corrupt, \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the oracle which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in\set\setminus[n]$.
+If \rec is corrupt, \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the oracle which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$.
+
+All remaining $s_i$ for $i\in [n]$ are uniformly samples $s_i\gets\{0,1\}^\ell$.
 \end{description}
 
 The oracle is publicly parameterized by one of the following selection methods:
