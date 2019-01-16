@@ -1,16 +1,19 @@
-\usepackage{amssymb,enumitem,amsmath,amsthm,mathtools,tikz,xspace}
+\usepackage{amssymb,enumitem,mathtools,tikz,xspace}
 \usetikzlibrary{arrows}
 \usepackage[]{hyperref}
 \usepackage{stmaryrd} %brackets 
 \newcommand{\lb}{\llbracket}
 \newcommand{\rb}{\rrbracket}
 
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{claim}[theorem]{Claim}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{corollary}[theorem]{Corollary}
+\iffullversion  
+	\usepackage{amsmath,amsthm}
+	\newtheorem{theorem}{Theorem}[section]
+	\newtheorem{definition}[theorem]{Definition}
+	\newtheorem{lemma}[theorem]{Lemma}
+	\newtheorem{claim}[theorem]{Claim}
+	\newtheorem{remark}[theorem]{Remark}
+	\newtheorem{corollary}[theorem]{Corollary}
+\fi
 
 \newcommand{\send}{\ensuremath{\mathsf{S}}\xspace}
 \newcommand{\rec}{\ensuremath{\mathsf{R}}\xspace}

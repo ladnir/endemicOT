@@ -16,7 +16,7 @@
 \draw [->, thick] (U) to [out=240,in=90] (TC);
 \draw [-, thick] (E) to [out=60,in=270] (5,2);
 \draw [->, thick] (5,2) to [out=90,in=300] (U);
-\draw [-, thick] (TC) to [out=0,in=180] (5,2);
+\draw [-, thick] (TC) to [out=0,in=300] (4.655,3);
 \draw [->, thick] (E) to [out=180,in=270] (SC);
 \draw [->, thick] (E) to [out=0,in=270] (RC);
 \end{tikzpicture}
@@ -26,7 +26,7 @@ The figure depicts the different security notions of OT and their relations. $A\
 }
 \end{figure}
 
-\begin{lemma}
+\begin{lemma}\label{lemma:is_a}
 Let the distribution of OT strings be efficiently sampleable. 
 Then a uniform security implies sender as well as a receiver tweakable security. If \OT is a sender or receiver tweakable secure, then it is also an endemically secure.
 \end{lemma}
