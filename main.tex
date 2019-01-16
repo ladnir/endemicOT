@@ -1,4 +1,15 @@
-\documentclass[10pt]{article}
+
+\newif\iffullversion
+
+\fullversionfalse
+
+
+\iffullversion    
+	\documentclass[10pt]{article}
+\else
+	\documentclass[runningheads]{llncs}
+	\pagestyle{plain}
+\fi
 
 %\usepackage[a4paper, total={6in, 9in}]{geometry}
 
