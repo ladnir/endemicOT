@@ -314,6 +314,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 			
 			$\Adv'$ defines the circuit $\mathcal{S}_i$ with support $\{\ww_i\}$ and $\mathcal{M}_i:[1]\rightarrow\mathbb{F}^\kappa_2$ s.t. $\mathcal{M}_i(1)=\H(i, \tt_i)$. $\Adv'$ sends $\mathcal{S}_i$ and $\mathcal{M}_i$ to $\OOT^\E$ as the receiver's input to the $i$-th OT instance. The view of \Adv is unmodified and the ideal and real output agree on output $\vv_{i,x_i}$.
 			
+			
 			\item[Hybrid 3.]\label{hybrid:simOutput} Assuming $\Adv'$ did not abort in \stepref{step:consistency}, for all $w\neq \ww_i$, \rec has $\negl$ probability of computing $g=\qq_i+\bb\odot \mathcal{C}(w)$. If this was not the case, then \rec could compute
 			\begin{align*}
 			g +\tt_i &=\qq_i+\bb\odot \mathcal{C}(w)+\tt_i\\
@@ -321,9 +322,20 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 			&=(\cc_i+\mathcal{C}(w))\odot \bb
 			\end{align*}
 			which contradicts the proof of \stepref{step:consistency}.
-			Therefore, the probability that \Adv has made a query of the form $\H(i,\qq_i+\bb\odot \mathcal{C}(w))$ for $w\neq \ww_i$ is also negligible. If such as query does happen $\Adv'$ aborts. Otherwise, if \send makes an $\H$ query of the form $\H(i,\qq_i+\bb\odot \mathcal{C}(w))$ for a new $(i,w)$ pair and $w\neq \ww_i$, then $\Adv'$ computes $x$ s.t. $map(x)=w$ and sends $(\textsc{Output}, x)$ to the $i$-th instance of $\OOT^E$ and receives $\vv_{i,x}\gets\{0,1\}^\ell$ in response. $\Adv'$ programs $\H$ to output $\vv_{i,x}$ on this query. All other $\H$ queries are answered as normal. The distribution of $\H$ after being programmed is identical since the input has not previously been queried and in both cases the result is uniformly distributed. This hybrid is indistinguishably distributed from the previous. In particular, $\Adv'$ may now abort on bad $\H$ queries made by \rec which happens with $\negl$ probability.
+			Therefore, the probability that \Adv has made a query of the form $\H(i,\qq_i+\bb\odot \mathcal{C}(w))$ for $w\neq \ww_i$ is also negligible. If such as query does happen $\Adv'$ aborts. This hybrid is indistinguishably distributed from the previous. 
 			
-			\item[Hybrid 4.] $\Adv'$ does not take the input of \send and does not program $\H$ in \hybridref{hybrid:simOutput}. \send only interacts with $\OOT^\E$. This change is identically distributed.
+			
+			\item[Hybrid 4.] \label{hybrid:simOutput2} when \send makes an $\H$ query of the form $\H(i,h)$ which has not previously be queries, $\Adv'$ must determine if there is a unique $x\in[N]$ such that $h=\qq_i+\bb\odot \mathcal{C}(map(x))$. First, let us assume there exists two distinct $w,w'\in\mathbb{F}^\kc_2$ which satisfies this. That is,
+			\begin{align*}
+			\bb \odot (c_i + \mathcal{C}(w)) &= \bb \odot (c_i + \mathcal{C}(w'))\\
+			\bb \odot \mathcal{C}(w) &=			\bb \odot \mathcal{C}(w') \\
+			0 &= \bb \odot (\mathcal{C}(w) + \mathcal{C}(w'))
+			\end{align*}			
+			Recall that $\mathcal{C}$ by construction has minimum distance $\dc\geq\kappa$ and that $\bb$ is uniformly distributed. Let $\delta=\mathcal{C}(w) + \mathcal{C}(w')$ and $E=\{i \mid \delta_i=1\}$, then $|E|\geq \dc\geq \kappa$ and for the above to hold we require $\bb_i=0 \mid \forall i\in E$ which occurs with probability $\Pr[\bb_i=0 \mid \forall i\in E]=2^{-|E|}\leq 2^{-\dc}\leq2^{-\kappa}$. In such an event the simulations fails but this occurs with negligible probability.			
+			
+			Gaussian elimination can then be used to determine if there exists a $w$ such that $h+\qq_i$ erasure decodes to $w$ where the erasures are index by $\{i \mid b_i=0\}$. If so, $\Adv'$ computes $x$ s.t. $map(x)=w$ and sends $(\textsc{Output}, x)$ to the $i$-th instance of $\OOT^E$ and receives $\vv_{i,x}\gets\{0,1\}^\ell$ in response. $\Adv'$ programs $\H$ to output $\vv_{i,x}$ on this query. All other $\H$ queries are answered as normal. The distribution of $\H$ after being programmed is identical since the input has not previously been queried and in both cases the result is uniformly distributed.			
+			
+			\item[Hybrid 5.] $\Adv'$ does not take the input of \send and does not program $\H$ in \hybridref{hybrid:simOutput}. \send only interacts with $\OOT^\E$. This change is identically distributed.
 		\end{enumerate}
 	\end{proof}
 \end{proof}
@@ -362,8 +374,21 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\rec$ oracle.
 	\end{claim}
 	\begin{proof}
-		Observe that the honest receiver uniformly chooses
+		Observe that the honest receiver uniformly chooses $\tt_0^j$ and $\bb\in\{0,1\}^\nc$ is uniformly sampled by the $\OOT^{\send u}$ oracle. Now observe that all of the outputs strings are of the form
+		\begin{align*}
+			\vv_{i,j}&=\H(i,\qq_i + \bb \odot \mathcal{C}(map(x)))\\
+					 &=\H(i,\, \tt_i + \bb \odot (c_i + \mathcal{C}(map(x)))).
+		\end{align*}
+		As such, $\Adv$ has negligible probability of querying strings of this form prior to receiving the output of $\OOT^{\send u}$ since $\tt_i$ is uniformly distributed in their view.
+		
+		The second concern is there does not exist distinct $x,x'\in[N]$ s.t. 
+		$$
+			\bb \odot \mathcal{C}(map(x)) = \bb \odot \mathcal{C}(map(x'))
+		$$
+		as this would result in $\vv_{i,x}=\vv_{i,x'}$. However, this happens with negligible probaiblity as described in claim 2, hybrid 4 of \lemmaref{lem:ext-E} .
 	\end{proof}
 \end{proof}
 
 
+
+\subsection{Improved OT Extension}
