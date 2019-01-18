@@ -387,71 +387,71 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 	\label{fig:uniformSelect}
 \end{figure}
 
-\begin{figure}[t!]
-	\vspace{-1cm}
-	\framebox{
-	\begin{minipage}{0.95\linewidth}\small
-			\textsc{Parameters:} $\kappa$ is the computational security parameter. $m$ denotes the number of OTs. $N$ denotes the number of messages each OT has. $\mathcal{C}$ is an $[\nc,\kc,\dc]$ binary linear code such that $\kc=\log_2 N$ and $\dc\geq \kappa$. A bijective map $map : [N]\rightarrow\mathbb{F}^\kc$.\\
-			\textsc{Requirements:} $\H : [m] \times \mathbb{F}_2^\nc \rightarrow \mathbb{F}_2^\kappa$ is a random oracle.			
-			Let $m'=m+s$ where $s$ is defined in \stepref{step:consistency}. \OOT is an 1-out-of-2 OT oracle with output messages in $\mathbb{F}_2^{m'}$.
-			\\
-			
-			\textsc{Extend:} On input $(\textsc{Extend})$ from \send and $(\textsc{Extend}, (x_1,...,x_m)\in[N]^m)$ from \rec.
-			\begin{enumerate}
-				\item\label{step:extInit} Both parties invoke $\nc$  instances of $\OOT$  where \send takes the role of the receiver. If $\OOT$ has inputs, the corresponding party  locally samples them uniformly from the input domains. \send receives $(\bb'\in\{1,2\}^\nc, \{\tt^j_{b_j}\}_{j\in [\nc]})$ where $\bb_i=(\bb_i'-1)\in\{0,1\}$. \rec receives $\{(\tt^j_0,\tt^j_1)\}_{j\in [\nc]}$. Let $T_0\in \mathbb{F}^{m'\times \nc}_2$ denote the matrix formed by concatenating the column vectors $\tt^1_0||...||\tt^\nc_0$. \\
-				
-				%				\item \rec constructs matrices $T_0,T_1\in \mathbb{F}^{m'\times \nc}_2$ from the seeds $\{(\rr^j_0,\rr^j_1)\}_{j\in [\nc]}$ so that the respective columns are:
-				%				$$
-				%					\tt^j_0 := \PRG(\rr^j_0)\in \mathbb{F}^{m'}_2,\qquad \tt^j_1 := \PRG(\rr^j_1)\in \mathbb{F}^{m'}_2,\qquad \forall j\in[\nc]
-				%				$$
-				%				In the same way \send produces $\tt^j_{b_j}$, for each $j\in[\nc]$. Summarizing, \rec holds $\{(\tt^j_0,\tt^j_1)\}_{j\in[\nc]}$ and \send holds $\{\tt^j_{b_j}\}_{j\in[\nc]}$.
-				%				
-				\item\label{step:extSendU} \rec  defines $\ww_i:=map(x_i)$ for $i\in[m]$ and  samples random $\ww_{m+\ell}\gets \mathbb{F}^\kc_2$, for $\ell\in[s]$. Then constructs a matrix $C\in\mathbb{F}^{m'\times \nc}_2$ such that each row $\cc_i$ is the codeword $\mathcal{C}(\ww_i)$. Then, \rec sends to \send the values
-				$$
-				\uu^j :=\tt^j_0 +\tt^j_1+\cc^j, \qquad \forall j\in[\nc],
-				$$
-				where $\cc^j$ is the $j$-th column of $C$.
-				
-				\item\label{step:extCompQ} \send receives $\uu^j\in\mathbb{F}^{m'}_2$ and computes
-				$$
-				\qq^j := b_j \cdot \uu^j +\tt^j_{b_j} = b_j\cdot \cc^j+\tt^j_0,\qquad \forall j\in[\nc]
-				$$
-				that form the columns of an $(m'\times \nc)$ matrix $Q$. Denoting the rows of $T_0, Q$ by $\tt_i,\qq_i$, \rec now holds $\cc_i,\tt_i$ and \send holds $\bb, \qq_i$ so that 
-				$$
-				\qq_i = \cc_i\odot \bb+\tt_i,\qquad \forall i\in[m'].
-				$$
-				
-				\item \emph{Consistency check:}\label{step:consistency} \rec  proves in zero knowledge that given their view:
-				\begin{center}
-					$	\forall i\in[m], \exists w\in\mathbb{F}^\kc_2\  s.t.\  \cc_i \text{ decodes to } w \quad  \text{and}$ \\
-					$\forall w'\in\mathbb{F}^\kc_2\setminus\{w\},$ the distribution of \\
-					$(\cc_i+\mathcal{C}(w))\odot \bb$\\      
-					has at least $\log_2(1/\negl)$ bits of entropy.
-				\end{center}
-				
-				 For example, the proof of \cite{C:KelOrsSch15} for $N=2$ or \cite{RSA:OrrOrsSch17} otherwise. $s\geq0$ is specified by the proof protocol.
-%				\begin{itemize}
-%					\item Both parties query the challenge oracle $\O^{\textsf{chllng}}$ on input $u^j$ for $j\in[\nc]$  which samples and returns $X=\{(x_1^{\ell}, ...,x_m^{\ell} )\in \mathbb{F}^m_2\}_{\ell\in[s]}$ % := H'(\uu^1|| ... || \uu^\nc).
-%					to both parties.
-%					
-%					\item \rec computes and sends, for $\ell \in[s]$:
-%					$$
-%					\widehat \tt^{\ell} := \sum_{i\in[m]} \tt_i \cdot x_i^\ell + \tt_{m+\ell}, \qquad \widehat \ww^\ell := \sum_{i\in[m]} \ww_i \cdot x_i^\ell + \ww_{m+\ell}
-%					$$
-%					
-%					\item \send computes $\widehat \qq^\ell := \sum_{i\in[m]} \qq_i \cdot x^\ell_i + \qq_{m+\ell}$, and checks that:
-%					$$
-%					\widehat\tt^\ell + \widehat\qq^\ell = \mathcal{C}(\widehat\ww^\ell) \odot \bb, \qquad \forall\ell\in[s].
-%					$$
-%					If the check fails, \send sends $\textsf{Abort}$, and otherwise continues.
-%				\end{itemize}
-				\item \rec outputs $\vv_{i, x_j}:=\H(i,\tt_i)$ for all $i\in[m]$.
-			\end{enumerate}
-			
-			
-			\textsc{Output:} On input $(\textsc{Output}, (i,x))$ from \send. If $i\in[m],j\in[N]$, then \send outputs $\vv_{i,x}:=\H(i,\qq_i+\mathcal{C}(map(x))\odot \bb)$.
-	\end{minipage}
-	}
-	\caption{ 1-out-of-$N$ OT Extension.}
-	\label{fig:otExt}
-\end{figure}
+%\begin{figure}[t!]
+%	\vspace{-1cm}
+%	\framebox{
+%	\begin{minipage}{0.95\linewidth}\small
+%			\textsc{Parameters:} $\kappa$ is the computational security parameter. $m$ denotes the number of OTs. $N$ denotes the number of messages each OT has. $\mathcal{C}$ is an $[\nc,\kc,\dc]$ binary linear code such that $\kc=\log_2 N$ and $\dc\geq \kappa$. A bijective map $map : [N]\rightarrow\mathbb{F}^\kc$.\\
+%			\textsc{Requirements:} $\H : [m] \times \mathbb{F}_2^\nc \rightarrow \mathbb{F}_2^\kappa$ is a random oracle.			
+%			Let $m'=m+s$ where $s$ is defined in \stepref{step:consistency}. \OOT is an 1-out-of-2 OT oracle with output messages in $\mathbb{F}_2^{m'}$.
+%			\\
+%			
+%			\textsc{Extend:} On input $(\textsc{Extend})$ from \send and $(\textsc{Extend}, (x_1,...,x_m)\in[N]^m)$ from \rec.
+%			\begin{enumerate}
+%				\item\label{step:extInit} Both parties invoke $\nc$  instances of $\OOT$  where \send takes the role of the receiver. If $\OOT$ has inputs, the corresponding party  locally samples them uniformly from the input domains. \send receives $(\bb'\in\{1,2\}^\nc, \{\tt^j_{b_j}\}_{j\in [\nc]})$ where $\bb_i=(\bb_i'-1)\in\{0,1\}$. \rec receives $\{(\tt^j_0,\tt^j_1)\}_{j\in [\nc]}$. Let $T_0\in \mathbb{F}^{m'\times \nc}_2$ denote the matrix formed by concatenating the column vectors $\tt^1_0||...||\tt^\nc_0$. \\
+%				
+%				%				\item \rec constructs matrices $T_0,T_1\in \mathbb{F}^{m'\times \nc}_2$ from the seeds $\{(\rr^j_0,\rr^j_1)\}_{j\in [\nc]}$ so that the respective columns are:
+%				%				$$
+%				%					\tt^j_0 := \PRG(\rr^j_0)\in \mathbb{F}^{m'}_2,\qquad \tt^j_1 := \PRG(\rr^j_1)\in \mathbb{F}^{m'}_2,\qquad \forall j\in[\nc]
+%				%				$$
+%				%				In the same way \send produces $\tt^j_{b_j}$, for each $j\in[\nc]$. Summarizing, \rec holds $\{(\tt^j_0,\tt^j_1)\}_{j\in[\nc]}$ and \send holds $\{\tt^j_{b_j}\}_{j\in[\nc]}$.
+%				%				
+%				\item\label{step:extSendU} \rec  defines $\ww_i:=map(x_i)$ for $i\in[m]$ and  samples random $\ww_{m+\ell}\gets \mathbb{F}^\kc_2$, for $\ell\in[s]$. Then constructs a matrix $C\in\mathbb{F}^{m'\times \nc}_2$ such that each row $\cc_i$ is the codeword $\mathcal{C}(\ww_i)$. Then, \rec sends to \send the values
+%				$$
+%				\uu^j :=\tt^j_0 +\tt^j_1+\cc^j, \qquad \forall j\in[\nc],
+%				$$
+%				where $\cc^j$ is the $j$-th column of $C$.
+%				
+%				\item\label{step:extCompQ} \send receives $\uu^j\in\mathbb{F}^{m'}_2$ and computes
+%				$$
+%				\qq^j := b_j \cdot \uu^j +\tt^j_{b_j} = b_j\cdot \cc^j+\tt^j_0,\qquad \forall j\in[\nc]
+%				$$
+%				that form the columns of an $(m'\times \nc)$ matrix $Q$. Denoting the rows of $T_0, Q$ by $\tt_i,\qq_i$, \rec now holds $\cc_i,\tt_i$ and \send holds $\bb, \qq_i$ so that 
+%				$$
+%				\qq_i = \cc_i\odot \bb+\tt_i,\qquad \forall i\in[m'].
+%				$$
+%				
+%				\item \emph{Consistency check:}\label{step:consistency} \rec  proves in zero knowledge that given their view:
+%				\begin{center}
+%					$	\forall i\in[m], \exists w\in\mathbb{F}^\kc_2\  s.t.\  \cc_i \text{ decodes to } w \quad  \text{and}$ \\
+%					$\forall w'\in\mathbb{F}^\kc_2\setminus\{w\},$ the distribution of \\
+%					$(\cc_i+\mathcal{C}(w))\odot \bb$\\      
+%					has at least $\log_2(1/\negl)$ bits of entropy.
+%				\end{center}
+%				
+%				 For example, the proof of \cite{C:KelOrsSch15} for $N=2$ or \cite{RSA:OrrOrsSch17} otherwise. $s\geq0$ is specified by the proof protocol.
+%%				\begin{itemize}
+%%					\item Both parties query the challenge oracle $\O^{\textsf{chllng}}$ on input $u^j$ for $j\in[\nc]$  which samples and returns $X=\{(x_1^{\ell}, ...,x_m^{\ell} )\in \mathbb{F}^m_2\}_{\ell\in[s]}$ % := H'(\uu^1|| ... || \uu^\nc).
+%%					to both parties.
+%%					
+%%					\item \rec computes and sends, for $\ell \in[s]$:
+%%					$$
+%%					\widehat \tt^{\ell} := \sum_{i\in[m]} \tt_i \cdot x_i^\ell + \tt_{m+\ell}, \qquad \widehat \ww^\ell := \sum_{i\in[m]} \ww_i \cdot x_i^\ell + \ww_{m+\ell}
+%%					$$
+%%					
+%%					\item \send computes $\widehat \qq^\ell := \sum_{i\in[m]} \qq_i \cdot x^\ell_i + \qq_{m+\ell}$, and checks that:
+%%					$$
+%%					\widehat\tt^\ell + \widehat\qq^\ell = \mathcal{C}(\widehat\ww^\ell) \odot \bb, \qquad \forall\ell\in[s].
+%%					$$
+%%					If the check fails, \send sends $\textsf{Abort}$, and otherwise continues.
+%%				\end{itemize}
+%				\item \rec outputs $\vv_{i, x_j}:=\H(i,\tt_i)$ for all $i\in[m]$.
+%			\end{enumerate}
+%			
+%			
+%			\textsc{Output:} On input $(\textsc{Output}, (i,x))$ from \send. If $i\in[m],j\in[N]$, then \send outputs $\vv_{i,x}:=\H(i,\qq_i+\mathcal{C}(map(x))\odot \bb)$.
+%	\end{minipage}
+%	}
+%	\caption{ 1-out-of-$N$ OT Extension.}
+%	\label{fig:otExt}
+%\end{figure}

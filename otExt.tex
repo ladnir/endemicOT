@@ -130,12 +130,11 @@ To realize the ideal Sender Chosen Message oracle $\OOT^\send$ \cite{C:IKNP03,EC
 				\qq_i = \cc_i\odot \bb+\tt_i,\qquad \forall i\in[m'].
 				$$
 				
-				\item \emph{Consistency check:}\label{step:consistency} \rec  proves in zero knowledge that given their view:
+				\item \emph{Consistency check:}\label{step:consistency} \rec  proves in zero knowledge that given their view $\textsc{view}_\rec$:
 				\begin{center}
 					$	\forall i\in[m], \exists w\in\mathbb{F}^\kc_2\  s.t.\  \cc_i \text{ decodes to } w \quad  \text{and}$ \\
-					$\forall w'\in\mathbb{F}^\kc_2\setminus\{w\},$ the distribution of \\
-					$(\cc_i+\mathcal{C}(w))\odot \bb$\\      
-					has at least $\log_2(1/\negl)$ bits of entropy.
+					$\forall \Adv\in\{0,1\}^*, w'\in\mathbb{F}^\kc_2\setminus\{w\},$ \\
+					$\Pr_{\bb}[\Adv(\textsc{view}_\rec)=(\cc_i+\mathcal{C}(w))\odot \bb]=\negl$
 				\end{center}
 				
 				 For example, the proof of \cite{C:KelOrsSch15} for $N=2$ or \cite{RSA:OrrOrsSch17} otherwise. $s\geq0$ is specified by the proof protocol.
@@ -180,7 +179,7 @@ To realize the ideal Sender Chosen Message oracle $\OOT^\send$ \cite{C:IKNP03,EC
 %\end{figure}
 
 
-\subsection{OT Extension Attacks}
+\subsection{OT Extension Attacks}\label{sec:extAttack}
 
 The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol descriptions that are intended to satisfy the Uniform Message security notion, \definitionref{def:otSec}, but we show this to not be the case. For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks on Uniform Message security also apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail two attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
 
@@ -257,7 +256,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 
 
 
-\subsection{OT Extension Security}
+\subsection{OT Extension Security}\label{sec:extSec}
 
 
 \begin{definition}\label{def:ext_E_E}
@@ -352,7 +351,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 \begin{definition}\label{def:ext_Su_R}
 	Let $\Pi^{\textsf{ext-S}u}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\send u}$.
 \end{definition}
-\begin{lemma}
+\begin{lemma}\label{lem:ext_Su_R}
 	The $\Pi^{\textsf{ext-S}u}$ protocol realizes 1-out-of-$N$ $\OOT^\rec$ security.
 \end{lemma}
 \begin{proof}
@@ -363,21 +362,69 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\rec$ oracle.
 	\end{claim}
 	\begin{proof}
-		Observe that the honest receiver uniformly chooses $\tt_0^j$ and $\bb\in\{0,1\}^\nc$ is uniformly sampled by the $\OOT^{\send u}$ oracle. Now observe that all of the outputs strings are of the form
+		The general security of this claim also follows from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}. What remains to be shown is that the random oracle can be programmed appropriately so that it is consistent with the ideal oracle. Observe that the honest receiver uniformly chooses $\tt_0^j$ and $\bb\in\{0,1\}^\nc$ is uniformly sampled by the $\OOT^{\send u}$ oracle. Now observe that all of the outputs strings are of the form
 		\begin{align*}
 			\vv_{i,j}&=\H(i,\qq_i + \bb \odot \mathcal{C}(map(x)))\\
 					 &=\H(i,\, \tt_i + \bb \odot (c_i + \mathcal{C}(map(x)))).
 		\end{align*}
-		As such, $\Adv$ has negligible probability of querying strings of this form prior to receiving the output of $\OOT^{\send u}$ since $\tt_i$ is uniformly distributed in their view.
+		As such, $\Adv$ has negligible probability of querying strings of this form prior to receiving the output of $\OOT^{\send u}$ since $\tt_i$ is uniformly distributed in their view. Therefore, the output of $\H$ can be programmed to the ideal output of $\OOT^\rec$ when \Adv queries it.
 		
 		The second concern is there does not exist distinct $x,x'\in[N]$ s.t. 
 		$$
 			\bb \odot \mathcal{C}(map(x)) = \bb \odot \mathcal{C}(map(x'))
 		$$
-		as this would result in $\vv_{i,x}=\vv_{i,x'}$. However, this happens with negligible probaiblity as described in claim 2, hybrid 4 of \lemmaref{lem:ext-E} .
+		as this would result in $\H(i,\qq_i + \bb \odot \mathcal{C}(map(x)))=\vv_{i,x}=\vv_{i,x'}=\H(i,\qq_i + \bb \odot \mathcal{C}(map(x')))$ and thereby allow \Adv to distinguish. However, this happens with negligible probability as described in claim 2, hybrid 4 of \lemmaref{lem:ext-E} .
 	\end{proof}
 \end{proof}
 
 
 
-\subsection{Improved OT Extension}
+
+\begin{definition}\label{def:ext_Su_U}
+	Let $\Pi^{\textsf{ext-S}u+}$ be the protocol $\Pi^{\textsf{ext-S}u}$ where the random oracle $\H$ required by $\Pi^{\textsf{ext-S}u}$ is defined as follows. 
+	\begin{enumerate}
+		\item Let $\H':\{0,1\}^{[m]\times \mathbb{F}^\nc_2}\rightarrow\{0,1\}^\kappa$ be a random oracle.
+		\item Before \stepref{step:extInit} of $\Pi^{\textsf{ext-S}u}$, \send samples $k\gets\mathbb{F}^\nc_2$ sends a random oracle commitment of $k$ to \rec, i.e. \textcolor{red}{define OR commitment}. 
+		\item After receiving $U$ in \stepref{step:extSendU}, \send decommits to $k$ to \rec who aborts is the decommitment fails.
+		\item Both parties define $\H(i,x)=\H'(i,x+k)$.
+	\end{enumerate}
+\end{definition}
+\begin{lemma}
+	The $\Pi^{\textsf{ext-S}u+}$ protocol realizes 1-out-of-$N$ $\OOT^\U$ security.
+\end{lemma}
+%The intuition of this statement is that \rec must commit to their selection $x_1,...,x_m$ before knowing $k$. As such, the simulator can first extract $x_i$ and then program the oracle
+\begin{proof}
+
+	\begin{claim}[Malicious Sender Security]\label{claim:ext-Su-U-MalSender}
+		$\Pi^{\textsf{ext-S}u+}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+	\begin{proof}
+		The simulation follows the same strategy as \lemmaref{lem:ext_Su_R} except now $\Adv$ is allowed to sample $k$ and have the parties output messages of the form $\vv_{i,x}:=\H(i, k + \tt_i + \bb \odot (\cc_i + \mathcal{C}(map(x))))$. The simulator $\Adv'$ samples $\tt_i$ uniformly at random after $\Adv$ is bound to their choice of $k$ and therefore its easy to verify that \Adv has negligible probability of querying $\H$ on such an input before receiving $k$.
+	\end{proof}
+	
+	\begin{claim}[Malicious Receiver Security]\label{claim:ext-Su-U-MalReceiver}
+		$\Pi^{\textsf{ext-S}u+}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+	\begin{proof}
+		The simulation also follows the same strategy as \lemmaref{lem:ext_Su_R} with a few key differences. 
+		\begin{enumerate}
+			\item $\Adv'$ sends a dummy commitment in place of the commitment to $k$, i.e. a uniform string from the same distribution.
+			\item Then $\Adv'$ runs the normal simulation described by  \lemmaref{lem:ext_Su_R} up to the point that \send would decommit to $k$ except that $\Adv'$ does not program $\H$ as described.
+			
+			\item At this point $\Adv'$ has received $U$ in step \stepref{step:extSendU} and $\Adv$ send a valid proof for \stepref{step:consistency} (by assumption or $\Adv'$ would have aborted). $\Adv'$ now uniformly samples $k\gets\mathbb{F}^\nc_2$ and programs the commitment random oracle to decommit to $k$. $\Adv'$ then programs $\H'$ to output the ideal output $\vv_{i,x_i}$ of \rec for the query $\H'(i,k + \tt_i)$. Since $k\in\mathbb{F}^\nc_2$ is uniformly distributed in the view of $\Adv$, it follows that $\Adv$ has probability at most $q 2^{-\nc}\leq q2^{-\kappa}=\negl$ probability of querying the oracle at this point, where $q$ is the number of queries that \Adv has made.
+			\item $\Adv'$ then sends the decommits of $k$ to $\Adv$ and completes the simulation as \lemmaref{lem:ext_Su_R} does.
+		\end{enumerate} 
+	\end{proof}
+\end{proof}
+
+\subsection{OT Extension with an Ideal Cipher}
+
+In this section we will discuss how to efficiently implement OT extension in the Ideal Cipher model. The core motivation for OT extension in this model is the pervasive support for hardware based implementations of AES\cite{aes-ni,aes-neon}, which we will model as an ideal cipher. We design two new protocols that satisfy $\OOT^\send$ and $\OOT^\U$-security respectively and achieve better concrete performance than the protocols analyzed in the \sectionref{sec:extSec}. In particular, the hash function $\H$ used in \sectionref{sec:extSec} requires an input domain $(i,x)\in [m]\times \mathbb{F}^\nc_2$ which we reduce to just $x\in\mathbb{F}^\nc_2$ while maintaining security. Previous implementations\cite{libOTe,encrypto,KOS,EMP} have either instantiated $H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The author of \cite{EMP} independently identified and fixed the same implementation issue concurrently to us. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. We discuss how to avoid this attack and propose two new protocols where the random oracle implementing $\H(i,x)$ can be replaced by an ideal one-way cipher $\pi(x)$ without the requirement for the index $i$. Such an ideal one-way cipher can be realized by the Davies-Meyers construction in the ideal cipher model\cite{...}.
+
+
+We begin with issues present in existing implementations\cite{libOTe,encrypto,KOS}. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_2,c_2\in\mathbb{Z}_1$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security. For example, let $c_1=c_2=1$, then \rec can choose $T_0$ such that $\tt_i+i=\tt_{i'}+i'$. It then holds that all the output messages of the receiver will be the same value. While this is a security violation in the case of $\Pi^{\textsf{ext-S}u+}$, the larger issue is that the output messages of the sender will equal for the same input value. That is, for all $i,i'\in[m],x\in[N]$, it holds that $\vv_{i,x}=\vv_{i',x}$. Such an attack violates Endemic security.
+
+The motivation for deviating from protocol specification of $\H(i,x)$ is for the case of 1-out-of-2 OT where $x\in\{0,1\}^{\kappa}$ where $\kappa=128$. In this case it is temping to use AES with a fixed key to implement $\H$ since hardware based AES is roughly 45 times faster than an optimized Blake2 implementations\cite{blake2}  in our experiments. 
+
+
+
