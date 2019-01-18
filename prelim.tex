@@ -1,7 +1,7 @@
 \section{Preliminaries}
 
 \subsection{Notation}
-$\sec$ denotes the security parameter and for $n\in\mathbb N$, $[n]:=\{1,\dots,n\}$. We use $\langle \A,\B\rangle$ to denote a protocol between two parties \A and \B as well as the transcript of the protocol, which consists of all the messages sent between them. We use $(\A(a),\B(b))_{\langle \A,\B\rangle}$ to denote the joint output distribution of $\A$ and \B when interacting in protocol $\langle \A,\B\rangle$ with inputs $a$ and $b$.
+$\sec$ denotes the security parameter and for $n\in\mathbb N$, $[n]:=\{1,\dots,n\}$. We use $\Pi^{\A,\B}$, $\Pi$ when $\A$ and $\B$ are clear from the context,  to denote a protocol between two parties \A and \B. $\langle \A,\B\rangle$ denotes as the transcript of the protocol, which consists of all the messages sent between them. We use $(\A(a),\B(b))_{\Pi}$ to denote the joint output distribution of $\A$ and \B when interacting in protocol $\Pi$ with inputs $a$ and $b$.
 
 
 \begin{definition}[Random Oracle]
@@ -32,7 +32,7 @@ A \emph{random oracle} over a set of domains and an image is a collection of fun
 
 \begin{definition}[(Two Message) Uniform Key Agreement (\UKA)] 
 Let \G be a group.
-We call a protocol $\langle \A,\B\rangle$ between two ppt parties \A and \B (two message) uniform key agreement if \A first sends a message $\mes_\A\in\G$ to \B and \B responds with a final message $\mes_\B$ and in the end, both establish a common key $\key$ (see Figure~\ref{fig:UKA}) using a key establish algorithm \EK. Further, we require three properties:
+We call a protocol $\Pi$ between two ppt parties \A and \B (two message) uniform key agreement if \A first sends a message $\mes_\A\in\G$ to \B and \B responds with a final message $\mes_\B$ and in the end, both establish a common key $\key$ (see Figure~\ref{fig:UKA}) using a key establish algorithm \EK. Further, we require three properties:
 \begin{description}
 \item[Correctness:]
 $$
@@ -48,7 +48,7 @@ where $\key$ is the established key between \A and \B and $u$ is a uniform eleme
 $$
 |\Pr[\D(1^\sec,\mes_\A)=1]-\Pr[\D( 1^\sec,u)=1]|=\negl,
 $$
-where $u$ is a uniform element from \G.
+where $u$ is a uniform element from \G and $\mes_\A\leftarrow\A(\tape_\A)$.
 \end{description}
 When \A and \B can send their messages concurrently, we call it a $1$-round \UKA otherwise a $2$-round \UKA.
 \end{definition}
@@ -114,33 +114,33 @@ This lemma follows for the same reason as \lemmaref{lem:keytomultkey}.
 
 
 \begin{definition}[Ideal $k$-out-of-$n$ Oblivious Transfer]\label{def:ot}
-An \emph{ideal $k$-out-of-$n$ oblivious transfer} is an oracle that interacts with two parties, a sender \send and a receiver \rec. Let $\set\subseteq[n]$ of size $k$ and  $s_1,...,s_n\in \{0,1\}^\ell$.
+An \emph{ideal $k$-out-of-$n$ oblivious transfer} is a functionality that interacts with two parties, a sender \send and a receiver \rec. Let $\set\subseteq[n]$ of size $k$ and  $s_1,...,s_n\in \{0,1\}^\ell$.
 
-The oracle is publicly parameterized by one of the following message sampling methods:
+The functionality is publicly parameterized by one of the following message sampling methods:
 \begin{description}
-\item[] \textsc{Sender Chosen Message:} $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the oracle which defines $s_i:=\mathcal{M}(i)$.
+\item[] \textsc{Sender Chosen Message:} $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_i:=\mathcal{M}(i)$.
 
-\item[] \textsc{Receiver Chosen Message:} \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the oracle which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in\set\setminus[n]$.
+\item[] \textsc{Receiver Chosen Message:} \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in\set\setminus[n]$.
 
-\item[] \textsc{Uniform Message:} The oracle uniformly samples $s_i\gets\{0,1\}^{\ell}$ for $i\in[n]$. 
+\item[] \textsc{Uniform Message:} The functionality uniformly samples $s_i\gets\{0,1\}^{\ell}$ for $i\in[n]$. 
  
-\item[] \textsc{Endemic Chosen Message:} If $\send$ is corrupt, then $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the oracle which defines $s_i:=\mathcal{M}(i)$.
+\item[] \textsc{Endemic Chosen Message:} If $\send$ is corrupt, then $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_i:=\mathcal{M}(i)$.
 
-If \rec is corrupt, \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the oracle which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$.
+If \rec is corrupt, \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$.
 
 All remaining $s_i$ for $i\in [n]$ are uniformly samples $s_i\gets\{0,1\}^\ell$.
 \end{description}
 
-The oracle is publicly parameterized by one of the following selection methods:
+The functionality is publicly parameterized by one of the following selection methods:
 \begin{description}
-	\item[] \textsc{Receiver Selection:} \rec sends the circuit $\mathcal{S}:[n]\rightarrow\{0,1\}$ to the oracle where the support of $\mathcal{S}$ is of size $k$. The oracle defines $\set:=\{i \mid \mathcal{S}(i)=1\}$.
-	\item[] \textsc{Uniform Selection:} The oracle uniformly samples $\set\gets\mathbb{P}([n])$ s.t. $|\set|=k$.
+	\item[] \textsc{Receiver Selection:} \rec sends the circuit $\mathcal{S}:[n]\rightarrow\{0,1\}$ to the functionality where the support of $\mathcal{S}$ is of size $k$. The functionality defines $\set:=\{i \mid \mathcal{S}(i)=1\}$.
+	\item[] \textsc{Uniform Selection:} The functionality uniformly samples $\set\gets\mathbb{P}([n])$ s.t. $|\set|=k$.
 \end{description}
 
-The functionality of the oracle is as follows. As specified by the message sampling method, the oracle receives the circuit $\mathcal{M}$ from the appropriate party if one is called for.  As specified by the selection method, the oracle receives the circuit $\mathcal{S}$ if one is called for. 
+As specified by the message sampling method, the oracle receives the circuit $\mathcal{M}$ from the appropriate party if one is called for.  As specified by the selection method, the functionality receives the circuit $\mathcal{S}$ if one is called for. 
 Thereafter, upon receiving the message $(\textsc{Output}, i)$ from \send, respond with $s_i$. Upon receiving $(\textsc{Output}, i)$ from \rec and if $i\in \set$,  respond with $s_i$. 
 
-We denote the ideal oracles for Sender Chosen, Receiver Chosen, Uniform and Endemic Chosen Message with Receiver Selection as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. The analogous oracles for Uniform Selection are denoted as  $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively.
+We denote the ideal functionalities for Sender Chosen, Receiver Chosen, Uniform and Endemic Chosen Message with Receiver Selection as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. The analogous oracles for Uniform Selection are denoted as  $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively.
 \end{definition}
 \begin{remark}
 	When $n$ is polynomial in the security parameter $\kappa$, we simplify \definitionref{def:ot} to allow the parties directly input the appropriate $s_i$ messages as opposed to specifying a circuit $\mathcal{M}$. Similarly for the set $\set:=\{i \mid \mathcal{S}(i)=1\}$. Lastly, instead of querying the oracle with $(\textsc{Output}, i)$, the oracle sends $(s_i)_{i\in [n]}$ to \send and $(\set, (s_i)_{i\in\set})$ to \rec. This simplification can trivially be simulated when $n=\textsf{poly}(\kappa)$.
@@ -150,28 +150,28 @@ We denote the ideal oracles for Sender Chosen, Receiver Chosen, Uniform and Ende
 
 
 \begin{definition}[$k$ out of $n$ Oblivious Transfer ($\OT_{k,n}$)]\label{def:otSec}
-We call a protocol $\langle \send,\rec \rangle$ between two ppt parties, a sender \send and a receiver \rec, a \emph{$k$ out of $n$ oblivious transfer} if %\rec has as input a set $\set\subset[n]$ of size $k$ and 
-at the end, \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs $(s_i)_{i\in\set}$ and a set $\set\subset[n]$ s.t. $|\set|=k$. For security, we require two properties with respect to an ideal OT \OOT.
+We call a protocol $\Pi$ between two ppt parties, a sender \send and a receiver \rec, a \emph{$k$ out of $n$ oblivious transfer} if %\rec has as input a set $\set\subset[n]$ of size $k$ and 
+at the end, \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs $(s_i)_{i\in\set}$ and a set $\set\subset[n]$ s.t. $|\set|=k$. For security, we require two properties with respect to a functionality \OOT.
 \begin{description}
 \item[Security Against a Malicious Sender:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
 $$
-|\Pr[\D((\Adv,\rec)_{\langle \Adv, \rec\rangle})=1] -\Pr[\D( (\Adv', \O_{\OT, \rec})_{\langle \Adv', \OOT\rangle})=1]|=\negl,
+|\Pr[\D((\Adv,\rec)_{\Pi})=1] -\Pr[\D( (\Adv', \OOT))=1]|=\negl,
 $$
-where $\O_{\OT, \rec}$ is the \rec's side output within the view of \OOT and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+where all algorithms receive input $1^\sec$. \rec additionally receives input \set.
 \item[Security Against a Malicious Receiver:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
 $$
-|\Pr[\D((\send, \Adv)_{\langle \send, \Adv\rangle})=1] -\Pr[\D((\O_{\OT,\send},\Adv')_{\langle \OOT , \Adv' \rangle})=1]|=\negl,
+|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D((\OOT,\Adv'))=1]|=\negl,
 $$
-where $\O_{\OT,\send}$ is  the \send's side output within the view of \OOT and all algorithms receive input $1^\sec$.
+where all algorithms receive input $1^\sec$.
 \end{description}
 
 
 \textcolor{red}{TODO: update this to incorporate ``Uniform Selection"} We distinguish four different message security notions.
 \begin{description}
 \item[Uniform Message Security:] The OT is secure with respect to $\OOT^\U$.
-\item[Sender Tweakable Security:] The OT is secure with respect to $\OOT^{\send}$.
-\item[Receiver Tweakable Security:] The OT is secure with respect to $\OOT^{\rec}$.
-\item[Endemic Message Security:] The OT is secure with respect to $\OOT^{e}$.
+\item[Sender Chosen Message (SCM) Security:] The OT is secure with respect to $\OOT^{\send}$.
+\item[Receiver Chosen Message (RCM) Security:] The OT is secure with respect to $\OOT^{\rec}$.
+\item[Endemic Security:] The OT is secure with respect to $\OOT^{\E}$.
 \end{description}
 
 
