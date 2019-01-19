@@ -63,16 +63,16 @@ We start with proving that the scheme is secure against a malicious sender.
 \begin{claim}\label{claim:malsender}
 Given a $\delta$ correct and $\epsilon$ $(n-1)$-multi instance uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
 $$
-|\Pr[\D((\Adv,\rec)_{\langle \Adv, \rec\rangle})=1] -\Pr[\D( (\Adv', \O_{\OT, \rec}^\send)_{\langle \Adv', \OOT^\send\rangle})=1]|\leq \epsilon+(1-\delta),
+|\Pr[\D((\Adv,\rec)_{\Pi})=1] -\Pr[\D( (\Adv', \OOT^\E))=1]|\leq \epsilon+(1-\delta),
 $$
-where $\O_{\OT, \rec}^\send$ is the \rec's side output within the view of $\OOT^\send$ and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 \end{claim}
 
 \begin{proof}
 We define $\Adv'$ as follows. 
-It generates $(r_j)_{j\in[n]}$ by sampling $r_1,\dots, r_n\leftarrow \G$. Then, it samples for all $j\in[n]$, $\tape_{\A,j}\leftarrow\bits^*$ and $\mes_{\A,j}\leftarrow\UKA.\A(\tape_{\A,j})$. Finally it programs the random oracle for all of the $j\in[n]$ points $(r_i)_{i\in[n]\setminus \{j\}}$ such that $r_i\oplus\H((r_i)_{i\in[n]\setminus \{j\}})=\mes_{\A,i}$. Now $\Adv'$ invokes \Adv, answers his random oracle queries straightforwardly, sends $(r_j)_{j\in[n]}$ and receives $(\mes_{\B,j})_{j\in[n]}$ from \Adv. It computes $s_{\A,j}\leftarrow\UKA.\EK(\tape_{\A,j},\mes_{\B,j})$ for all $j\in[n]$ and submits $(s_{\A,j})_{j\in [n]}$ to \OOT. $\Adv'$ outputs the output of \Adv.
+It generates $(r_j)_{j\in[n]}$ by sampling $r_1,\dots, r_n\leftarrow \G$. Then, it samples for all $j\in[n]$, $\tape_{\A,j}\leftarrow\bits^*$ and $\mes_{\A,j}\leftarrow\UKA.\A(\tape_{\A,j})$. Finally it programs the random oracle for all of the $j\in[n]$ points $(r_i)_{i\in[n]\setminus \{j\}}$ such that $r_i\oplus\H((r_i)_{i\in[n]\setminus \{j\}})=\mes_{\A,i}$. Now $\Adv'$ invokes \Adv, answers his random oracle queries straightforwardly, sends $(r_j)_{j\in[n]}$ and receives $(\mes_{\B,j})_{j\in[n]}$ from \Adv. It computes $s_{\A,j}\leftarrow\UKA.\EK(\tape_{\A,j},\mes_{\B,j})$ for all $j\in[n]$ and submits $(s_{\A,j})_{j\in [n]}$ to $\OOT^{\E}$. $\Adv'$ outputs the output of \Adv.
 
-We show, that if there is a distinguisher \D that distinguishes the distribution $(\Adv,\rec)_{\langle \Adv, \rec\rangle}$ from $(\Adv',\O_{\OT, \rec})_{\langle \Adv', \OOT\rangle}$, then there is an distinguisher $\D_{\UKA}$ against the $n$-multi instance uniformity of the \UKA scheme. 
+We show, that if there is a distinguisher \D that distinguishes the distribution $(\Adv,\rec)_{\Pi}$ from $(\Adv',\OOT^{\E})$, then there is an distinguisher $\D_{\UKA}$ against the $n$-multi instance uniformity of the \UKA scheme. 
 
 $\D_{\UKA}$ has access to an oracle $\O$ that either outputs uniform strings or messages of the \UKA protocol. For all $j\in[n]\setminus\{i\}$, $\D_{\UKA}$ follows the description of $\Adv'$ with the difference that instead of sampling  $\mes_{\A,j}\leftarrow\UKA.\A(\tape_{\A,j})$, it samples $\mes_{\A,j}$ from $\O$. Given $(r_j)_{j\in[n]\setminus\{i\}}$, it samples $\mes_{\A,i}\leftarrow\UKA.\A(\tape_{\A,i})$ and sets $r_i$ such that $r_i\oplus\H((r_j)_{j\in[n]\setminus \{i\}})=\mes_{\A,i}$. As $\Adv'$, it computes $s_{\A,i}\leftarrow\UKA.\EK(\tape_{\A,i},\mes_{\B,i})$ which is \rec's output. It now invokes distinguisher \D on \rec's output $s_{\A,i}$ and the output of $\Adv$. In the end, it outputs the output of \D.
 
@@ -80,7 +80,7 @@ $\D_{\UKA}$ has access to an oracle $\O$ that either outputs uniform strings or 
 We now analyze the distributions. 
 First, notice that the distribution of $(r_i,\mes_{A,i})$ when sampling $r_i\leftarrow\G$ and then programming the random oracle $r_i\oplus\H((r_i)_{i\in[n]\setminus \{j\}})=\mes_{\A,i}$ is identical to the distribution when sampling $\H((r_i)_{i\in[n]\setminus \{j\}})$ and choosing $r_i$  such that $r_i\oplus\H((r_i)_{i\in[n]\setminus \{j\}})=\mes_{\A,i}$, both are the uniform distribution over $\G\times\G$ conditioned to their sum being $\mes_{\A,i}$. Therefore it follows straightforwardly from the definition of \O, \rec and $\Adv'$ that when \O outputs uniform messages, the output of \Adv is distributed as when interacting with $\rec$ while when \O outputs \UKA messages, it is distributed as the output of $\Adv'$. Hence, if there is a distinguisher $\D$ that distinguishes the output distribution of \Adv given $s_{\A,i}$, i.e.
 $$
-\epsilon_{\D}\leq |\Pr[\D((\Adv,s_{\A,i})_{\D_{{\UKA}^{\O_\A}}})=1]-\Pr[\D((\Adv,s_{\A,i})_{\D_{{\UKA}^{\O_u}}})=1]|
+\epsilon_{\D}\leq |\Pr[\D((\Adv,s_{\A,i})_{\D_{\UKA}^{\O_\A}})=1]-\Pr[\D((\Adv,s_{\A,i})_{\D_{\UKA}^{\O_u}})=1]|
 $$
 then it implicitly breaks the $(n-1)$-multi instance uniformity of the \UKA protocol, i.e. 
 \begin{eqnarray*}
@@ -102,12 +102,11 @@ then
 
 Hence, given a distinguisher $\D$ with
 $$
-|\Pr[\D((\Adv,\rec)_{\langle \Adv, \rec\rangle})=1] -\Pr[ \D((\Adv',\O_{\OT, \rec})_{\langle \Adv', \OOT\rangle})=1]|=\epsilon_{\OT},
+|\Pr[\D((\Adv,\rec)_{\Pi})=1] -\Pr[ \D((\Adv',\OOT^{\E}))=1]|=\epsilon_{\OT},
 $$
-where $\O_{\OT, \rec}$ outputs $s_{\B,i}$
 and assuming w.l.o.g. 
 $$
-\Pr[\D((\Adv,\rec)_{\langle \Adv, \rec\rangle})=1]]>\Pr[  \D((\Adv',\O_{\OT, \rec})_{\langle \Adv', \OOT\rangle})=1]
+\Pr[\D((\Adv,\rec)_{\Pi})=1]]>\Pr[  \D((\Adv',\OOT^\E))=1],
 $$
  we can lower bound $\epsilon$ of our distinguisher against the \UKA protocol by
 \begin{eqnarray*}
@@ -121,9 +120,9 @@ We finish the proof of the theorem by showing that the \OT protocol is secure ag
 \begin{claim}\label{claim:malreceiver}
 Given a $\delta$ correct, $\epsilon_u$ $Q$ multi-instance uniform, $\epsilon_k$ $(Q,n-1)$ multi-instance key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
 $$
-|\Pr[\D((\send, \Adv)_{\langle \send, \Adv\rangle})=1] -\Pr[\D((\O_{\OT,\send}^\rec,\Adv')_{\langle \OOT^\rec , \Adv' \rangle})=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
+|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D((\OOT^\E,\Adv'))=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
 $$
-where $\O_{\OT,\send}^\rec$ is  the \send's side output within the view of $\OOT^\rec$ and all algorithms receive input $1^\sec$.
+where all algorithms receive input $1^\sec$.
 \end{claim}
 
 
@@ -137,7 +136,7 @@ It responds with $\H(q_j):=\mes_j\ominus g^*_{\beta_j}$. When \Adv sends $(r_i)_
 
 Let there be a distinguisher $\D$ with
 $$
-\epsilon_{\D}:=|\Pr[\D((\send, \Adv)_{\langle \send, \Adv\rangle})=1] -\Pr[\D(((s_{\B,i})_{i\in[n]},\Adv')_{\langle \OOT^\rec , \Adv' \rangle})=1]|,
+\epsilon_{\D}:=|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D(((s_{\B,i})_{i\in[n]},\Adv')_{\Pi^{ \OOT^\rec , \Adv'}})=1]|,
 $$
 where $(s_{\B,i})_{i\in[n]}$ are the outputs of $\UKA.\EK(\tape_{\B,i},\mes_{\A,i})$. Then there is a distinguisher $\D_u$ breaking the $Q$-multi instance uniformity of the \UKA protocol. $\D_u$ gets access to an oracle $\O$ which is either outputs uniform messages, i.e. $\O_u$ or messages of  the form $\mes_\A\leftarrow\A(\tape_\A)$ for $\tape_\A\leftarrow\bits^*$. $\D_u$ invokes \D and creates its input as follows. It invokes $\Adv$ and interacts with him as \Adv' does with the difference that $\mes_j$ are requested from $\O$ rather than computing them.  After receiving the output, $\D_u$ uses it as input for $\D$ together with $(s_{\B,i})_{i\in[n]}$, where $s_{\B,i}\leftarrow\UKA.\EK(\tape_{\B,i},\mes_{\A,i})$. $\D_u$ outputs the output of \D. If $\Adv'$ aborts, we let $\D_u$ output $0$.
 
@@ -174,7 +173,7 @@ where there is a $j\in[Q]$ such that the last equality holds. It also uses oracl
 For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the same argument as in Claim~\ref{claim:malsender} using the correctness of the scheme. Hence we obtain
 
 \begin{eqnarray*}
-\epsilon_{\OT} &=&|\Pr[\D((\send, \Adv)_{\langle \send, \Adv\rangle})=1] -\Pr[\D((\O_{\OT,\send}^\rec,\Adv)_{\langle \OOT^\rec , \Adv \rangle})=1]|\\
+\epsilon_{\OT} &=&|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D((\OOT^\E,\Adv))=1]|\\
 &\leq & Q\epsilon_{u}+|\Pr[\D((s_{\B,i})_{i\in[n]},\Adv)=1]-\Pr[\D(\set_{\B,i^*}, \Adv)=1]|\\
 &\leq & Q(\epsilon_{u}+\epsilon_{k})+|\Pr[\D(\set_{\B,i^*},\Adv)=1]-\Pr[\D(\set_{\A,i^*}, \Adv)=1]|\\
 &\leq &Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),

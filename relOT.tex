@@ -5,8 +5,8 @@
 \centering
 \begin{tikzpicture}
 \node (U) at (4,4) {Uniform Message Security};
-\node (SC) at (0,2) {SCM Securiy};
-\node (RC) at (8,2) {RCM Security};
+\node (SC) at (0,2) {$\OOT^\send$-Security};
+\node (RC) at (8,2) {$\OOT^\rec$-Security};
 \node (E) at (4,0) {Endemic Security};
 \node (TC) at (3,2) {Coin Tossing};
 \draw [-implies,double equal sign distance] (U) -- (SC);
@@ -28,34 +28,34 @@ The figure depicts the different security notions of OT and their relations. $A\
 
 \begin{lemma}\label{lemma:is_a}
 Let the distribution of OT strings be efficiently sampleable. 
-Then a uniform security implies sender as well as a receiver tweakable security. If \OT is a sender or receiver tweakable secure, then it is also an endemically secure.
+Then $\OOT^\U$-security implies $\OOT^{\send}$ as well as $\OOT^\rec$-security. $\OOT^{\send}$ or $\OOT^\rec$-security imply $\OOT^\E$-security.
 \end{lemma}
 
 \begin{proof}
-In the first step, we show that uniform security implies sender tweakable security and receiver tweakable security implies endemic security. These two implications result from the same simple fact that a malicious sender interacting with the ideal OT is easier to construct when it can choose the OT strings rather than if it receives the strings from the ideal OT. The following claim formalizes this fact. 
+In the first step, we show that uniform message security implies sender chosen message security and receiver chosen message security implies endemic security. These two implications result from the same simple fact that a malicious sender interacting with the ideal OT is easier to construct when it can choose the OT strings than when it receives the strings from the ideal OT. The following claim formalizes this fact. 
 \begin{claim}\label{claim:utocs}
-Let \OT be secure against a malicious sender with respect to an ideal OT $\OOT^*$ that sends the OT strings $(s_i)_{i\in[n]}$ to the sender, i.e. oracle $\OOT^u$ and $\OOT^{\rec}$, and the distribution of $(s_i)_{i\in[n]}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\send}$, which receives the OT strings $(s_i)_{i\in[n]}$ from the sender.
+Let $\Pi$ be an OT secure against a malicious sender with respect to an ideal OT $\OOT^*$ that sends the OT strings $(s_i)_{i\in[n]}$ to the sender, i.e. functionality $\OOT^\U$ and $\OOT^{\rec}$, and the distribution of $(s_i)_{i\in[n]}$ is efficiently sampleable. Then $\Pi$ is also secure against a malicious sender with respect to ideal OT $\OOT$, which receives the OT strings $(s_i)_{i\in[n]}$ from the sender, i.e functionality $\OOT^\send$ and $\OOT^\E$.
 \end{claim}
 
 
 \begin{proof}
-We show that if there is an adversary that breaks the security against a malicious security with respect to ideal OT $\OOT^{\send}$ then there is also an adversary that breaks the security with respect to $\OOT'$. More precisely, if there is a ppt adversary $\Adv_1$ such that for any ppt adversary $\Adv_1'$ there exists a ppt distinguisher $\D_1$ with 
+We show that if there is an adversary that breaks the security against a malicious security with respect to ideal OT $\OOT$ then there is also an adversary that breaks the security with respect to $\OOT^*$. More precisely, if there is a ppt adversary $\Adv_1$ such that for any ppt adversary $\Adv_1'$ there exists a ppt distinguisher $\D_1$ with 
 $$
-|\Pr[\D_1((\Adv_1,\rec)_{\langle \Adv_1, \rec\rangle})=1] -\Pr[\D_1( (\Adv'_1, \O_{\OT, \rec}^{\send})_{\langle \Adv_1', \OOT^{\send}\rangle})=1]|=\epsilon,
+|\Pr[\D_1((\Adv_1,\rec)_{\Pi})=1] -\Pr[\D_1( (\Adv'_1, \OOT))=1]|=\epsilon,
 $$
-where $\O_{\OT, \rec}^{\send}$ is the \rec's side output within the view of $\OOT^{\send}$ and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 Then there is also a ppt adversary $\Adv_2$ such that for any ppt adversary $\Adv_2'$ there exists a ppt distinguisher $\D_2$ with 
 $$
-|\Pr[\D_2((\Adv_2,\rec)_{\langle \Adv_2, \rec\rangle})=1] -\Pr[\D_1( (\Adv'_2, \O_{\OT, \rec}^*)_{\langle \Adv_2', \OOT^*\rangle})=1]|=\epsilon,
+|\Pr[\D_2((\Adv_2,\rec)_{\Pi})=1] -\Pr[\D_1( (\Adv'_2, \OOT^*))=1]|=\epsilon,
 $$
-where $\O_{\OT, \rec}^*$ is the \rec's side output within the view of $\OOT^*$ and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 
-We set $\Adv_2:=\Adv_1$ and $\D_2:=\D_1$. Further, for any $\Adv_2'$, there is an $\Adv_1'$  such that the distribution of $(\Adv'_2, \O_{\OT, \rec}^*)_{\langle \Adv_2', \OOT^*\rangle}$ is identical with the distribution $(\Adv'_1, \O_{\OT, \rec}^{\send})_{\langle \Adv_1', \OOT^{\send}\rangle}$. This follows from the fact that  $\Adv_1'$ could choose the OT strings $(s_i)_{i\in[n]}$  from the same distribution as $\OOT^*$ does and otherwise follow the description of $\Adv_2'$. Since $\D_1$ is successful for any $\Adv_1'$ it will be also for any $\Adv_2'$, which can be seen as a special case on over the set of all ppt adversaries $\Adv_1'$.
+We set $\Adv_2:=\Adv_1$ and $\D_2:=\D_1$. Further, for any $\Adv_2'$, there is an $\Adv_1'$  such that the distribution of $(\Adv'_2, \OOT^*)$ is identical with the distribution $(\Adv'_1, \OOT)$. This follows from the fact that  $\Adv_1'$ could choose the OT strings $(s_i)_{i\in[n]}$  from the same distribution as $\OOT^*$ does and otherwise follow the description of $\Adv_2'$. Since $\D_1$ is successful for any $\Adv_1'$ it will be also for any $\Adv_2'$, which can be seen as a subset of the set of all ppt adversaries $\Adv_1'$.
 \end{proof}
 
-The remaining two implications, from uniform security to receiver tweakable security and from sender tweakable security to endemic security follow in a similar fashion. Again it is easier to construct a malicious receiver interacting with the ideal OT when he can choose the OT strings rather than receiving them from the ideal OT.
+The remaining two implications, from uniform security to receiver chosen message security and from sender chosen message security to endemic security follow in a similar fashion. Again it is easier to construct a malicious receiver interacting with the ideal OT when he can choose the OT strings rather than receiving them from the ideal OT.
 \begin{claim}\label{claim:utocr}
-Let \OT be secure against a malicious receiver with respect to an ideal OT $\OOT^*$ that sends the learned OT strings $(s_i)_{i\in\set}$ to the receiver, i.e. oracle $\OOT^u$ and $\OOT^{\send}$, and the distribution of $(s_i)_{i\in\set}$ is efficiently sampleable. Then \OT is also secure against a malicious sender with respect to ideal OT $\OOT^{\rec}$, which receives the OT strings $(s_i)_{i\in\set}$ from the receiver.
+Let $\Pi$ be an OT secure against a malicious receiver with respect to an ideal OT $\OOT^*$ that sends the learned OT strings $(s_i)_{i\in\set}$ to the receiver, i.e. functionality $\OOT^\U$ and $\OOT^{\send}$, and the distribution of $(s_i)_{i\in\set}$ is efficiently sampleable. Then $\Pi$ is also secure against a malicious sender with respect to ideal OT $\OOT$, which receives the OT strings $(s_i)_{i\in\set}$ from the receiver, i.e. $\OOT^\rec$ and $\OOT^\E$.
 \end{claim}
 
 \begin{proof}
@@ -82,7 +82,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (7.5,5) {Receiver$(\set\subset[n])$:};
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(7.25,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
-\node at (5.25,4.125){$\O^{e}_{k,n}$};
+\node at (5.25,4.125){$\OOT^\E$};
 \node [anchor=west] at (0,4){$\forall i\in[n]:$};
 \node [anchor=west] at (0,3.5){$\quad r_i:=s_i\oplus m_i$};
 
@@ -102,29 +102,29 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 % 				\item \label{step:senderChosen_step2}  $\send$ sends the strings $r_1,...,r_n$ to $\rec$ where $r_i:=s_i\oplus m_i$.
 % 				\item \label{step:senderChosen_step3}  $\rec$ outputs $(s_i)_{i\in \set}$ where $s_i:=m_i\oplus r_i$.
 % 	\end{enumerate}\end{minipage}}
-	\caption{Sender Chosen OT Protocol $\Pi^{\send}_{k,n}$ in the $\O^{e}_{k,n}$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
+	\caption{Sender Chosen OT Protocol $\Pi^{\send}_{k,n}$ in the $\OOT^\E$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:protoSendOT}
 \end{figure}
 
 
 \begin{lemma}
-	$\Pi^{\send}_{k,n}$ of \figureref{fig:protoSendOT} realizes the Sender Chosen Ideal OT $\OOT^{\send}$ (\definitionref{def:ot}) with unconditional security in the $\O^{e}_{k,n}$ hybrid.
+	$\Pi^{\send}_{k,n}$ of \figureref{fig:protoSendOT} realizes the Sender Chosen Ideal OT $\OOT^{\send}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
 \end{lemma}
 
 \begin{proof}
-	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output  to $\Adv_1$.  $\Adv_1'$ plays the role of $\O^{e}_{k,n}$ and $\rec$ in $\Pi^{\send}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$%in \stepref{step:senderChosen_step1}
+	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with functionality $\OOT^\send$ and produces an identical output  to $\Adv_1$.  $\Adv_1'$ plays the role of $\OOT^\E$ and $\rec$ in $\Pi^{\send}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$%in \stepref{step:senderChosen_step1}
 , along with the strings $r_1,...,r_n$% in \stepref{step:senderChosen_step2}
-.  $\Adv_1'$ extracts the OT strings of $\Adv_1$ as $s_i:=r_i\oplus m_i$. $\Adv_1'$ sends $(s_i)_{i\in [n]}$ to $\O^{\send}_{k,n}$ and outputs whatever $\Adv_1$ outputs.
+.  $\Adv_1'$ extracts the OT strings of $\Adv_1$ as $s_i:=r_i\oplus m_i$. $\Adv_1'$ sends $(s_i)_{i\in [n]}$ to $\OOT^\send$ and outputs whatever $\Adv_1$ outputs.
 	
-	Observe that the output of the honest receiver is identical when $\Adv_1$ interacts with $\rec$ in $\Pi^{\send}_{k,n}$ and when $\Adv_1'$ interacts with $\O^{\send}_{k,n}$.
+	Observe that the output of the honest receiver is identical when $\Adv_1$ interacts with $\rec$ in $\Pi^{\send}_{k,n}$ and when $\Adv_1'$ interacts with $\OOT^\send$.
 	
 	
-	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with the oracle $\O^{\send}_{k,n}$ and produces an identical output distribution to $\Adv_2$. $\Adv_2'$ plays the role of $\O^{e}_{k,n}$ and $\send$ in $\Pi^{\send}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$% in \stepref{step:senderChosen_step1}
-. $\Adv_2'$ sends $\set$ to  $\O^{\send}_{k,n}$ and receives $(s_i)_{i\in \set}$ in response. $\Adv_2'$ computes $r_i:=s_i\oplus m_i$ for $i\in \set$ and uniformly samples $r_i\gets \{0,1\}^\ell$ for $i\in [n]\setminus \set$. $\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_2$ and outputs whatever $\Adv_2$ outputs.
+	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with the functionality $\OOT^\send$ and produces an identical output distribution to $\Adv_2$. $\Adv_2'$ plays the role of $\OOT^\E$ and $\send$ in $\Pi^{\send}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$% in \stepref{step:senderChosen_step1}
+. $\Adv_2'$ sends $\set$ to  $\OOT^\send$ and receives $(s_i)_{i\in \set}$ in response. $\Adv_2'$ computes $r_i:=s_i\oplus m_i$ for $i\in \set$ and uniformly samples $r_i\gets \{0,1\}^\ell$ for $i\in [n]\setminus \set$. $\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_2$ and outputs whatever $\Adv_2$ outputs.
 
-	The transcripts of $\Adv_2$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observer that in the real interaction for $i\in [n]\setminus\set$, $r_i:=s_i\oplus m_i$ where $m_i$ is sampled uniformly at random  by the oracle $\O^{e}_{k,n}$ and is independent of the transcript of $\Adv_2$ (conditioned on $r_i$). Therefore sampling $r_i$ directly induces an identical distribution. 
+	The transcripts of $\Adv_2$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observe that in the real interaction for $i\in [n]\setminus\set$, $r_i:=s_i\oplus m_i$, where $m_i$ is sampled uniformly at random  by functionality $\OOT^\E$ and is independent of the transcript of $\Adv_2$ (conditioned on $r_i$). Therefore sampling $r_i$ directly induces an identical distribution. 
 	
-	Therefore, any distinguishing advantage $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\send}_{k,n}$ implies that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\O^{e}_{k,n}$, i.e. $\negl$.
+	Therefore, any distinguishing advantage $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\send}_{k,n}$ implies that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\OOT^\E$, i.e. $\negl$.
 \end{proof}
 
 
@@ -136,7 +136,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(7.25,4.5);
 \node [anchor=west] at (7.5,5) {Receiver$(\set\subset[n],(s_i)_{i\in\set})$:};
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
-\node at (5.25,4.125){$\O^{e}_{k,n}$};
+\node at (5.25,4.125){$\OOT^\E$};
 \node [anchor=west] at (0,3){$\forall i\in[n]:$};
 \node [anchor=west] at (0,2.5){$\quad s_i:=r_i\oplus m_i$};
 
@@ -158,29 +158,29 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 % 				\item \label{step:receiverChosen_step2}  $\rec$ sends the strings $r_1,...,r_n$ to $\send$ where $r_i:=s_i\oplus m_i$ for $i\in \set$ and $r_i\gets\{0,1\}^\ell$ for $i\in [n]\setminus\set$.
 % 				\item \label{step:receiverChosen_step3}  $\send$ outputs $(s_i)_{i\in [n]}$ where $s_i:=m_i\oplus r_i$.
 % 	\end{enumerate}\end{minipage}}
-	\caption{Receiver Chosen OT Protocol $\Pi^{\rec}_{k,n}$ in the $\O^{e}_{k,n}$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
+	\caption{Receiver Chosen OT Protocol $\Pi^{\rec}_{k,n}$ in the $\OOT^\E$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:protoRecvOT}
 \end{figure}
 
 
 \begin{lemma}
-	$\Pi^{\rec}_{k,n}$ of \figureref{fig:protoRecvOT} realizes the Receiver Chosen Ideal OT $\OOT^{\rec}$ (\definitionref{def:ot}) with unconditional security in the $\O^{e}_{k,n}$ hybrid.
+	$\Pi^{\rec}_{k,n}$ of \figureref{fig:protoRecvOT} realizes the Receiver Chosen Ideal OT $\OOT^{\rec}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
 \end{lemma}
 
 \begin{proof}
-	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with the oracle $\O^{\rec}_{k,n}$ and produces an identical output distribution as $\Adv_1$.  $\Adv_1'$ plays the role of $\O^{e}_{k,n}$ and $\rec$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$% in \stepref{step:receiverChosen_step1}
-. $\Adv_1'$ invokes $\O^{\rec}_{k,n}$ as the sender and receives $s_1,...,s_n$ in response. $\Adv_1'$ sends $r_1,...,r_n$ to $\Adv_1$ where $r_i:=m_1\oplus s_i$ and 	 outputs whatever $\Adv_1$ outputs.
+	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with $\OOT^{\rec}$ and produces an identical output distribution as $\Adv_1$.  $\Adv_1'$ plays the role of $\OOT^\E$ and $\rec$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$% in \stepref{step:receiverChosen_step1}
+. $\Adv_1'$ invokes $\OOT^{\rec}$ as the sender and receives $s_1,...,s_n$ in response. $\Adv_1'$ sends $r_1,...,r_n$ to $\Adv_1$ where $r_i:=m_1\oplus s_i$ and 	 outputs whatever $\Adv_1$ outputs.
 	
-	The transcripts of $\Adv_1$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observer that in the real interaction for $i\in [n]\setminus\set$, $r_i\gets\{0,1\}^\ell$ while $\Adv_1'$ chooses $r_i:=m_1\oplus s_i$ where $s_i$ is sampled uniformly at random by $\O^{\rec}_{k,n}$. Therefore computing $r_i:=m_1\oplus s_i$ is identically distributed to $r_i\gets\{0,1\}^\ell$ given that $s_i\gets\{0,1\}^\ell$ is independent of the transcript of $\Adv_1$. 
+	The transcripts of $\Adv_1$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observe that in the real interaction for $i\in [n]\setminus\set$, $r_i\gets\{0,1\}^\ell$ while $\Adv_1'$ chooses $r_i:=m_1\oplus s_i$ where $s_i$ is sampled uniformly at random by $\OOT^{\rec}$. Therefore, computing $r_i:=m_1\oplus s_i$ implies an identically distribution as when $r_i\gets\{0,1\}^\ell$ given that $s_i\gets\{0,1\}^\ell$ is independent of the transcript of $\Adv_1$. 
 	
 	
-	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with the oracle $\O^{\rec}_{k,n}$ and produces an identical output as $\Adv_2$. $\Adv_2'$ plays the role of $\O^{e}_{k,n}$ and $\send$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$% in \stepref{step:receiverChosen_step1}
-. $\Adv_2'$ receives $r_1,...,r_n$ from $\Adv_2$% in \stepref{step:receiverChosen_step2} 
- and extracts $(s_i)_{i\in \set}$ as $s_i:=r_i\oplus m_i$. $\Adv_2'$ sends $\set$ and $(s_i)_{i\in \set}$ to $\O^{\rec}_{k,n}$ and outputs whatever $\Adv_2$ outputs.
+	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with $\OOT^{\rec}$ and produces an identical output as $\Adv_2$. $\Adv_2'$ plays the role of $\OOT^\E$ and $\send$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$% in \stepref{step:receiverChosen_step1}
+. $\Adv_2'$ receives $r_1,...,r_n$ from $\Adv_2$ % in \stepref{step:receiverChosen_step2} 
+ and extracts $(s_i)_{i\in \set}$ as $s_i:=r_i\oplus m_i$. $\Adv_2'$ sends $\set$ and $(s_i)_{i\in \set}$ to $\OOT^{\rec}$ and outputs whatever $\Adv_2$ outputs.
 	
-	The output distribution of he honest sender is identical in these two interactions is identical except for $(s_i)_{i\in [n]\setminus \set}$. In the real interaction \send outputs $s_i:=m_i\oplus r_i$ where $m_i$ is sampled uniformly by $\O^{e}_{k,n}$ and independent of the transcript. Therefore $\O^{\rec}_{k,n}$ sampling $s_i\gets\{0,1\}^\ell$ directly is identically distributed.
+	The output distribution of he honest sender is identical in these two interactions is identical except for $(s_i)_{i\in [n]\setminus \set}$. In the real interaction \send outputs $s_i:=m_i\oplus r_i$ where $m_i$ is sampled uniformly by $\OOT^\E$ and independent of the transcript. Therefore $\OOT^{\rec}$ sampling $s_i\gets\{0,1\}^\ell$ directly is identically distributed.
 	
-	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\rec}_{k,n}$ implies  that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\O^{e}_{k,n}$, i.e. $\negl$.
+	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\rec}_{k,n}$ implies  that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\OOT^\E$, i.e. $\negl$.
 \end{proof}
 
 
@@ -193,11 +193,11 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (7.5,5) {Receiver$(\set\subset[n])$:};
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(7.25,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
-\node at (5.25,4.125){$\O^{e}_{k,n}$};
+\node at (5.25,4.125){$\OOT^\E$};
 \draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(7.25,3.85);
 \draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
 \draw [thick] (4.75,3.15)--(5.75,3.15)--(5.75,2.15)--(4.75,2.15)--cycle;
-\node at (5.25,2.625){$\O^{\coin}$};
+\node at (5.25,2.625){$\F^{\coin}$};
 \draw [thick, ->] (5.75,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(7.25,2.35);
 \draw [thick, <-] (3.25,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(4.75,2.35);
 
@@ -218,32 +218,32 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 % 				\item \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(s_i)_{i\in \set}$ where $s_i:=m_i\oplus r_i$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{ Uniform  OT Protocol $\Pi^{u}_{k,n}$ in the $\O^{e}_{k,n},\O^{\coin}$ hybrid (\definitionref{def:ot}).  For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
+	\caption{ Uniform  OT Protocol $\Pi^{\U}_{k,n}$ in the $\OOT^\E,\F^{\coin}$ hybrid (\definitionref{def:ot}).  For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:uniformOT}
 \end{figure}
 
 
 \begin{lemma}
-	$\Pi^{u}_{k,n}$ of \figureref{fig:uniformOT} realizes the Uniform Ideal OT $\OOT^{\rec}$ (\definitionref{def:ot}) with unconditional security in the $\O^{e}_{k,n},\O^{\coin}$ hybrid.
+	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the Uniform Ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ hybrid.
 \end{lemma}
 \begin{proof}
-	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with the oracle $\O^{u}_{k,n}$ and produces an identical output distribution as $\Adv_1$.  $\Adv_1'$ plays the role of $\O^{e}_{k,n},\O^{\coin}$ and $\rec$ in $\Pi^{u}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$% in \stepref{step:uniform_step1}
+	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with functionality $\OOT^{\U}$ and produces an identical output distribution as $\Adv_1$.  $\Adv_1'$ plays the role of $\OOT^\E,\F^{\coin}$ and $\rec$ in $\Pi^{\U}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$% in \stepref{step:uniform_step1}
 .
 	
 	
-	$\Adv_1'$ invokes $\O^{u}_{k,n}$ as the sender and receives $s_1,...,s_n$ in response. When $\Adv_1$ invokes $\O^{\coin}$% during \stepref{step:uniform_step3}
- $\Adv_1'$ sends $r_1,...,r_n$ to $\Adv_1$ on behalf of $\O^{\coin}$ where $r_i:=m_1\oplus s_i$ and outputs whatever $\Adv_1$ outputs. Observe that $s_i$ is sampled uniformly at random by $\O^{u}_{k,n}$ and is independent of the transcript of $\Adv_1$ (conditioned on $r_i$). Therefore computing $r_i:=m_1\oplus s_i$ induces an identical distribution as $r_i\gets\{0,1\}^\ell$.
+	$\Adv_1'$ invokes $\OOT^{\U}$ as the sender and receives $s_1,...,s_n$ in response. When $\Adv_1$ invokes $\F^{\coin}$% during \stepref{step:uniform_step3}
+, $\Adv_1'$ sends $r_1,...,r_n$ to $\Adv_1$ on behalf of $\F^{\coin}$ where $r_i:=m_1\oplus s_i$ and outputs whatever $\Adv_1$ outputs. Observe that $s_i$ is sampled uniformly at random by $\OOT^{\U}$ and is independent of the transcript of $\Adv_1$ (conditioned on $r_i$). Therefore computing $r_i:=m_1\oplus s_i$ induces an identical distribution as $r_i\gets\{0,1\}^\ell$.
 	
-	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with the oracle $\O^{\rec}_{k,n}$ and produces an identical output as $\Adv_2$. $\Adv_2'$ plays the role of $\O^{e}_{k,n},\O^{\coin}$ and $\send$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$% in \stepref{step:uniform_step1}
+	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with $\OOT^{\rec}$ and produces an identical output as $\Adv_2$. $\Adv_2'$ plays the role of $\OOT^\E,\F^{\coin}$ and $\send$ in $\Pi^{\U}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$% in \stepref{step:uniform_step1}
 . 
 	
 	
-	$\Adv_2'$ invokes  $\O^{u}_{k,n}$ as the receiver with input $\set$ and receives $(s_i)_{i\in\set}$ in response. When $\Adv_2$ invokes $\O^{\coin}$% during \stepref{step:uniform_step3} 
-	$\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_1$ on behalf of $\O^{\coin}$ where $r_i:=m_1\oplus s_i$ for $i\in \set$ and otherwise sets $r_i$ as the output of $\O^\coin$. $\Adv_2'$ outputs whatever $\Adv_2$ outputs.
+	$\Adv_2'$ invokes  $\OOT^{\U}$ as the receiver with input $\set$ and receives $(s_i)_{i\in\set}$ in response. When $\Adv_2$ invokes $\F^{\coin}$% during \stepref{step:uniform_step3} 
+	$\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_1$ on behalf of $\F^{\coin}$ where $r_i:=m_1\oplus s_i$ for $i\in \set$ and otherwise sets $r_i$ as the output of $\F^\coin$. $\Adv_2'$ outputs whatever $\Adv_2$ outputs.
 	
-	The transcripts of these two interactions are identical except for the messages $(r_i)_{i\in \set}$. In the real interaction $r_i$ is sampled uniformly at random by $\O^{\coin}$ as opposed to $\Adv_2'$ computing $r_i:=m_i\oplus s_i$. Observe that $s_i$ is sampled uniformly at random by $\O^{u}_{k,n}$ and is independent of the transcript of $\Adv_2$ (conditioned on $r_i$). Therefore computing $r_i:=m_1\oplus s_i$ induces an identical distribution as $r_i\gets\{0,1\}^\ell$.
+	The transcripts of these two interactions are identical except for the messages $(r_i)_{i\in \set}$. In the real interaction $r_i$ is sampled uniformly at random by $\F^{\coin}$ as opposed to $\Adv_2'$ computing $r_i:=m_i\oplus s_i$. Observe that $s_i$ is sampled uniformly at random by $\OOT^{\U}$ and is independent of the transcript of $\Adv_2$ (conditioned on $r_i$). Therefore computing $r_i:=m_1\oplus s_i$ induces an identical distribution as $r_i\gets\{0,1\}^\ell$.
 
-	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{u}_{k,n}$ implies that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\O^{e}_{k,n}$ or $\O^\coin$, i.e. $\negl$.
+	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\U}$ implies that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\OOT^\E$ or $\F^\coin$, i.e. $\negl$.
 	
 \end{proof}
 
@@ -277,7 +277,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (0,5) {Sender:};
 \node [anchor=west] at (7.5,5) {Receiver:};
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
-\node at (5.25,4.125){$\O^{e}_{k,n}$};
+\node at (5.25,4.125){$\OOT^\U$};
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$[k]$}(7.25,4.5);
 \draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in [k]}$}(7.25,3.85);
 \draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
@@ -292,13 +292,13 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 % 				\item \label{step:coin_step2} Both parties output the bits of $(s_i)_{i\in [k]}$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{Coin flipping Protocol $\Pi^{\coin}$ in the $\O^{u}_{k,n}$ hybrid. For all $i\in[n]$, $m_i$ is in $\bits^\ell$}
+	\caption{Coin flipping Protocol $\Pi^{\coin}$ in the $\OOT^{\U}$ hybrid. For all $i\in[n]$, $m_i$ is in $\bits^\ell$.}
 	\label{fig:coinFlip}
 \end{figure}
 
 
 \begin{lemma}
-	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol with unconditional security  in the $\O^{u}_{k,n}$ hybrid  (\definitionref{def:ot}).
+	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol with unconditional security  in the $\O^{\U}$ hybrid  (\definitionref{def:ot}).
 \end{lemma}
 \begin{proof}
 	Trivial.
@@ -312,7 +312,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (0,5) {Sender:};
 \node [anchor=west] at (7.5,5) {Receiver:};
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
-\node at (5.25,4.125){$\O^{e}_{k,n}$};
+\node at (5.25,4.125){$\OOT^\E$};
 \node [anchor=west] at (7.5,4.5){$\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$};
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set'$}(7.25,4.5);
 \draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(s_i)_{i\in \set'}$}(7.25,3.85);
@@ -359,7 +359,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (0,5.5) {Sender:};
 \node [anchor=west] at (7.5,5.5) {Receiver:};
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
-\node at (5.25,4.125){$\O^{\rec}_{k,n}$};
+\node at (5.25,4.125){$\OOT^{\rec}$};
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set,(s_i)_{i\in\set}$}(7.25,4.5);
 \draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set'}$}(7.25,3.85);
 \node [anchor=west] at (0,3.5) {$\forall i\in[n]$};
@@ -382,7 +382,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 % 				\item \label{step:uniformSelect_step3} \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(\set, (s_i)_{i\in\set})$ where $s_i:=s_{\pi(i)}'$ and $\set:=\{j \mid \exists i, j=\pi(i)\}$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{Uniform $k$-out-of-$n$ OT protocol $\Pi^{\U}$ in the $\OOT^{\rec}$ hybrid and random oracle model.}
+	\caption{Uniform $k$-out-of-$n$ OT protocol $\Pi^{\U}_{k,n}$ in the $\OOT^{\rec}$ hybrid and random oracle model.}
 
 \label{fig:RtoU}
 \end{figure}
