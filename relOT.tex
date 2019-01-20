@@ -1,31 +1,6 @@
 \section{Relations between OT Security Notions}\label{sec:relot}
 
 
-\begin{figure}[h!]
-\centering
-\begin{tikzpicture}
-\node (U) at (4,4) {Uniform Message Security};
-\node (SC) at (0,2) {$\OOT^\send$-Security};
-\node (RC) at (8,2) {$\OOT^\rec$-Security};
-\node (E) at (4,0) {Endemic Security};
-\node (TC) at (3,2) {Coin Tossing};
-\draw [-implies,double equal sign distance] (U) -- (SC);
-\draw [-implies,double equal sign distance] (U) -- (RC);
-\draw [-implies,double equal sign distance] (SC) -- (E);
-\draw [-implies,double equal sign distance] (RC) -- (E);
-\draw [->, thick] (U) to [out=240,in=90] (TC);
-\draw [-, thick] (E) to [out=60,in=270] (5,2);
-\draw [->, thick] (5,2) to [out=90,in=300] (U);
-\draw [-, thick] (TC) to [out=0,in=300] (4.655,3);
-\draw [->, thick] (E) to [out=180,in=270] (SC);
-\draw [->, thick] (E) to [out=0,in=270] (RC);
-\end{tikzpicture}
-\label{fig:OTrelations}
-\caption{
-The figure depicts the different security notions of OT and their relations. $A\Rightarrow B$ denotes that security $A$ implies security $B$. $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed into an OT realizing security $B$.
-}
-\end{figure}
-
 \begin{lemma}\label{lemma:is_a}
 Let the distribution of OT strings be efficiently sampleable. 
 Then $\OOT^\U$-security implies $\OOT^{\send}$ as well as $\OOT^\rec$-security. $\OOT^{\send}$ or $\OOT^\rec$-security imply $\OOT^\E$-security.
