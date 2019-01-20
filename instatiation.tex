@@ -1,4 +1,4 @@
-\section{Instantiations}
+\section{Instantiations}\label{sec:inst}
 \newcommand{\Z}{\ensuremath{\mathbb Z}\xspace}
 
 \subsection{Instantiation from DDH}
@@ -79,7 +79,7 @@ Therefore, except with negligible probability, $\D$ has the same advantage in br
 Using Theorem~\ref{thm:KAtoOT}, Lemma~\ref{lem:DHuniform} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
 
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting OT is statistically secure against malicious senders making at most polynomially many random oracle queries and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting endemic OT is statistically secure against malicious senders making at most polynomially many random oracle queries and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}
 
 \begin{remark}
@@ -134,5 +134,5 @@ We define the group operation $\pk_1\oplus\pk_2$, by mapping $\pk_1=(\cdt_1,\rho
 By using \theoremref{thm:KAtoOT}, \lemmaref{lem:multuniform} and \lemmaref{lem:keytomultkey}, we get the following corollary.
  
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Crystals-Kyber, then in the programmable random oracle model the resulting OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Crystals-Kyber, then in the programmable random oracle model the resulting endemic OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\MLWE}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}

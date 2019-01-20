@@ -168,16 +168,16 @@ where all algorithms receive input $1^\sec$.
 
 \textcolor{red}{TODO: update this to incorporate ``Uniform Selection"} We distinguish four different message security notions.
 \begin{description}
-\item[Uniform Message Security:] The OT is secure with respect to $\OOT^\U$.
-\item[Sender Chosen Message (SCM) Security:] The OT is secure with respect to $\OOT^{\send}$.
-\item[Receiver Chosen Message (RCM) Security:] The OT is secure with respect to $\OOT^{\rec}$.
-\item[Endemic Security:] The OT is secure with respect to $\OOT^{\E}$.
+\item[Uniform Message Security:] The OT is secure with respect to $\OOT^\U$, i.e. $\OOT^\U$-secure.
+\item[Sender Chosen Message Security:] The OT is secure with respect to $\OOT^{\send}$, i.e. $\OOT^{\send}$-secure.
+\item[Receiver Chosen Message Security:] The OT is secure with respect to $\OOT^{\rec}$, i.e. $\OOT^{\rec}$-secure.
+\item[Endemic Security:] The OT is secure with respect to $\OOT^{\E}$, i.e. $\OOT^{\E}$-secure.
 \end{description}
 
 
 \end{definition}
 
 \begin{remark}
-Uniform security is the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic security gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can potentially choose the strings $(s_i)_{i\in\set}$.
+$\OOT^\U$-security is the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic security gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can potentially choose the strings $(s_i)_{i\in\set}$.
 \end{remark}
 

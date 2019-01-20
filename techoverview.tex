@@ -1,0 +1,49 @@
+\subsection{Our Techniques}
+
+\paragraph{Endemic Security.} When defining malicious security of an OT, one defines an ideal functionality $\OOT$. An OT is called secure, if for any adversary against the OT scheme, there exists an adversary interacting with \OOT producing the same output. Classically, $\OOT$ either receives the OT strings $s_0$, $s_1$ as input from the sender or samples them uniformly at random and outputs them to the sender. But there are also OTs where the receiver can determine the OT strings or even both parties could influence how the OT strings are generated. We distinguish four main security notions.
+\begin{description}
+\item[Uniform Message Security:] The ideal functionality $\OOT^{\U}$ samples the OT strings uniformly at random and outputs the strings to sender and receiver.
+\item[Sender Chosen Message Security:] The ideal functionality $\OOT^{\send}$ receives the OT strings from the sender and outputs one of the strings to the receiver.
+\item[Receiver Chosen Message Security:] The ideal functionality $\OOT^{\rec}$ receives one of the OT strings from the receiver, samples the other one uniformly at random and outputs the strings to the sender.
+\item[Endemic Security] If the sender is malicious, it chooses both strings. If the receiver is malicious, it chooses one of the strings. All strings that are not choosen yet, are sampled uniformly at random by the ideal functionality $\OOT^{\E}$ and forwarded the sender and receiver such that the sender has both strings and the receiver has one of the strings. 
+\end{description}
+
+Notice that endemic security gives the weakest security guarantees, no matter whether the receiver or the sender is malicious, the malicious party can always determine the output distribution. Uniform message security gives very strong security guarantees since a malicious party can never change the distribution to non-uniform.
+     
+
+\paragraph{Relations Between Security Notions.} We show on one hand that an OT with uniform message security is also secure with respect to all other security notions. On the other hand, uniform, sender and receiver chosen message security imply endemic security. Still, there are very simple transformations from an endemically secure OT to an OT that achieves any of the other security notions. Though we remark that uniform message security implies and therefore requires a secure coin tossing protocol. In \figureref{fig:OTrelations}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\node (U) at (4,4) {Uniform Message Security};
+\node (SC) at (0,2) {$\OOT^\send$-Security};
+\node (RC) at (8,2) {$\OOT^\rec$-Security};
+\node (E) at (4,0) {Endemic Security};
+\node (TC) at (3,2) {Coin Tossing};
+\draw [-implies,double equal sign distance] (U) -- (SC);
+\draw [-implies,double equal sign distance] (U) -- (RC);
+\draw [-implies,double equal sign distance] (SC) -- (E);
+\draw [-implies,double equal sign distance] (RC) -- (E);
+\draw [->, thick] (U) to [out=240,in=90] (TC);
+\draw [-, thick] (E) to [out=60,in=270] (5,2);
+\draw [->, thick] (5,2) to [out=90,in=300] (U);
+\draw [-, thick] (TC) to [out=0,in=300] (4.655,3);
+\draw [->, thick] (E) to [out=180,in=270] (SC);
+\draw [->, thick] (E) to [out=0,in=270] (RC);
+\end{tikzpicture}
+\label{fig:OTrelations}
+\caption{
+The figure depicts the different security notions of OT and their relations. $A\Rightarrow B$ denotes that security $A$ implies security $B$. $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed into an OT realizing security $B$.
+}
+\end{figure}
+we give an overview over these implications and transformations. 
+
+We also show that endemic OT is weaker than the other notions but at the same time this allows a minimal round complexity of a single round. More precisely, we show that there is no one round OT that achieves sender or receiver chosen message security.
+
+\paragraph{From Key Agreement to OT.}
+
+point out solutions in crs model, kilian commitment and hashing technique
+
+\paragraph{Instantiation and Implementation.}
+
+\paragraph{Secure Employment of OT Extension.}

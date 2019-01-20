@@ -1,5 +1,5 @@
 \begin{lemma}\label{lem:nosendtweak}
-There is no sender tweakable secure two message OT where the sender sends its message first. 
+There is no sender chosen message secure two message OT where the sender sends its message first. 
 \end{lemma}
 
 
@@ -19,7 +19,7 @@ Let the scheme be $\delta$ correct, for $\delta\geq 1-\negl$. Then, the probabil
 $$
 \Pr[(s_{0,1},s_{1,2})=(s_0,s_1)]\geq \left(\frac{3}{4}\delta\right)^2> \frac{1}{2},
 $$
-where $(s_0,s_1)=f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$. A malicious receiver interacting with the ideal \OT can achieve this at most with probability $\frac{1}{2}$. Hence, there is a distinguisher that breaks the sender tweakable security of the OT.
+where $(s_0,s_1)=f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$. A malicious receiver interacting with the ideal OT can achieve this at most with probability $\frac{1}{2}$. Hence, there is a distinguisher that breaks the sender tweakable security of the OT.
 
 Now assume that for any $(s_0,s_1)$,
 \begin{eqnarray}\label{eqn:noncomm}
@@ -45,11 +45,11 @@ where $u\leftarrow\bits$. Since $\D$ breaks \PRF with probability $\epsilon_{\PR
 \end{eqnarray*}
 Since the OT is $\delta=1-\negl$ correct, we get by using a union bound that the malicious receivers output $s_{b_i,i}$ is correct and $\PRF_{\key}(s_{b_i,i})=0$ holds at least with probability $\frac{1}{2}+\frac{1}{64}-\negl$. Hence, $\PRF_{\key}(s_{b_i,i})=0$ holds with a noticeable bias - given $\key$- when the malicious receiver interacts with an honest sender. If there is a distribution of $(s_0,s_1)$ from which the ideal OT samples with the same bias, then there is a distinguisher $\D$ that breaks the security of \PRF. $\D$ samples from this distribution, queries $\PRF$ on the samples and outputs $1$ if the query returns $0$. 
 
-Since there is no such a distribution for a secure PRF, there is no adversary $\Adv'$ that creates the same output distribution when interacting with the ideal OT as when the malicious receiver interacts with the honest sender. Hence, the OT is not sender tweakable secure. 
+Since there is no such a distribution for a secure PRF, there is no adversary $\Adv'$ that creates the same output distribution when interacting with the ideal OT as when the malicious receiver interacts with the honest sender. Hence, the OT is not sender chosen message secure. 
 \end{proof}
 
 \begin{lemma}
-There is no receiver tweakable secure two message OT where the receiver sends its message first.
+There is no receiver chosen message secure two message OT where the receiver sends its message first.
 \end{lemma}
 
 \begin{proof}
@@ -100,5 +100,5 @@ Similar as in the proof of Lemma~\ref{lem:nosendtweak}, we argue that a maliciou
 &\geq&  \left(\frac{1}{2}-\epsilon_{\PRF}\right)+\left(\frac{1}{2}+\epsilon_{\PRF}\right)\cdot\frac{3}{8}\left(\frac{1}{2}-\epsilon_{\PRF}\right)\\
 &=& \frac{1}{2}+\frac{1}{32}-\negl,
 \end{eqnarray*}
-unless one breaks the security of the prf. As previously, this constitutes an attack against the receiver tweakable security.
+unless one breaks the security of the prf. As previously, this constitutes an attack against the receiver chosen message security.
 \end{proof}
