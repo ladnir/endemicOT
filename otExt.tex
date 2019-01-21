@@ -130,14 +130,15 @@ To realize the ideal Sender Chosen Message oracle $\OOT^\send$ \cite{C:IKNP03,EC
 				\qq_i = \cc_i\odot \bb+\tt_i,\qquad \forall i\in[m'].
 				$$
 				
-				\item \emph{Consistency check:}\label{step:consistency} \rec  proves in zero knowledge that given their view $\textsc{view}_\rec$:
+				\item \emph{Consistency check:}\label{step:consistency} \rec  proves in zero knowledge that %given their view $\textsc{view}_\rec$:
 				\begin{center}
-					$	\forall i\in[m], \exists w\in\mathbb{F}^\kc_2\  s.t.\  \cc_i =\uu_i+\tt_i+\tt_{1,i}  \text{ erasure decodes to } w $\\ 
-					{ with erasures indexed by } $\{j \mid \bb_j = 0 \} \quad  \text{and}$ \\
-					$\forall$ ppt $\Adv\in\{0,1\}^*, w'\in\mathbb{F}^\kc_2\setminus\{w\},$ \\
-					$\Pr_{\bb}[\Adv(\textsc{view}_\rec)=(\cc_i+\mathcal{C}(w'))\odot \bb]=\negl$
+					$	\forall i\in[m], \exists w\in\mathbb{F}^\kc_2 \mid  0=\bb\odot (\uu_i+\tt_i+\tt_{1,i} +\mathcal{C}(w))$
 				\end{center}
-								
+				Note: $\bb\in\mathbb{F}^\nc_2$ is distributed uniformly in the view of \rec.
+								%					$ \text{ erasure decodes to } w $\\ 
+								%					{ with erasures indexed by } $\{j \mid \bb_j = 0 \} \quad  \text{and}$ \\
+								%					$\forall$ ppt $\Adv\in\{0,1\}^*, w'\in\mathbb{F}^\kc_2\setminus\{w\},$ \\
+								%					$\Pr_{\bb}[\Adv(\textsc{view}_\rec)=(\cc_i+\mathcal{C}(w'))\odot \bb]=\negl$
 				%In particular, using a sigma protocol with the first message being $U$, \rec proves in zero knowledge to \send that for all $i\in[m], \exists \ww_i$ s.t. $\cc_i\odot \bb$ erasure decodes to $\ww_i$ with erasures indexed by $\{j \mid \bb_j=0 \}$. Note, \send does \emph{not} send $\bb$.
 				
 				 For example, the proof of \cite{C:KelOrsSch15} for $N=2$ or \cite{RSA:OrrOrsSch17} otherwise. $s\geq0$ is specified by the proof protocol.
@@ -299,21 +300,25 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 	\begin{proof}
 				Consider the following hybrids which will define the simulator $\Adv'$. 
 		\begin{enumerate}[leftmargin=1.8cm]
-			\item[Hybrid 1.] $\Adv'$ internally runs \Adv while plays the role of $\send$ and base OT oracle $\OOT=\OOT^\E$. $\Adv'$ receives $\{\tt^j_0,\tt^j_1\}_{i\in\nc}$ from \Adv in \stepref{step:extInit} and samples $\bb$ as \send would. $\Adv'$ outputs whatever \Adv outputs. The view of $\Adv$ is unmodified.
+			\item[Hybrid 1.] $\Adv'$ internally runs \Adv while plays the role of $\send$ and base OT oracle $\OOT=\OOT^\E$. $\Adv'$ receives $\{\tt^j_0,\tt^j_1\}_{i\in\nc}$ from \Adv in \stepref{step:extInit}. $\Adv'$ outputs whatever \Adv outputs. The view of $\Adv$ is unmodified.
 			
-			\item[Hybrid 2.] In \stepref{step:extSendU} $\Adv'$ receives $U$ from $\Adv$.  $\Adv'$ computes $C$ and $Q$ using $\tt_0^j,\tt_1^j,\bb$. $\Adv'$ performs the proof of \stepref{step:consistency} as \send would. If the proof fails, $\Adv'$ aborts as \send would. Otherwise, by the correctness of the proof, $\cc_i$ decodes to $\ww_i$  and computes $x_i$ s.t. $\ww_i=map(x_i)$.
+			\item[Hybrid 2.] In \stepref{step:extSendU} $\Adv'$ receives $U$ from $\Adv$, computes $C:=T_0+T_1$ and uniformly samples $\bb\gets\mathbb{F}^\nc_2$. Let  $B_i:=\{j \mid \bb_j = i\}$. For all $i\in[m]$, $\Adv'$ attempts to erasure decode $\cc_i$ with erasures indexed by $B_0$. If $\cc_i$ failed to decode, then there does not exist a $w\in\mathbb{F}^\kc_2$ s.t. $0=\bb\odot (\cc_i+\mathcal{C}(w))$ and $\Adv'$ aborts in \stepref{step:consistency} as \send would. Otherwise, let $\cc_i$ decode to $\ww_i$ and $\Adv'$ computes $x_i$ s.t. $\ww_i=map(x_i)$
+			
+			%$\Adv'$ performs the proof of \stepref{step:consistency} as \send would. If the proof fails, $\Adv'$ aborts as \send would. Otherwise, by the correctness of the proof, $\cc_i$ decodes to $\ww_i$  and computes $x_i$ s.t. $\ww_i=map(x_i)$.
 			
 			$\Adv'$ defines the circuit $\mathcal{S}_i[1]\rightarrow\{0,1\}$ with support $\{x_i\}$ and $\mathcal{M}_i:[1]\rightarrow\mathbb{F}^\kappa_2$ s.t. $\mathcal{M}_i(1)=\H(i, \tt_i)$. $\Adv'$ sends $\mathcal{S}_i$ and $\mathcal{M}_i$ to $\OOT^\E$ as the receiver's input to the $i$-th OT instance. The view of \Adv is unmodified and the ideal and real output agree on output $\vv_{i,x_i}$.
 			
 			
-			\item[Hybrid 3.]\label{hybrid:simOutput} Assuming $\Adv'$ did not abort in \stepref{step:consistency}, for all $w\neq \ww_i$, \Adv  has $\negl$ probability of computing $g=\qq_i+\bb\odot \mathcal{C}(w)$. If this was not the case, then \Adv  could compute
+			\item[Hybrid 3.]\label{hybrid:simOutput} Assuming $\Adv'$ did not abort in \stepref{step:consistency}, let $E=\{j \mid \exists i\in[m], (\cc_i\oplus \mathcal{C}(\ww_i))_j = 1\}$ index the columns of $C$ where $\Adv$ added an error to any codeword $\cc_i$ (w.r.t $\ww_i$). By the correctness of \stepref{step:consistency}, it holds that $E\subseteq B_0$, otherwise the consistency proof would have failed. By passing the consistency proof, \Adv learns what $\bb_j=0$ for all $j\in E$. Similarly, the probability of passing the check and $\Pr[|E|=d]=\Pr[\bb_j=0 \mid \forall j\in E]=2^{-d}$ due to the proof being independent of $\bb$. We will see that this is equivalent to \Adv simply guessing $E$ (which is correct with the same probability) and then being honest. 
+			
+			For all $w\neq \ww_i$, \Adv  has $\negl$ probability of computing $g=\qq_i+\bb\odot \mathcal{C}(w)$. If this was not the case, then \Adv  could compute
 			\begin{align*}
 			g +\tt_i &=\qq_i+\bb\odot \mathcal{C}(w)+\tt_i\\
 			&=\cc_i\odot\bb+\tt_i+\bb\odot \mathcal{C}(w)+\tt_i\\
-			&=(\cc_i+\mathcal{C}(w))\odot \bb
+			&=(\cc_i+\mathcal{C}(w))\odot \bb\\
+			&=(\mathcal{C}(\ww_i)+\mathcal{C}(w))\odot \bb
 			\end{align*}
-			which contradicts the proof of \stepref{step:consistency}.
-			Therefore, the probability that \Adv has made a query of the form $\H(i,\qq_i+\bb\odot \mathcal{C}(w))$ for $w\neq \ww_i$ is also negligible. If such as query does happen $\Adv'$ aborts. This hybrid is indistinguishably distributed from the previous. 
+			This last equality holds due to $\Adv'$ aborting if $(\cc_i+\mathcal{C}(\ww_i))\odot \bb\neq 0$. Recall that $\mathcal{C}$ has minimum distance $\dc\geq \kappa$ and therefore computing $g$ is equivalent $\Adv$ guessing $\dc\geq \kappa$ bits of $\bb$ which happens with probability $2^{-\dc}\leq 2^{-\kappa}$.  As such, the probability that \Adv has made a query of the form $\H(i,\qq_i+\bb\odot \mathcal{C}(w))$ for $w\neq \ww_i$ is also negligible. If such as query does happen $\Adv'$ aborts. This hybrid is indistinguishably distributed from the previous. 
 			
 			
 			\item[Hybrid 4.] \label{hybrid:simOutput2} when \send makes an $\H$ query of the form $\H(i,h)$ which has not previously be queries, $\Adv'$ must determine if there is a unique $x\in[N]$ such that $h=\qq_i+\bb\odot \mathcal{C}(map(x))$. First, let us assume there exists two distinct $w,w'\in\mathbb{F}^\kc_2$ which satisfies this. That is,
@@ -387,7 +392,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 	Let $\Pi^{\textsf{ext-S}u+}$ be the protocol $\Pi^{\textsf{ext-S}u}$ where the random oracle $\H$ required by $\Pi^{\textsf{ext-S}u}$ is defined as follows. 
 	\begin{enumerate}
 		\item Let $\H':\{0,1\}^{[m]\times \mathbb{F}^\nc_2}\rightarrow\{0,1\}^\kappa$ be a random oracle.
-		\item Before \stepref{step:extInit} of $\Pi^{\textsf{ext-S}u}$, \send samples $k\gets\mathbb{F}^\nc_2$ sends a random oracle commitment of $k$ to \rec, i.e. \textcolor{red}{define OR commitment}. 
+		\item Before \stepref{step:extInit} of $\Pi^{\textsf{ext-S}u}$, \send samples $k\gets\mathbb{F}^\nc_2$ sends a of $k$ to \rec, i.e. \textcolor{red}{define OR commitment}. 
 		\item After receiving $U$ in \stepref{step:extSendU}, \send decommits to $k$ to \rec who aborts is the decommitment fails.
 		\item Both parties define $\H(i,x)=\H'(i,x+k)$.
 	\end{enumerate}
@@ -433,7 +438,7 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 
 %We begin with the $\Pi^{\textsf{ext-R}}$ protocol defined in \definitionref{def:ext_R_S}.
 \begin{definition}\label{def:ext_R_S}
-	Let $\Pi^{\textsf{ext-R}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$, $N=2$, \stepref{step:consistency} is implemented using \cite{C:KelOrsSch15} and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+	Let $\Pi^{\textsf{ext-R}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
 \end{definition}
 \begin{lemma}\label{lem:ext_R_S}
 	The $\Pi^{\textsf{ext-R}}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security and, against a malicious \rec, $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
@@ -460,15 +465,6 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec. \rec only interacts with $\OOT^\E$. This change is identically distributed since $\Adv'$ was not using the input of \rec.
 		\end{enumerate}
 	\end{proof}
-	
-%	\begin{claim}[Uniform Messages for Honest \send]
-%		The output messages for an honest \send are distributed uniformly by the protocol except with negligible probability. 
-%	\end{claim}
-%	\begin{proof}
-%		First, \equationref{eq:unique} shows that $y_{i,x}:=\tt_i + \bb \odot (\cc_i + \mathcal{C}(map(x)))$ is unique over all $i\in[m],x\in[N]$ with probability at least $1-m^2N'^22^{-\nc}=1-\negl$, where $N'\leq N$ is the maximum number of outputs \send computes for any OT instance.
-%		Therefore, the output $\vv_{i,x}=\pi_k(y_{i,x})+y_{i,x}$ of \send is distributed uniformly due to $\pi_k$ being an ideal random permutation. \textcolor{red}{cite DaviesMeyers and say its not invertable.} 
-%	\end{proof}
-
 	\begin{claim}[Malicious Receiver $\OOT^\U$-Security]\label{claim:ext-R-S-MalReceiver}
 		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
 	\end{claim}
@@ -485,14 +481,17 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 			\item[Hybrid 3.] $\Adv'$ then uniformly samples $k\gets\{0,1\}^\kappa$ as \send would and defines the ideal permutation $\pi_k$. If $\pi_k$ has been queries by $\Adv$, then $\Adv'$ aborts. The probability of this event is negligible due to $k$ being uniformly sampled from $\{0,1\}^\kappa$. Otherwise, before sending $k$ to \send, $\Adv'$ programs $\pi_k$ s.t.  $\pi_k(\tt_i)=\vv_{i, x_i}+\tt_i$. Conditioned on these input/outputs not colliding for $i\in[m]$, which happens with overwhelming probability, this modification is identically distributed due to $\vv_{i, x_i}\gets\{0,1\}^\kappa$ being sampled uniformly by $\OOT^\U$.
 			
 			
-			\item[Hybrid 4.]\label{hybrid:simOutputR} Assuming $\Adv'$ did not abort in \stepref{step:consistency}, for all $w\neq \ww_i$, \Adv has $\negl$ probability of computing $g=\qq_i+\bb\odot \mathcal{C}(w)$. If this was not the case, then \Adv  could compute
+			\item[Hybrid 4.]\label{hybrid:simOutputR} Assuming $\Adv'$ did not abort in \stepref{step:consistency}, let $E=\{j \mid \exists i\in[m], (\cc_i\oplus \mathcal{C}(\ww_i))_j = 1\}$ index the columns of $C$ where $\Adv$ added an error to any codeword $\cc_i$ (w.r.t $\ww_i$). By the correctness of \stepref{step:consistency}, it holds that $E\subseteq B_0$, otherwise the consistency proof would have failed. By passing the consistency proof, \Adv learns what $\bb_j=0$ for all $j\in E$. Similarly, the probability of passing the check and $\Pr[|E|=d]=\Pr[\bb_j=0 \mid \forall j\in E]=2^{-d}$ due to the proof being independent of $\bb$. We will see that this is equivalent to \Adv simply guessing $E$ (which is correct with the same probability) and then being honest. 
+			
+			For all $w\neq \ww_i$, \Adv  has $\negl$ probability of computing $g=\qq_i+\bb\odot \mathcal{C}(w)$. If this was not the case, then \Adv  could compute
 			\begin{align*}
 			g +\tt_i &=\qq_i+\bb\odot \mathcal{C}(w)+\tt_i\\
 			&=\cc_i\odot\bb+\tt_i+\bb\odot \mathcal{C}(w)+\tt_i\\
-			&=(\cc_i+\mathcal{C}(w))\odot \bb
+			&=(\cc_i+\mathcal{C}(w))\odot \bb\\
+			&=(\mathcal{C}(\ww_i)+\mathcal{C}(w))\odot \bb
 			\end{align*}
-			which contradicts the proof of \stepref{step:consistency}.
-			Therefore, the probability that \Adv has made a query of the form $\pi_k(\qq_i+\bb\odot \mathcal{C}(w))$ for $w\neq \ww_i$ is also negligible. If such as query does happen $\Adv'$ aborts. This hybrid is indistinguishably distributed from the previous. 
+			This last equality holds due to $\Adv'$ aborting if $(\cc_i+\mathcal{C}(\ww_i))\odot \bb\neq 0$. Recall that $\mathcal{C}$ has minimum distance $\dc\geq \kappa$ and therefore computing $g$ is equivalent $\Adv$ guessing $\dc\geq \kappa$ bits of $\bb$ which happens with probability $2^{-\dc}\leq 2^{-\kappa}$.  As such, the probability that \Adv has made a query of the form $\pi_k(\qq_i+\bb\odot \mathcal{C}(w))$ for $w\neq \ww_i$ is also negligible. If such as query does happen $\Adv'$ aborts. This hybrid is indistinguishably distributed from the previous. 
+			
 			
 			
 			\item[Hybrid 5.] \label{hybrid:simOutput2R} When \send makes an $\pi_k$ query of the form $\pi_k(h)$ which they have not previously been queried, $\Adv'$ must determine if there is a unique $w\in\mathbb{F}^\nc_2,i\in[m]$ such that $h=\qq_i+\bb\odot \mathcal{C}(w)$. For the sake of contradiction, let us assume there exists any two $i,i'\in[m]$ or  $w,w'\in\mathbb{F}^\kc_2$ which result in the same input to $\pi_k$. If $i=i'$ and $w=w'$, then a unique $(i,w)$ exist. Otherwise,
@@ -511,14 +510,14 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 			\begin{equation}\label{eq:unique}
 				\Pr_{i,i',c^*}[\bb\odot c^* \leq \tt_{i} +\tt_{i'}]\leq m^2p_0p_1=m^2N2^{-\nc}
 			\end{equation}
-			which is negligible\footnote{Note, $N=2$. }.  Therefore we conclude that $(i,w)$ is unique if such a pair exists.
+			which is negligible\footnote{Note, $N$ is assumed to be polynomial. This is true in the target use case where $N=2$ and $\nc=\kappa$. }.  Therefore we conclude that $(i,w)$ is unique if such a pair exists.
 			
 			
 			If so then $\Adv'$ can use Gaussian elimination to identify it. In particular, $\Adv'$ computes $h+\qq_i$ for all $i\in[m]$ and checks that $(h+\qq_i)_\ell =0$ for all $\ell\in B_1$ and if so tries erasure decodes $h+\qq_i$ to $w$ where the erasures are index by $B_0$. For $h+\qq_i$ this will happen and $\Adv'$ computes $x$ s.t. $map(x)=w$ and sends $(\textsc{Output}, x)$ to the $i$-th instance of $\OOT^\send$ and receives $\vv_{i,x}\gets\{0,1\}^\ell$ in response.  Let $y_{i,x}:=h=\tt_i + \bb (\cc_i + \mathcal{C}(map(x)))$.
 			
-			$\Adv'$ programs $\pi_k(y_{i,x})=\vv_{i,x}+y_{i,x}$. Programming $\pi_k$ requires the input/output pair $(y_{i,x},\vv_{i,x}+y_{i,x})$ to have not previously been queried on $\pi_k,\pi_k^{-1}$.  It is easy to verify that with overwhelming probability $\pi_k^{-1}(\vv_{i,x}+h)$ has not been queries since $\vv_{i,x}$ is uniformly distributed. 
+			$\Adv'$ programs $\pi_k(y_{i,x})=\vv_{i,x}+y_{i,x}$. Programming $\pi_k$ requires the input/output pair $(y_{i,x},\vv_{i,x}+y_{i,x})$ to have not previously been queried on $\pi_k,\pi_k^{-1}$.  It is easy to verify that with overwhelming probability $\pi_k^{-1}(\vv_{i,x}+y_{i,x})$ has not been queries since $\vv_{i,x}$ is uniformly distributed. 
 			
-			
+			In the other direction, $y_{i,x}$  could have been queries in two ways. 1) $D$ or \Adv guessed it which is negligible as discussed in \hybridref{hybrid:simOutputR}. 2) $D$ inverted $\vv_{i',x'}:=\H(y_{i',x'})=\pi_k(y_{i',x'})+y_{i',x'}$ and then recovered $\bb$. However, $v=\pi_k(y)+y$ is preimage resistant\cite{C:BlaRogShr02,SP:Winternitz} which informally follows from the difficulty of finding an input to the random permutation $\pi_k$ which differs from $v$ by itself.
 			%However, we also must show that $y_{i,x}:=h=\tt_i + \bb (\cc_i + \mathcal{C}(map(x)))$ has not been queried by $\Adv$ or $D$. The view of $D$ contains $\tt_i$ and polynomial many outputs $\vv_{i,x}=\pi_k(y_{i,x}) + y_{i,x}$. 
 			%The distribution of $\pi$ after being programmed is identical since the input or output has not previously been queried. In particular, later a distinguisher may be given access to $\pi_k$ and $\pi_k^{-1}$ and many $\vv_{i,x}$ values. However, it remains hard to find a preimage $h$ of $\vv_{i,x}=\pi_k(h)+h$ due to $h$ masking the permutation output\cite{daviesMeyers}.
 			
@@ -536,9 +535,38 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 \end{proof}
 
 
-%\begin{lemma}\label{lem:ext_R_S_honest_sender}
-%	$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
-%\end{lemma}
-%\begin{proof}
-%	TODO. this is odd.
-%\end{proof}
+\begin{definition}\label{def:ext_R_U}
+	Let $\Pi^{\textsf{ext-U}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
+	\begin{enumerate}
+		\item In the first round, \send samples $k\gets\{0,1\}^{\kappa}$ and sends a commitment of $k$ to \rec.
+		\item After \stepref{step:consistency}, \send decommits $k$ to \rec who aborts if it fails.
+		\item Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+	\end{enumerate}
+\end{definition}
+
+\begin{lemma}\label{lem:ext_U_U}
+	The $\Pi^{\textsf{ext-U}}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security and, against a malicious \rec, $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
+\end{lemma}
+\begin{proof}
+	\begin{claim}[Malicious Sender Security]\label{claim:ext-U-U-MalSender}
+		$\Pi^{\textsf{ext-U}}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+	\begin{proof}
+		The simulation follows essentially the same strategy as \lemmaref{lem:ext_R_S}.
+		The differences to the hybrids are as follows.
+		\begin{enumerate}[leftmargin=1.8cm]
+			\item[Hybrid 1.] $\Adv'$ extracts $k$ from the commitment. Then $\Adv'$ samples $T_0,T_1$ and the selections $\bb$ uniformly at random and simulates the base OTs using them.
+			
+			\item[Hybrid 4.] $\Adv'$ no longer sends the messages specified by $\send$ to $\OOT^\U$. Instead, when $\Adv$ makes a query to $\pi_k(h)$, $\Adv'$ checks if $h=y_{i,x}=\tt_i +\bb\odot( \cc_i + \mathcal{C}(map(x)))$ for some pair $(i,x)$. If so, then $(i,x)$ are unique as described by \lemmaref{lem:ext_R_S}. $\Adv'$ queries the $i$-th instance of $\OOT^\U$ with $(\textsc{Output}, x)$ and receives $\vv_{i,x}$ in response. $\Adv'$ programs $\pi_k(y_{i,x})=\vv_{i,x}+y_{i,x}$. The probability of the input/output being previously queries is negligible due to $\Adv$ extracting $k$ before $\tt_i$ was sampled and $\vv_{i,x}$ being uniformly distributed.
+			
+			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec. \rec only interacts with $\OOT^\U$. This change is identically distributed since $\Adv'$ was not using the input of \rec.
+		\end{enumerate}
+	\end{proof}
+	\begin{claim}[Malicious Receiver $\OOT^\U$-Security]\label{claim:ext-U-U-MalReceiver}
+		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+	\begin{proof}
+		Follows directly from \lemmaref{lem:ext_R_S} claim 2 and the hiding property of the commitment. 
+	\end{proof}
+	
+\end{proof}
