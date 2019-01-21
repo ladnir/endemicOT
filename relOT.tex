@@ -86,22 +86,27 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 	$\Pi^{\send}_{k,n}$ of \figureref{fig:protoSendOT} realizes the Sender Chosen Ideal OT $\OOT^{\send}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
 \end{lemma}
 
+\iffullversion
 \begin{proof}
-	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with functionality $\OOT^\send$ and produces an identical output  to $\Adv_1$.  $\Adv_1'$ plays the role of $\OOT^\E$ and $\rec$ in $\Pi^{\send}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$%in \stepref{step:senderChosen_step1}
+ We construct a new adversary $\Adv_1'$ which interacts with functionality $\OOT^\send$ and produces an identical output  to $\Adv_1$.  $\Adv_1'$ plays the role of $\OOT^\E$ and $\rec$ in $\Pi^{\send}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$%in \stepref{step:senderChosen_step1}
 , along with the strings $r_1,...,r_n$% in \stepref{step:senderChosen_step2}
 .  $\Adv_1'$ extracts the OT strings of $\Adv_1$ as $s_i:=r_i\oplus m_i$. $\Adv_1'$ sends $(s_i)_{i\in [n]}$ to $\OOT^\send$ and outputs whatever $\Adv_1$ outputs.
 	
 	Observe that the output of the honest receiver is identical when $\Adv_1$ interacts with $\rec$ in $\Pi^{\send}_{k,n}$ and when $\Adv_1'$ interacts with $\OOT^\send$.
 	
 	
-	Now let us consider a corrupt receiver $\Adv_2$. We construct a new adversary $\Adv_2'$ which interacts with the functionality $\OOT^\send$ and produces an identical output distribution to $\Adv_2$. $\Adv_2'$ plays the role of $\OOT^\E$ and $\send$ in $\Pi^{\send}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$% in \stepref{step:senderChosen_step1}
-. $\Adv_2'$ sends $\set$ to  $\OOT^\send$ and receives $(s_i)_{i\in \set}$ in response. $\Adv_2'$ computes $r_i:=s_i\oplus m_i$ for $i\in \set$ and uniformly samples $r_i\gets \{0,1\}^\ell$ for $i\in [n]\setminus \set$. $\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_2$ and outputs whatever $\Adv_2$ outputs.
+	
+	Now consider a corrupt receiver $\Adv$. We construct a new adversary $\Adv_2'$ which interacts with the functionality $\OOT^\send$ and produces an identical output distribution to $\Adv_2$. $\Adv_2'$ plays the role of $\OOT^\E$ and $\send$ in $\Pi^{\send}_{k,n}$ while running $\Adv_2$. $\Adv_2'$ receives the set $\set\subset[n]$ of size $k$ and the endemic OT strings $(m_i)_{i\in \set}$ from $\Adv_2$. $\Adv_2'$ sends $\set$ to  $\OOT^\send$ and receives $(s_i)_{i\in \set}$ in response. $\Adv_2'$ computes $r_i:=s_i\oplus m_i$ for $i\in \set$ and uniformly samples $r_i\gets \{0,1\}^\ell$ for $i\in [n]\setminus \set$. $\Adv_2'$ sends $r_1,...,r_n$ to $\Adv_2$ and outputs whatever $\Adv_2$ outputs.
 
 	The transcripts of $\Adv_2$ in these two interactions are identical except for $(r_i)_{i\in [n]\setminus \set}$. Observe that in the real interaction for $i\in [n]\setminus\set$, $r_i:=s_i\oplus m_i$, where $m_i$ is sampled uniformly at random  by functionality $\OOT^\E$ and is independent of the transcript of $\Adv_2$ (conditioned on $r_i$). Therefore sampling $r_i$ directly induces an identical distribution. 
 	
 	Therefore, any distinguishing advantage $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\send}_{k,n}$ implies that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\OOT^\E$, i.e. $\negl$.
 \end{proof}
-
+\else
+\begin{proof}[sketch]	
+	The case of a corrupt sender is straight forward. The simulator receives $(m_i)_{i\in[n]},(r_i)_{i\in[n]}$ from \rec and sends $(m_i\oplus r_i)_{i\in[n]}$ to $\OOT^\send$. The output distribution is identical to the real protocol. Consider a corrupt receiver. The simulator receives their set and strings $(m_i)_{i\in\in{\set}}$. All other $(m_i)_{i\in\in{[n]\setminus\set}}$ are uniformly distributed in their view. Therefore, so is $(m_i+r_i)_{i\in\in{[n]\setminus\set}}$ and the simulator can then replace these strings with $(r_i)_{i\in\in{[n]\setminus\set}}$.
+\end{proof}
+\fi
 
 \begin{figure}[t]
 \centering
@@ -141,7 +146,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \begin{lemma}
 	$\Pi^{\rec}_{k,n}$ of \figureref{fig:protoRecvOT} realizes the Receiver Chosen Ideal OT $\OOT^{\rec}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
 \end{lemma}
-
+\iffullversion
 \begin{proof}
 	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with $\OOT^{\rec}$ and produces an identical output distribution as $\Adv_1$.  $\Adv_1'$ plays the role of $\OOT^\E$ and $\rec$ in $\Pi^{\rec}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$% in \stepref{step:receiverChosen_step1}
 . $\Adv_1'$ invokes $\OOT^{\rec}$ as the sender and receives $s_1,...,s_n$ in response. $\Adv_1'$ sends $r_1,...,r_n$ to $\Adv_1$ where $r_i:=m_1\oplus s_i$ and 	 outputs whatever $\Adv_1$ outputs.
@@ -157,7 +162,12 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 	
 	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\rec}_{k,n}$ implies  that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\OOT^\E$, i.e. $\negl$.
 \end{proof}
-
+\else
+\begin{proof}[sketch]
+	Consider a corrupt sender. First, \send sends $(m_i)_{i\in[n]}$ to the simulator and $\OOT^\rec$ sends $(s_i)_{i\in[n]}$. $k$ of the $s_i$ strings will have a distribution specified by $\rec$ while the other are uniform. For all of them, the simulator computes $r_i:=s_i+m_i$ and sends $r_i$ to \send. For the uniform $s_i$, adding another uniform value does not change the distribution. The other messages have an identical distribution.	
+	For a corrupt receiver, the $(m_i)_{i\in[n]\setminus\set}$ are uniformly distributed in their view. Therefore, so is $(m_i+r_i)_{i\in [n]\setminus\set}$. 
+\end{proof}
+\fi
 
 
 \begin{figure}[t]
@@ -201,6 +211,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \begin{lemma}
 	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the Uniform Ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ hybrid.
 \end{lemma}
+\iffullversion
 \begin{proof}
 	First let us consider any corrupt sender $\Adv_1$. We construct a new adversary $\Adv_1'$ which interacts with functionality $\OOT^{\U}$ and produces an identical output distribution as $\Adv_1$.  $\Adv_1'$ plays the role of $\OOT^\E,\F^{\coin}$ and $\rec$ in $\Pi^{\U}_{k,n}$ while running $\Adv_1$. $\Adv_1'$ receives the endemic OT strings $m_1,...,m_n$ from $\Adv_1$% in \stepref{step:uniform_step1}
 .
@@ -221,7 +232,12 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 	Therefore, any distinguishing advantage adversary $\Adv_1$ or $\Adv_2$ produces in protocol $\Pi^{\U}$ implies that $\Adv_1'$ or $\Adv_2'$ would produce the same advantage against the instantiation of $\OOT^\E$ or $\F^\coin$, i.e. $\negl$.
 	
 \end{proof}
-
+\else
+\begin{proof}[sketch]
+	Consider a corrupt \send. The simulator calls $\OOT^{\U}$ and receives $s_1,...,s_n$. When \send invokes $\F^{\coin}$, $\Adv_1'$ sends $r_i:=m_1\oplus s_i$ to $\Adv_1$ on behalf of $\F^{\coin}$. Due to $s_i$ is sampled uniformly this change results in the same distribution. 
+	For a corrupt receiver, the simulator effectively does the same. First receive $\set$ and send it to $\OOT^{\U}$ and receive $(s_i)_{i\in\set}$. Then have  $\F^{\coin}$ output $r_i:=m_1\oplus s_i$ for $i\in\set$ and uniform otherwise.
+\end{proof}
+\fi
 
 
 
@@ -287,16 +303,16 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (0,5) {Sender:};
 \node [anchor=west] at (7.5,5) {Receiver:};
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
-\node at (5.25,4.125){$\OOT^\E$};
+\node at (5.25,4.125){$\OOT^\send$};
 \node [anchor=west] at (7.5,4.5){$\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$};
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set'$}(7.25,4.5);
-\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(s_i)_{i\in \set'}$}(7.25,3.85);
-\node [anchor=west] at (0,3.5) {$\pi\leftarrow\Pi([n])$};
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(s_{\pi(i)})_{i\in \set'}$}(7.25,3.85);
+\node [anchor=west] at (0,4.5) {$\pi\leftarrow\Pi([n])$};
 \draw [thick, ->] (3.25,3)-- node [midway, above]{$\pi$} (7.25,3);
-\draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(s_i)_{i\in [n]}$}(4.75,3.85);
-\node [anchor=west] at (0,2.5) {output $(s_{\pi(i)})_{\pi(i)\in[n]}$};
+\draw [thick, ->] (3.25,4.5)-- node [midway,above]{$(s_{\pi(i)})_{i\in [n]}$}(4.75,4.5);
+\node [anchor=west] at (0,2.5) {output $(s_{i})_{i\in[n]}$};
 \node [anchor=west] at (7.5,3) {$\set:=\{j \mid \exists i, j=\pi(i)\}$};
-\node [anchor=west] at (7.5,2.5) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (7.5,2.5) {output $\set, (s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -307,22 +323,22 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 % 				\item \label{step:uniformSelect_step3} \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(\set, (s_i)_{i\in\set})$ where $s_i:=s_{\pi(i)}'$ and $\set:=\{j \mid \exists i, j=\pi(i)\}$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{Uniform Selection $k$-out-of-$n$ OT protocol $\Pi^{\E u}$ in the $\OOT^{\E}$ hybrid. $\Pi([n])$ is the set of permutations over $[n]$.}
+	\caption{Uniform Selection $k$-out-of-$n$ OT protocol $\Pi^{\send u}$ in the $\OOT^{\send}$ hybrid. $\Pi([n])$ is the set of permutations over $[n]$.}
 	\label{fig:uniformSelect}
 \end{figure}
 
 
 \begin{lemma}
-	$\Pi^{\E u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Endemic Message OT $\OOT^{\E u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\E}$ hybrid.
+	$\Pi^{\E u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Endemic Message OT $\OOT^{\send u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\send}$ hybrid.
 \end{lemma}
 
 
-\begin{proof}
-	\textcolor{red}{TODO}.
+\begin{proof}[sketch]
+	Consider a corrupt \send. Due to $\set'$ being uniformly distributed, so is $\set=\pi(\set')$ since $\pi$ is one to one. Consider a corrupt \rec. The simulator receives $\set'$ from \rec and the $\set,(s_i)_{i\in\set}$ from $\OOT^{\send u}$. The simulator uniformly samples $\pi$ s.t. $\{s_i\}_{i\in\set} =\{s_{\pi(i)}\}_{i\in\set'}$ and completes the protocol.
 \end{proof}
 
 \begin{remark}
-	\textcolor{red}{Make some statement about how the sample transformation applies to the other OT message security notions.}
+	The same transformation applies to $\OOT^\U,\OOT^\E, \OOT^\rec$ except \send does not input anything to $\OOT^*$.
 \end{remark}
  
 
