@@ -15,6 +15,12 @@
 
 \input{header.tex}
  
+ %proof symbol
+ \iffullversion    
+	\newcommand{\pe}{}
+\else
+	\newcommand{\pe}{\ensuremath{\qed}\xspace}
+\fi
 
 \title{Endemic Oblivious Transfer}
 \author{Daniel Masny \and Peter Rindal}
@@ -36,12 +42,12 @@
 
 
 \bibliographystyle{alpha}
-\bibliography{bib,cryptobib/abbrev0,cryptobib/crypto}
+\bibliography{bib,cryptobib/abbrev3,cryptobib/crypto}
 
 \appendix
 \input{allbutoneOT.tex}
 
-\input{otExtAppendix.txt}
+%\input{otExtAppendix.txt}
 
 
 \end{document}
