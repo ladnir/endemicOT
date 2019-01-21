@@ -1,0 +1,23 @@
+\begin{proof}\label{proof:ext_U_U}
+	\begin{claim}[Malicious Sender Security]\label{claim:ext-U-U-MalSender}
+		$\Pi^{\textsf{ext-U}}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+	\begin{proof}
+		The simulation follows essentially the same strategy as \lemmaref{lem:ext_R_S}.
+		The differences to the hybrids are as follows.
+		\begin{enumerate}[leftmargin=1.8cm]
+			\item[Hybrid 1.] $\Adv'$ extracts $k$ from the commitment. Then $\Adv'$ samples $T_0,T_1$ and the selections $\bb$ uniformly at random and simulates the base OTs using them.
+			
+			\item[Hybrid 4.] $\Adv'$ no longer sends the messages specified by $\send$ to $\OOT^\U$. Instead, when $\Adv$ makes a query to $\pi_k(h)$, $\Adv'$ checks if $h=y_{i,x}=\tt_i +\bb\odot( \cc_i + \mathcal{C}(map(x)))$ for some pair $(i,x)$. If so, then $(i,x)$ are unique as described by \lemmaref{lem:ext_R_S}. $\Adv'$ queries the $i$-th instance of $\OOT^\U$ with $(\textsc{Output}, x)$ and receives $\vv_{i,x}$ in response. $\Adv'$ programs $\pi_k(y_{i,x})=\vv_{i,x}+y_{i,x}$. The probability of the input/output being previously queries is negligible due to $\Adv$ extracting $k$ before $\tt_i$ was sampled and $\vv_{i,x}$ being uniformly distributed.
+			
+			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec. \rec only interacts with $\OOT^\U$. This change is identically distributed since $\Adv'$ was not using the input of \rec.
+		\end{enumerate}
+	\end{proof}
+	\begin{claim}[Malicious Receiver $\OOT^\U$-Security]\label{claim:ext-U-U-MalReceiver}
+		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+	\begin{proof}
+		Follows directly from \lemmaref{lem:ext_R_S} claim 2 and the hiding property of the commitment. 
+	\end{proof}
+	
+\end{proof}

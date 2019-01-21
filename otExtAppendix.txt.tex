@@ -1,10 +1,25 @@
 
+\section{OT Extension Appendix}\label{sec:extApp}
 
 
+\iffullversion
+\else
+\subsection{Proof of \lemmaref{lem:malRec}}
+\input{proofs/attack_BadT0.tex}
 
-\begin{lemma}\label{lem:KOS-ci-erasure} (informal)
-	If the consistency proof of \cite{C:KelOrsSch15} passes (Figure 7, Check correlation), then all codewords $\cc_i$ erasure decode to $\ww_i$ where the erasures are indexed by $\{j \mid b_j=1\}$. Note: \cite{C:KelOrsSch15} defines $\cc_i$ as $\mathbf{x}_i$ and $\ww_i$ as $x_i$.
-\end{lemma}
-\begin{proof}
-	See full version of this paper or \cite{C:KelOrsSch15}.
-\end{proof}
+
+\subsection{Proof of \lemmaref{lem:malRec2}}
+\input{proofs/attack_Selection.tex}
+
+
+\subsection{Proof of \lemmaref{lem:malSend}}
+\input{proofs/attack_AllOnes.tex}
+
+
+\subsection{Proof of \lemmaref{lem:ext_R_S}}
+\input{proofs/ext_R_S.tex}
+
+
+\subsection{Proof of \lemmaref{def:ext_R_U}}
+\input{proofs/ext_U_U.tex}
+\fi
