@@ -1,4 +1,7 @@
 \section{Instantiations}\label{sec:inst}
+In the following, we first show how to efficiently instantiate the construction in \figureref{fig:oneroundKAtoOT} using the Diffie-Hellman key exchange. In particular, we show how a tighter security reduction can be obtained using the random selfreducibility of the DDH assumption.
+
+Afterwards, we show how to instantiate the construction in \figureref{fig:KAtoOT} based on the lattice based Kyber key agreement. 
 \newcommand{\Z}{\ensuremath{\mathbb Z}\xspace}
 
 \subsection{Instantiation from DDH}
@@ -27,6 +30,7 @@ Let DDH be secure over \G except advantage $\epsilon$, then $n$ multi-instance D
 
 \begin{proof}
 This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as the distribution over $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, where for all $j\leq i$, $c_j=a_jb$ and for $j>i$, $c_j\leftarrow\Z_p$. If $\D$ distinguishes hybrid $\hyb_i$ from $\hyb_{i+1}$, it breaks the DDH assumption over \G.
+\pe
 \end{proof}
 
 
@@ -73,7 +77,8 @@ of $\O_{\key}$ is also distributed correctly. In case that $\vec{c}$ is uniform,
 $$
 \Pr\lb T\text{ invertible}\rb= \frac{1}{p^{n^2}}\prod_{i=0}^{n-1}(p^n-p^i)\geq\left(1-\frac{1}{p}\right)^n\geq 1-\negl.
 $$ 
-Therefore, except with negligible probability, $\D$ has the same advantage in breaking $n$ multi-instance DDH as $\D_{\key}$ has in breaking $(Q,n)$ one-round multi-instance key indistinguishability .
+Therefore, except with negligible probability, $\D$ has the same advantage in breaking $n$ multi-instance DDH as $\D_{\key}$ has in breaking $(Q,n)$ one-round multi-instance key indistinguishability.
+\pe
 \end{proof}
 
 Using Theorem~\ref{thm:KAtoOT}, Lemma~\ref{lem:DHuniform} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
