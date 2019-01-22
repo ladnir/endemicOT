@@ -4,6 +4,6 @@
 \begin{proof}\label{proof:Attack_BadT0}
 	For simplicity let $N=2$ and $m=1$. We define $\Adv$ as follows. $\Adv$ plays the role of \rec and replaces the input to base OTs, the sender input, with strings $\tt_0^j,\tt_1^j\in \{0\}^{m'}$ and then completes the protocol as normal.
 	
-	We define $\D$ as follows. $\D$ executes \send and \Adv with input $x_1=1$. \send outputs $(\vv_{1,1},\vv_{1,2})$ and $\D$ outputs 1 if $\vv_{1,1}=\H(1, \{0\}^\nc)$ and 0 otherwise. In the real interaction it clearly holds that $\Pr[D((\send, \Adv)_{\Pi^{\textsf{OOS}}})=1]=1$. In the ideal interaction the honest \send will output a uniformly distributed $\vv_{1,1}\in\{0,1\}^\kappa$ which was sampled by $\OOT^{\U}$ and therefore $\Pr[D((\OOT^{\U}, \Adv'))=1]=2^{-\kappa}$.
+	We define $\D$ as follows. $\D$ executes \send and \Adv with input $x_1=1$. \send outputs $(\vv_{1,1},\vv_{1,2})$ and $\D$ outputs 1 if $\vv_{1,1}=\H(1, \{0\}^\nc)$ and 0 otherwise. In the real interaction it clearly holds that $\Pr[\D((\send, \Adv)_{\Pi^{\textsf{OOS}}})=1]=1$. In the ideal interaction the honest \send will output a uniformly distributed $\vv_{1,1}\in\{0,1\}^\kappa$ which was sampled by $\OOT^{\U}$ and therefore $\Pr[\D((\OOT^{\U}, \Adv'))=1]=2^{-\kappa}$.
 	\pe
 \end{proof}

@@ -207,7 +207,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:EtoU}
-	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the Uniform Ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ hybrid.
+	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the Uniform Ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ (\definitionref{def:coin}) hybrid.
 \end{lemma}
 \iffullversion
 \begin{proof}
@@ -288,7 +288,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:OTtoC}
-	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol with unconditional security  in the $\O^{\U}$ hybrid  (\definitionref{def:ot}).
+	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol (\definitionref{def:coin}) with unconditional security  in the $\O^{\U}$ hybrid  (\definitionref{def:ot}).
 \end{lemma}
 \begin{proof}
 	Follows straigthforwardly from the definition of $\OOT^{\U}$ and the ideal coin tossing functionality $\F^{\coin}$, which outputs a random string to both parties.
