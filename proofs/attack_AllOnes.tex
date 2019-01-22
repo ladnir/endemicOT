@@ -1,7 +1,8 @@
 \begin{proof} \label{proof:Attack_AllOnes}
 	For simplicity let $N=2$ and $m=\kappa$. We define $\Adv$ as follows. $\Adv$ plays the role of \send and replaces the input to $\OOT^\send$, the receiver input, with the string $\bb:=\{0\}^\nc$. \Adv outputs the matrix $Q$.
 	
-	We define $D$ as follows. $D$ samples the selection bits $x_1,...,x_m\gets[2]$ and sends them to \rec. $D$ executes $\Adv$ who outputs $Q$ and \rec outputs $\vv_{1,x_1},...,\vv_{m,x_m}$. If $\vv_{i,x_i}=\H(i,\qq_i)$ for all $i\in[m]$, output 1, otherwise 0. In the real interaction it clearly holds that $\Pr[D((\Adv, \rec)_{\langle\Adv,\rec\rangle})=1]=1$ since $\qq_i=\tt_i$.
+	We define $\D$ as follows. $\D$ samples the selection bits $x_1,...,x_m\gets[2]$ and sends them to \rec. $\D$ executes $\Adv$ who outputs $Q$ and \rec outputs $\vv_{1,x_1},...,\vv_{m,x_m}$. If $\vv_{i,x_i}=\H(i,\qq_i)$ for all $i\in[m]$, output 1, otherwise 0. In the real interaction it clearly holds that $\Pr[\D((\Adv, \rec)_{\Pi^{\textsf{OOS+}}})=1]=1$ since $\qq_i=\tt_i$.
 	
-	By definition the input of $\Adv'$ is independent of $x_i$ and receives no output from $\OOT^\E$ (apart from their input $(\vv_{0,i},\vv_{1,i})_{i\in [m]}$). Therefore, it must hold that $\Pr[D((\Adv', \rec)_{\langle\Adv',\O^{\E}_{\textsf{OT,\send}}\rangle})=1]=2^{\kappa}$.
+	By definition the input of $\Adv'$ is independent of $x_i$ and receives no output from $\OOT^\E$ (apart from their input $(\vv_{0,i},\vv_{1,i})_{i\in [m]}$). Therefore, it must hold that $\Pr[\D((\Adv', \OOT^\rec))=1]=2^{\kappa}$.
+	\pe
 \end{proof}

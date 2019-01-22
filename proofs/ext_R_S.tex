@@ -1,7 +1,7 @@
 
 \begin{proof}\label{proof:ext_R_S}
 		\begin{claim}[Malicious Sender Security]\label{claim:ext-R-S-MalSender}
-		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\send$ oracle.
+		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\send$ functionality.
 	\end{claim}
 	\begin{proof}
 		%The simulation follows the same strategy as \lemmaref{lem:ext-E} except now $\Adv$ is allowed to sample $k$ and influence the messages being output by the parties. In particular, after \Adv sends $k$ to $\Adv'$, $\Adv'$ defines the circuits $\mathcal{M}_i(x)=\pi_k(y)+y$ where $y:=\tt_i + \bb \odot (\cc_i + \mathcal{C}(map(x)))$ and sends it to $\OOT^\send$ and the input of \send.
@@ -20,9 +20,10 @@
 			
 			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec. \rec only interacts with $\OOT^\E$. This change is identically distributed since $\Adv'$ was not using the input of \rec.
 		\end{enumerate}
+		\pe
 	\end{proof}
 	\begin{claim}[Malicious Receiver $\OOT^\U$-Security]\label{claim:ext-R-S-MalReceiver}
-		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ functionality.
 	\end{claim}
 	\begin{proof}
 		The simulation also follows a similar strategy as \lemmaref{lem:ext-E}. Consider the following hybrids which will define the simulator $\Adv'$. 
@@ -73,19 +74,22 @@
 			
 			$\Adv'$ programs $\pi_k(y_{i,x})=\vv_{i,x}+y_{i,x}$. Programming $\pi_k$ requires the input/output pair $(y_{i,x},\vv_{i,x}+y_{i,x})$ to have not previously been queried on $\pi_k,\pi_k^{-1}$.  It is easy to verify that with overwhelming probability $\pi_k^{-1}(\vv_{i,x}+y_{i,x})$ has not been queries since $\vv_{i,x}$ is uniformly distributed. 
 			
-			In the other direction, $y_{i,x}$  could have been queries in two ways. 1) $D$ or \Adv guessed it which is negligible as discussed in \hybridref{hybrid:simOutputR}. 2) $D$ inverted $\vv_{i',x'}:=\H(y_{i',x'})=\pi_k(y_{i',x'})+y_{i',x'}$ and then recovered $\bb$. However, $v=\pi_k(y)+y$ is preimage resistant\cite{C:BlaRogShr02,SP:Winternitz} which informally follows from the difficulty of finding an input to the random permutation $\pi_k$ which differs from $v$ by itself.
+			In the other direction, $y_{i,x}$  could have been queries in two ways. 1) $\D$ or \Adv guessed it which is negligible as discussed in \hybridref{hybrid:simOutputR}. 2) $\D$ inverted $\vv_{i',x'}:=\H(y_{i',x'})=\pi_k(y_{i',x'})+y_{i',x'}$ and then recovered $\bb$. However, $v=\pi_k(y)+y$ is preimage resistant\cite{C:BlaRogShr02,SP:Winternitz} which informally follows from the difficulty of finding an input to the random permutation $\pi_k$ which differs from $v$ by itself.
 			%However, we also must show that $y_{i,x}:=h=\tt_i + \bb (\cc_i + \mathcal{C}(map(x)))$ has not been queried by $\Adv$ or $D$. The view of $D$ contains $\tt_i$ and polynomial many outputs $\vv_{i,x}=\pi_k(y_{i,x}) + y_{i,x}$. 
 			%The distribution of $\pi$ after being programmed is identical since the input or output has not previously been queried. In particular, later a distinguisher may be given access to $\pi_k$ and $\pi_k^{-1}$ and many $\vv_{i,x}$ values. However, it remains hard to find a preimage $h$ of $\vv_{i,x}=\pi_k(h)+h$ due to $h$ masking the permutation output\cite{daviesMeyers}.
 			
 			\item[Hybrid 6.] $\Adv'$ does not take the input of \send and does not program $\pi$ in \hybridref{hybrid:simOutput2R}. \send only interacts with $\OOT^\send$. This change is identically distributed.
 		\end{enumerate} 
+		\pe
 	\end{proof}
 
 
 	\begin{claim}[Malicious Receiver $\OOT^\send$-Security]\label{claim:ext-R-S-MalReceiver2}
-		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\send$ oracle.
+		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\send$ functionality.
 	\end{claim}
 	\begin{proof}
 		Follows from \lemmaref{lemma:is_a} and the previous claim.
+		\pe
 	\end{proof}
+	\pe
 \end{proof}
