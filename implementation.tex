@@ -1,46 +1,54 @@
 \section{Implementation}
 
-We implement and benchmark several variants of our OT protocols. 
+We implement and benchmark several variants of our protocols. This includes two OT protocols based on DDH and one based on LWE along with five implementations of our OT extension protocols. We then compare these two several other implementation including the Chou \& Claudio \cite{LC:ChoOrl15} and Naor \& Pinkas \cite{SODA:NaoPin01} OT protocols and the chosen string variant of Keller, Orsini \& Scholl\cite{C:KelOrsSch15}.  All protocols are in the random oracle model.
 
+All protocols are implemented in the libOTe framework\cite{libOTe} which uses the elliptic curve implementation of Relic Took-kit\cite{relic} and the assembly based curve25519 of \cite{LC:ChoOrl15,simplest}. For the OT protocol based on Kyber we adapt the \cite{kyber} key exchange implementation. For our protocol we instantiate the Random Oracle using Blake2 or the hashing to curve implementation of \cite{relic} and the Ideal Cipher using AES.
 
+We perform experiments on a multi-core Intel Xeon processor at 2.7GHz and 256GB of RAM. Each party is given a single thread to execute on. The parties communicate over a network loopback device. We consider two settings, LAN where the parties have a 10Gbp connection and sub millisecond latency and a WAN setting where an artificial latency of 50 ms and throughput of 100Mbps is imposed on the loopback device. We consider computation security parameter $\kappa=128$ and statistical security of $\lambda=40$.  Some of the OT protocols take advantage of code written in assembly which can significantly outperform the other c++ implantations.
 
-
-
-\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
-\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
-\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
-\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
 
 \begin{figure*}[t!]\centering
-	\begin{tabular}{|c||c|c || r | r|  r | r |r |r|r |r|}
+	\begin{tabular}{|c||c|c|c || r | r|  r | r |r |r|r |r|}
 		\hline
-		\multirow{3}{*}{Protocol} & \multirow{3}{*}{Security}           & \multirow{3}{*}{Rounds} &                             \multicolumn{8}{c|}{$m$}                              \\
-		                          &                                     &                         & 1      & 32     & 128     & 512       & 1        & 32       &      128 & 512      \\ \cline{4-11}
-		                          &                                     &                         &       \multicolumn{4}{c|}{LAN}       &         \multicolumn{4}{c|}{WAN}          \\ \hline\hline
-		   \cite{LC:ChoOrl15}     & GapDH, RO$\rightarrow$ ``Random OT" & 2                       & 5      & 70     & 230     & 662       & 106      & 200      &      365 & 785      \\ \hline
-		  \cite{SODA:NaoPin01}    & DDH, RO $\rightarrow\OOT^\send$     & 3                       & 5      & 67     & 203     & 573       & 155      & 185      &      304 & 593      \\ \hline
-		          This            & DDH, RO $\rightarrow\OOT^\E$        & 1                       & 3      & 46     & 148     & 480       & {\bf 54} & 135      &      240 & 570      \\ \hline
-		          This            & LWE, RO $\rightarrow\OOT^\send$ or $\OOT^{\send u}$    & 2                       & {\bf1} & {\bf6} & {\bf24} & {\bf 105} & 101      & {\bf115} & {\bf154} & {\bf481} \\ \hline
+		     \multirow{3}{*}{Protocol}       &              \multirow{3}{*}{Security}              & \multirow{3}{*}{Rounds} & \multirow{3}{*}{ASM} &                              \multicolumn{8}{c|}{$m$}                              \\
+		                                     &                                                     &                         &                      & 1      & 32     & 128     & 512      & 1        & 32       &       128 & 512       \\ \cline{5-12}
+		                                     &                                                     &                         &                      &       \multicolumn{4}{c|}{LAN}       &          \multicolumn{4}{c|}{WAN}           \\ \hline\hline
+		\multirow{2}{*}{ \cite{LC:ChoOrl15}} & \multirow{2}{*}{GapDH, RO$\rightarrow$ ``Rand. OT"} & \multirow{2}{*}{   2 }  &          No          & 5      & 70     & 230     & 662      & 106      & 179      &       301 & 581       \\ \cline{4-12}
+		                                     &                                                     &                         &         Yes          & 2      & {\bf6} & {\bf16} & {\bf 58} & 104      & 115      &       220 & {272}     \\ \hline
+		        \cite{SODA:NaoPin01}         &           DDH, RO $\rightarrow\OOT^\send$           &            3            &          No          & 5      & 67     & 203     & 573      & 155      & 185      &       304 & 593       \\ \hline
+		       \multirow{3}{*}{ This}        &   \multirow{2}{*}{  DDH, RO $\rightarrow\OOT^\E$}   &   \multirow{2}{*}{ 1}   &          No          & 3      & 46     & 148     & 480      & {54}     & 135      &       240 & 550       \\ \cline{4-12}
+		                                     &                                                     &                         &       Some        & {\bf1} & 11     & 42      & 125      & {\bf 53} & {\bf 75} & {\bf 130} & {\bf 245} \\ \cline{2-12}
+		                                     & LWE, RO $\rightarrow\OOT^\send$ or $\OOT^{\send u}$ &            2            &         Yes          & {\bf1} & {\bf6} & {24}    & { 105}   & 101      & {108}    &     {154} & 481       \\ \hline
 	\end{tabular}
-	\caption{ \label{fig:baseTimes}}	
+	\caption{ \label{fig:baseTimes}Running times in milliseconds of our protocols and \cite{LC:ChoOrl15,SODA:NaoPin01}. ASM=Yes indicates the the implementation is written in assembly. }	
 \end{figure*}
 
 
 
+We begin with the performance results for our OT protocols based on DDH and LWE. These are detailed in \figureref{fig:baseTimes}. Interestingly, our two protocols are each more efficient than the other depending on the network setting. The Kyber based protocol protocol is most efficient in the LAN setting. This is due to the highly efficient operations which essentially comprise of linear algebra. However, the public keys and encryptions that are send in the Kyber based protocol are 40 times large than the DDH based OT. For example, a single OT using Kyber requires a total of 5,934 bytes while the DDH protocol requires 145 bytes. In the LAN setting this added communication has little impact. To perform 128 OT the Kyber implementation requires 24 milliseconds while our DDH based approach takes 42 milliseconds (when using an assembly based implementation). We note that rarely would you perform a different number of OTs than 128 which are used as a seed for OT extension.
+
+In the WAN setting the decreased round complexity and communication of the DDH approach allows it to achieve the smallest runnings times. To perform 128 OTs the DDH protocol requires 130 milliseconds while the Kyber protocol requires 154 milliseconds. However, this increased performance comes at the expense of only achieving $\OOT^\E$-security. 
+
+We also compare against the protocol of \cite{LC:ChoOrl15} and \cite{SODA:NaoPin01}. In the LAN setting the fast protocol is that of  \cite{LC:ChoOrl15} which requires each party to performance an amortized three exponentiation per OT while our DDH protocol requires 4. Both require five in the worst case. However, \cite{LC:ChoOrl15} the approach suffers from a technical issue in the proof where the input of the receiver can not be extracted at the appropriate time. As a result, to compose this protocol with OT extension requires additional rounds of communication which we do no, e.g. see \cite[Appendix A]{SP:DKLS18}. Regardless, in the WAN setting with 128 OT our protocols achieve the best performance of 130ms (DDH) and 154ms (Kyber) compared to 220ms by  \cite{LC:ChoOrl15}. To achieve simulation bases security, at least one more round of communication is requires which would bring their time to at least 270ms, a $2\times$ difference. In addition, our DDH based protocol only performs exponentiation in assembly while \cite{LC:ChoOrl15} is purely implemented in assembly which allows greater performance. To perform a single OT, our DDH protocol requires 145 bytes of communication, our Kyber protocol requires 5,934 bytes, \cite{LC:ChoOrl15} requires  the least with 112 bytes and \cite{SODA:NaoPin01} requires 165 bytes.
+
+
 \begin{figure*}[t!]\centering
-	\begin{tabular}{|c||c|c|c || r | r|  r |r |r|r |r|r|}
+	\begin{tabular}{|l||c|c|c || r | r|  r |r |r|r |r|r|}
 		\hline
-		\multirow{3}{*}{Protocol} &         \multirow{3}{*}{Security}          & \multirow{3}{*}{Total} & \multirow{3}{*}{$n$} &                                     \multicolumn{8}{c|}{$m$}                                     \\
-		                          &                                            &                         &                      & $2^{12}$ & $2^{16}$ & $2^{20}$ & $2^{24}$  & $2^{12}$  &  $2^{16}$ & $2^{20}$    &      $2^{24}$ \\ \cline{5-12}
-		                          &                                            &          Rounds         &                      &          \multicolumn{4}{c|}{LAN}          &              \multicolumn{4}{c|}{WAN}               \\ \hline\hline
-		                          &  $\OOT^{\send u},$RO $\rightarrow\OOT^\U$  &            4            &       $2^{76}$       & 20       & 151      & 1,612    & 24,060    & 345       &       833 & 7003        &       103,481 \\ \hline
-		 $\Pi^{\textsf{ext-S}u}$  & $\OOT^{\send u},$RO $\rightarrow\OOT^\rec$ &         {\bf 2}         &          2           & 14       & 76       & 610      & 8,224     & 406       &       700 & 6,488       &        32,315 \\ \hline
-		$\Pi^{\textsf{ext-S}u+}$  &  $\OOT^{\send u},$RO $\rightarrow\OOT^\U$  &            4            &          2           & 18       & 70       & 547      & 7,429     & 407       &       708 & 2,666       &        32,856 \\ \hline
-		 $\Pi^{\textsf{ext-S}u}$  &  $\OOT^{\U u},$IC $\rightarrow\OOT^\rec$   &         {\bf 2}         &          2           & 14       & 22       & 174      & 1,158     & {\bf 300} & {\bf 530} & {\bf 2,097} & {\bf  25,701} \\ \hline
-		 $\Pi^{\textsf{ext-U}u}$   &   $\OOT^{\U u},$IC $\rightarrow\OOT^\U$    &           4            &          2           & {\bf6}   & {\bf24}  & {\bf101} & {\bf 720} & {395}     &    { 645} & {2,128}     &      {26,256} \\ \hline
+		\multirow{3}{*}{Protocol}  &         \multirow{3}{*}{Security}          & \multirow{3}{*}{Total} & \multirow{3}{*}{$n$} &                                     \multicolumn{8}{c|}{$m$}                                     \\
+		                           &                                            &                        &                      & $2^{12}$ & $2^{16}$ & $2^{20}$ & $2^{24}$  & $2^{12}$  &  $2^{16}$ & $2^{20}$    &      $2^{24}$ \\ \cline{5-12}
+		                           &                                            &         Rounds         &                      &          \multicolumn{4}{c|}{LAN}          &              \multicolumn{4}{c|}{WAN}               \\ \hline\hline
+		$\Pi^{\textsf{ext-S}u+}$   &  $\OOT^{\send u},$RO $\rightarrow\OOT^\U$  &           4            &       $2^{76}$       & 20       & 151      & 1,612    & 24,060    & 345       &       833 & 7,003       &       103,481 \\ \hline\hline
+		\cite{C:KelOrsSch15}       & $\OOT^{\send},$RO $\rightarrow\OOT^\send$  &           5            &          2           & 28       & 84       & 640      & 8,361     & 865       &      1769 & 7,504       &        85,077 \\ \hline
+		$\Pi^{\textsf{ext-S}u}$    & $\OOT^{\send u},$RO $\rightarrow\OOT^\rec$ &        {\bf 2}         &          2           & 14       & 76       & 610      & 8,224     & 406       &       700 & 2,488       &        32,315 \\ \hline
+		$\Pi^{\textsf{ext-S}u+}$   &  $\OOT^{\send u},$RO $\rightarrow\OOT^\U$  &           4            &          2           & 18       & 70       & 547      & 7,429     & 407       &       708 & 2,666       &        32,856 \\ \hline\hline
+		$\Pi^{\textsf{ext-S}u\pi}$ &  $\OOT^{\U u},$IC $\rightarrow\OOT^\rec$   &           3            &          2           & 14       & 22       & 174      & 1,158     & {\bf 300} & {\bf 530} & {\bf 2,097} & {\bf  25,701} \\ \hline
+		$\Pi^{\textsf{ext-U}u\pi}$ &   $\OOT^{\U u},$IC $\rightarrow\OOT^\U$    &           5            &          2           & {\bf6}   & {\bf24}  & {\bf101} & {\bf 720} & {395}     &    { 645} & {2,128}     &      {26,256} \\ \hline
 	\end{tabular}
 	\caption{ \label{fig:extTimes}}	
 \end{figure*}
 
 
+
+We now turn our attention to the  OT extension performance result as shown in \figureref{fig:extTimes}. We compare our protocols to the fastest secure implementation \cite{C:KelOrsSch15,libOTe}. In particular, we update the \cite{libOTe} implementation of \cite{C:KelOrsSch15} to allow the sender to specify the output messages and include the index $i$ in the call to the random oracle $\H$, as specified by \cite{C:KelOrsSch15}. We implement five variants of our proposals where the output strings are sampled by the protocol (or possibly a malicious party). The 1-out-of-2 $\Pi^{\send u},\Pi^{\textsf{ext-\send}u\pi}$ protocol in both the random oracle and ideal cipher model which require 2 or 3 rounds of communication and achieves $\OOT^\rec$-security. To reduce the rounds we apply the Fiat-Shamir transformation to the sigma protocol of \cite{C:KelOrsSch15} for \stepref{step:consistency}. We also implement the $\Pi^{\send u+}$ and $\Pi^{\U u\pi}$ which both achieve $\OOT^\U$-security
 

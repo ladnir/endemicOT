@@ -3,7 +3,7 @@
 
 \subsection{Instantiation from DDH}
 
-In this subsection we use a group \G of prime order $p$ and $g$ is a generator or \G. For simplicity, we use the bracket notation $\lb a\rb$ to denote $g^a$, inparticular $\lb 1\rb:=g$. For vector $\vec{a}=(a_1,\ldots,a_n)$, we use $\lb \vec{a}\rb$ to denote $(\lb a_1\rb,\ldots,\lb a_n\rb)$. We use the same notation, i.e. $\lb A\rb$, also for a matrix $A$.
+In this subsection we use a group \G of prime order $p$ and $g$ is a generator or \G. For simplicity, we use the bracket notation $\lb a\rb$ to denote $g^a$, in particular $\lb 1\rb:=g$. For vector $\vec{a}=(a_1,\ldots,a_n)$, we use $\lb \vec{a}\rb$ to denote $(\lb a_1\rb,\ldots,\lb a_n\rb)$. We use the same notation, i.e. $\lb A\rb$, also for a matrix $A$.
 
 \begin{definition}[Decisional Diffie-Hellman (DDH) Assumption]
 For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
@@ -29,27 +29,7 @@ Let DDH be secure over \G except advantage $\epsilon$, then $n$ multi-instance D
 This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as the distribution over $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, where for all $j\leq i$, $c_j=a_jb$ and for $j>i$, $c_j\leftarrow\Z_p$. If $\D$ distinguishes hybrid $\hyb_i$ from $\hyb_{i+1}$, it breaks the DDH assumption over \G.
 \end{proof}
 
-
-\begin{figure}[h!]
-\centering
-\framebox{
-\begin{minipage}{0.85\linewidth}
-\centering
-\begin{tikzpicture}
-\node [anchor=west] at (2,5) {\A:};
-\node [anchor=west] at (7,5) {\B:};
-\node [anchor=west] at (2,4.5){$a\leftarrow\Z_p$};
-\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_{\A}:=\lb  a\rb$}(6.75,4.5);
-\node [anchor=west] at (7,4.5){$b\leftarrow\Z_p$};
-\draw [thick, <-] (3.75,4.35)-- node [midway,below]{$\mes_{\B}:=\lb  b\rb$}(6.75,4.35);
-\node [anchor=west] at (2,4) {$\key_\A=\mes_{\B}^a$};
-\node [anchor=west] at (7,4) {$\key_\B=\mes_{\A}^b$};
-\end{tikzpicture}
-\end{minipage}
-}
-\label{fig:DH}
-\caption{The figure shows the Diffie-Hellman key exchange. Correctness follows from $\key_\A=\lb  ab\rb=\key_{\B}$.}
-\end{figure}
+\input{figures/DH.tex}
 
 \begin{lemma}\label{lem:DDH}
 Let $Q$ and $n$ be polynomial in $\sec$.

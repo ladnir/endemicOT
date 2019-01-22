@@ -1,0 +1,19 @@
+\begin{figure}[h!]
+\centering
+\framebox{
+\begin{minipage}{0.85\linewidth}
+\centering
+\begin{tikzpicture}
+\node [anchor=west] at (2,5) {\A:};
+\node [anchor=west] at (7,5) {\B:};
+\node [anchor=west] at (2,4.5){$a\leftarrow\Z_p$};
+\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_{\A}:=\lb  a\rb$}(6.75,4.5);
+\node [anchor=west] at (7,4.5){$b\leftarrow\Z_p$};
+\draw [thick, <-] (3.75,4.35)-- node [midway,below]{$\mes_{\B}:=\lb  b\rb$}(6.75,4.35);
+\node [anchor=west] at (2,4) {$\key_\A=\mes_{\B}^a$};
+\node [anchor=west] at (7,4) {$\key_\B=\mes_{\A}^b$};
+\end{tikzpicture}
+\end{minipage}
+}
+\caption{\label{fig:DH}The figure shows the Diffie-Hellman key exchange. Correctness follows from $\key_\A=\lb  ab\rb=\key_{\B}$.}
+\end{figure}

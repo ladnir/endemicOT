@@ -46,7 +46,7 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 
 
 
-\paragraph{Transformations.} 
+
 
 
 \begin{figure}[t]
@@ -62,12 +62,12 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (0,3.5){$\quad r_i:=s_i\oplus m_i$};
 
 \draw [thick, ->] (3.25,3)-- node [midway,above]{$(r_i)_{i\in[n]}$}(7.25,3);
-\node [anchor=west] at (7.5,3){$\forall i\in\set:$};
-\node [anchor=west] at (7.5,2.5){$\quad s_i:=r_i\oplus m_i$};
+\node [anchor=west] at (7.5,3.5){$\forall i\in\set:$};
+\node [anchor=west] at (7.5,3){$\quad s_i:=r_i\oplus m_i$};
 \draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(7.25,3.85);
 \draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
-\node [anchor=west] at (0,2) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (7.5,2) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (0,2.5) {output $(s_i)_{i\in[n]}$};
+\node [anchor=west] at (7.5,2.5) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -117,8 +117,8 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (7.5,5) {Receiver$(\set\subset[n],(s_i)_{i\in\set})$:};
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\E$};
-\node [anchor=west] at (0,3){$\forall i\in[n]:$};
-\node [anchor=west] at (0,2.5){$\quad s_i:=r_i\oplus m_i$};
+\node [anchor=west] at (0,3.5){$\forall i\in[n]:$};
+\node [anchor=west] at (0,3){$\quad s_i:=r_i\oplus m_i$};
 
 \draw [thick, <-] (3.25,3)-- node [midway,above]{$(r_i)_{i\in[n]}$}(7.25,3);
 \node [anchor=west] at (7.5,4.5){$\forall i\in[n]\setminus\set:$};
@@ -127,8 +127,8 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \node [anchor=west] at (7.5,3){$\quad r_i:=s_i\oplus m_i$};
 \draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(7.25,3.85);
 \draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
-\node [anchor=west] at (0,2) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (7.5,2) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (0,2.5) {output $(s_i)_{i\in[n]}$};
+\node [anchor=west] at (7.5,2.5) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -186,13 +186,13 @@ The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again,
 \draw [thick, ->] (5.75,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(7.25,2.35);
 \draw [thick, <-] (3.25,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(4.75,2.35);
 
-\node [anchor=west] at (0,2.5){$\forall i\in[n]:$};
-\node [anchor=west] at (0,2){$\quad s_i:=r_i\oplus m_i$};
-\node [anchor=west] at (7.5,2.5){$\forall i\in\set:$};
-\node [anchor=west] at (7.5,2){$\quad s_i:=r_i\oplus m_i$};
+\node [anchor=west] at (0,2.8){$\forall i\in[n]:$};
+\node [anchor=west] at (0,2.3){$\quad s_i:=r_i\oplus m_i$};
+\node [anchor=west] at (7.5,2.8){$\forall i\in\set:$};
+\node [anchor=west] at (7.5,2.3){$\quad s_i:=r_i\oplus m_i$};
 
-\node [anchor=west] at (0,1.5) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (7.5,1.5) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (0,1.8) {output $(s_i)_{i\in[n]}$};
+\node [anchor=west] at (7.5,1.8) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}

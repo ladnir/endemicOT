@@ -9,11 +9,11 @@
 \section{OT Extension} \label{sec:otext}
 
 
-In this section we explore the rich implications Endemic OT has on efficient 1-out-of-$N$ OT extension along with presenting three new attacks and fixes of existing OT extension protocols\cite{C:KelOrsSch15, RSA:OrrOrsSch17} with Uniform Message security\footnote{\cite{C:KelOrsSch15, RSA:OrrOrsSch17} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$}. These protocols are derived from the seminal black-box protocol of Ishia, Kilian, Nissim and Petrank\cite{C:IKNP03}. We note that in all cases the Sender Chosen Message variant of these protocols\cite{C:IKNP03, C:KelOrsSch15, RSA:OrrOrsSch17} are secure. %In particular, these Sender Chosen Message protocol perform the following transformations $\OOT^\send\overset{\pi_1}{\rightarrow} \OOT^\E \overset{\pi_2}{\rightarrow} \OOT^\send$. However, as we will explore later, \figureref{fig:OTExtrelations} suggestions that a more efficient transformation exists where $\pi_1$ takes $\OOT^\E$ as input, e.g. a two round extension protocol satisfying $\OOT^\rec$.
+In this section we explore the rich implications Endemic OT has on efficient 1-out-of-$N$ OT extension along with presenting three new attacks and fixes of existing OT extension protocols\cite{C:KelOrsSch15,RSA:OrrOrsSch17} with Uniform Message security\footnote{\cite{C:KelOrsSch15,RSA:OrrOrsSch17} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$}. These protocols are derived from the seminal black-box protocol of Ishia, Kilian, Nissim and Petrank\cite{C:IKNP03}. We note that in all cases the Sender Chosen Message variant of these protocols\cite{C:IKNP03,C:KelOrsSch15,RSA:OrrOrsSch17} are secure. %In particular, these Sender Chosen Message protocol perform the following transformations $\OOT^\send\overset{\pi_1}{\rightarrow} \OOT^\E \overset{\pi_2}{\rightarrow} \OOT^\send$. However, as we will explore later, \figureref{fig:OTExtrelations} suggestions that a more efficient transformation exists where $\pi_1$ takes $\OOT^\E$ as input, e.g. a two round extension protocol satisfying $\OOT^\rec$.
 
 
 
-The functionality of 1-out-of-$N$ OT extension allows $\nc\approx\kappa$ instances of 1-out-of-2 OTs to be transformed into $m=\textsf{poly}(\kappa)$ instances of 1-out-of-$N$ OTs. There are several advantages of this transformation 1) $m$ can be polynomial times larger than $\nc$. 2) Only symmetric key cryptography is required which provides a larger performance improvement. 3) In some cases $N$ can be exponential in the security parameter $\kappa$. The 1-out-of-2 OTs that are being transformed are referred to as \emph{Base OTs}. Existing protocols\cite{C:IKNP03,EC:ALSZ15, C:KelOrsSch15, RSA:OrrOrsSch17} have called for the use of base OTs with the Sender Tweakable Message Security notion, e.g. $\OOT^\send$. However, this requirement can be relaxed to allow the base OTs to only achieve Endemic security. As shown by \figureref{fig:OTExtrelations}, in both cases ($\OOT^\send$ or $\OOT^\E$ base OTs) the OT extension protocol outputs messages that satisfy the Endemic security notion.  Tradition OT extension protocols, e.g. \cite{C:IKNP03,EC:ALSZ15, C:KelOrsSch15}, then apply the $\Pi^{\send}_{1,N}$ transform from \figureref{fig:protoSendOT} to realize the Sender Chosen Message functionality $\OOT^\send$. This observation suggests that more efficient OT extension can be realized by replacing Sender Chosen Message base OTs with Endemic OTs, e.g. our protocol.
+The functionality of 1-out-of-$N$ OT extension allows $\nc\approx\kappa$ instances of 1-out-of-2 OTs to be transformed into $m=\textsf{poly}(\kappa)$ instances of 1-out-of-$N$ OTs. There are several advantages of this transformation 1) $m$ can be polynomial times larger than $\nc$. 2) Only symmetric key cryptography is required which provides a larger performance improvement. 3) In some cases $N$ can be exponential in the security parameter $\kappa$. The 1-out-of-2 OTs that are being transformed are referred to as \emph{Base OTs}. Existing protocols\cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15,RSA:OrrOrsSch17} have called for the use of base OTs with the Sender Tweakable Message Security notion, e.g. $\OOT^\send$. However, this requirement can be relaxed to allow the base OTs to only achieve Endemic security. As shown by \figureref{fig:OTExtrelations}, in both cases ($\OOT^\send$ or $\OOT^\E$ base OTs) the OT extension protocol outputs messages that satisfy the Endemic security notion.  Tradition OT extension protocols, e.g. \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15}, then apply the $\Pi^{\send}_{1,N}$ transform from \figureref{fig:protoSendOT} to realize the Sender Chosen Message functionality $\OOT^\send$. This observation suggests that more efficient OT extension can be realized by replacing Sender Chosen Message base OTs with Endemic OTs, e.g. our protocol.
 
 In addition, the authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} suggest that the $\Pi^{\send}_{1,N}$ transform that was originally specified by \cite{C:IKNP03} can be removed and resulting protocol would satisfy the Uniform Message security notion. However, as previously stated, we show this not to be the case and that the protocol only achieve Endemic security. We note that many protocols that utilize Uniform Message security can likely tolerate the weaker notion of Endemic security, e.g. \cite{EC:RinRos17,CCS:RinRos17}.  However, other protocols such as the set inclusion protocol of \cite[Figure 5]{RSA:OrrOrsSch17} are insecure\footnote{The sender set all the OT messages to be the same value and force the receiver to conclude their item is in the sender's set.} when Uniform Message security is not satisfied. 
 
@@ -283,7 +283,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 	The $\Pi^{\textsf{ext-E}}$ protocol (\definitionref{def:ext_E_E}) is a 1-out-of-$N$ Oblivious Transfer ($\OOT^\E$) satisfying Endemic Message and Receiver Selection Security.
 \end{lemma}
 \begin{proof}
-	Correctness of the protocol was demonstrated by \cite{RSA:OrrOrsSch17}. The rest of the proof is essentially the same as \cite{RSA:OrrOrsSch17} except that the simulator extracts the messages from the malicious party.
+	Correctness of the protocol was demonstrated by \cite{RSA:OrrOrsSch17}.% The rest of the proof is essentially the same as \cite{RSA:OrrOrsSch17} except that the simulator extracts the messages from the malicious party.
 	\begin{claim}[Malicious Sender Security]\label{claim:ext-E-MalSender}
 		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\E$ oracle.
 	\end{claim}
@@ -298,9 +298,9 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 			
 			Note, $\Adv$ can influence $\mathcal{M}_i(j)=\H(i, \qq_i+\bb\odot \mathcal{C}(map(j)))=H(i, (c_i + \mathcal{C}(map(j)) \odot \bb + \tt_i)$ by choosing $\bb$ and the bits $\{\tt_i[j] \mid \bb_j=0\}$.
 			
-			\item[Hybrid 4.] For \stepref{step:consistency} $\Adv'$ simulates the consistency proof. This change is indistinguishable. 
+			\item[Hybrid 4.] For \stepref{step:consistency} $\Adv'$ simulates the consistency proof.
 			
-			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec. \rec only interacts with $\OOT^\E$. This change is identically distributed since $\Adv'$ was not using the input of \rec.
+			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec since it was not used. \rec only interacts with $\OOT^\E$. This change is identically distributed.
 		\end{enumerate}
 	\end{proof}
 
@@ -439,9 +439,9 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 
 
 \subsection{OT Extension with an Ideal Cipher}
-We now discuss how to efficiently implement OT extension by restricting the input domain of the random oracle $\H$ to be $\{0,1\}^\nc$. In particular, we are interested in the 1-out-of-2 OT case where $\nc=\kappa=128$. The core motivation for OT extension in this setting is the pervasive support for hardware based implementations of AES\cite{aes-ni,aes-neon}, which we will then use as an ideal cipher to hash the output messages. In this model we design two new protocols that satisfy $\OOT^\send$ and $\OOT^\U$-security respectively and achieve better concrete performance than the protocols analyzed in the \sectionref{sec:extSec}. These previous protocols have required a random oracle with input domain $[m]\times \mathbb{F}^\nc_2$ which we reduce to $\mathbb{F}^\nc_2$ while maintaining security. 
+We now discuss how to efficiently implement OT extension by restricting the input domain of the random oracle $\H$ to be $\{0,1\}^\nc$. In particular, we are interested in the 1-out-of-2 OT case where $\nc=\kappa=128$. The core motivation for OT extension in this setting is the pervasive support for hardware based implementations of AES, which we will then use as an ideal cipher to hash the output messages. In this model we design two new protocols that satisfy $\OOT^\send$ and $\OOT^\U$-security respectively and achieve better concrete performance than the protocols analyzed in the \sectionref{sec:extSec}. These previous protocols have required a random oracle with input domain $[m]\times \mathbb{F}^\nc_2$ which we reduce to $\mathbb{F}^\nc_2$ while maintaining security. 
 
-Interestingly, existing implementations\cite{libOTe,encrypto,KOS,EMP} have either instantiated $H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The authors of \cite{EMP} independently identified the same implementation issue concurrently to us. \cite{EMP} securely implement $\H(i,x)$. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_2,c_2\in\mathbb{Z}_1$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security. For example, let $c_1=c_2=1$, then \rec can choose $T_0$ such that $\tt_i+i=\tt_{i'}+i'$. It then holds that all the output messages of the receiver will be the same value.  That is, for all $i,i'\in[m],x\in[N]$, it holds that $\vv_{i,x}=\vv_{i',x}$. 
+Interestingly, existing implementations\cite{libOTe,encrypto,KOS,EMP} have either instantiated $\H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The authors of \cite{EMP} independently identified the same implementation issue concurrently to us. \cite{EMP} securely implement $\H(i,x)$. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_2,c_2\in\mathbb{Z}_1$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security. For example, let $c_1=c_2=1$, then \rec can choose $T_0$ such that $\tt_i+i=\tt_{i'}+i'$. It then holds that all the output messages of the receiver will be the same value.  That is, for all $i,i'\in[m],x\in[N]$, it holds that $\vv_{i,x}=\vv_{i',x}$. 
 
 %The motivation for deviating from protocol specification of $\H(i,x)$ is for the case of 1-out-of-2 OT where $x\in\{0,1\}^{\kappa}$ where $\kappa=128$. In this case it can be temping to use AES with a fixed key to implement $\H$ since hardware based AES is roughly 45 times faster than optimized hashing implementations\cite{blake2} in our experiments. 
 
@@ -449,10 +449,10 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 
 %We begin with the $\Pi^{\textsf{ext-R}}$ protocol defined in \definitionref{def:ext_R_S}.
 \begin{definition}\label{def:ext_R_S}
-	Let $\Pi^{\textsf{ext-R}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+	Let $\Pi^{\textsf{ext-R}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
 \end{definition}
 \begin{lemma}\label{lem:ext_R_S}
-	The $\Pi^{\textsf{ext-R}}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security and, against a malicious \rec, $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
+	The $\Pi^{\textsf{ext-R}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security, for $N=\textsf{poly}(\kappa)$. Against a malicious \rec,  $\Pi^{\textsf{ext-R}\pi}$ realizes $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
 \end{lemma}
 \iffullversion
 \input{proofs/ext_R_S.tex}
@@ -463,16 +463,16 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 \fi
 
 \begin{definition}\label{def:ext_U_U}
-	Let $\Pi^{\textsf{ext-U}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
+	Let $\Pi^{\textsf{ext-U}u\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
 	\begin{enumerate}
-		\item In the first round, \send samples $k\gets\{0,1\}^{\kappa}$ and sends a commitment of $k$ to \rec.
+		\item In round one, \send samples $k\gets\{0,1\}^{\kappa}$ and sends a commitment of $k$ to \rec.
 		\item After \stepref{step:consistency}, \send decommits $k$ to \rec who aborts if it fails.
 		\item Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
 	\end{enumerate}
 \end{definition}
 
 \begin{lemma}\label{lem:ext_U_U}
-	The $\Pi^{\textsf{ext-U}}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security.
+	The $\Pi^{\textsf{ext-U}u\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security, for $N=\textsf{poly}(\kappa)$.
 \end{lemma}
 \iffullversion
 \input{proofs/ext_U_U.tex}
