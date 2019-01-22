@@ -1,0 +1,49 @@
+\section{Additional Definitions and Lemmas}
+
+
+
+\begin{figure}[t]
+\centering
+\framebox{
+\begin{tikzpicture}
+\node [anchor=west] at (0,5) {Sender:};
+\node [anchor=west] at (7.5,5) {Receiver:};
+\draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
+\node at (5.25,4.125){$\OOT^\send$};
+\node [anchor=west] at (7.5,4.5){$\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$};
+\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set'$}(7.25,4.5);
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(s_{\pi(i)})_{i\in \set'}$}(7.25,3.85);
+\node [anchor=west] at (0,4.5) {$\pi\leftarrow\Pi([n])$};
+\draw [thick, ->] (3.25,3)-- node [midway, above]{$\pi$} (7.25,3);
+\draw [thick, ->] (3.25,4.5)-- node [midway,above]{$(s_{\pi(i)})_{i\in [n]}$}(4.75,4.5);
+\node [anchor=west] at (0,2.5) {output $(s_{i})_{i\in[n]}$};
+\node [anchor=west] at (7.5,3) {$\set:=\{j \mid \exists i, j=\pi(i)\}$};
+\node [anchor=west] at (7.5,2.5) {output $\set, (s_i)_{i\in\set}$};
+\end{tikzpicture}
+}
+% 	\framebox{\begin{minipage}{0.95\linewidth}
+% 			Input: The sender \send and receiver \rec have no input.
+% 			\begin{enumerate}
+% 				\item \label{step:uniformSelect_step1} \rec uniformly samples $\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$. \rec sends $\set'$ to $\OOT^{\E}$ and receives $(s_i')_{i\in \set'}$ in response. \send receives $(s_i')_{i\in [n]}$. 
+% 				\item \label{step:uniformSelect_step2} \send samples a random permutation $\pi : [n] \rightarrow [n]$ and sends it to \rec.
+% 				\item \label{step:uniformSelect_step3} \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(\set, (s_i)_{i\in\set})$ where $s_i:=s_{\pi(i)}'$ and $\set:=\{j \mid \exists i, j=\pi(i)\}$.
+% 			\end{enumerate}
+% 	\end{minipage}}
+	\caption{Uniform Selection $k$-out-of-$n$ OT protocol $\Pi^{\send u}$ in the $\OOT^{\send}$ hybrid. $\Pi([n])$ is the set of permutations over $[n]$.}
+	\label{fig:uniformSelect}
+\end{figure}
+
+
+\begin{lemma}
+	$\Pi^{\E u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Endemic Message OT $\OOT^{\send u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\send}$ hybrid.
+\end{lemma}
+
+\begin{remark}
+	The same transformation applies to $\OOT^\U,\OOT^\E, \OOT^\rec$ except \send does not input anything to $\OOT^*$.
+\end{remark}
+ 
+
+\begin{proof}[sketch]
+	Consider a corrupt \send. Due to $\set'$ being uniformly distributed, so is $\set=\pi(\set')$ since $\pi$ is one to one. Consider a corrupt \rec. The simulator receives $\set'$ from \rec and the $\set,(s_i)_{i\in\set}$ from $\OOT^{\send u}$. The simulator uniformly samples $\pi$ s.t. $\{s_i\}_{i\in\set} =\{s_{\pi(i)}\}_{i\in\set'}$ and completes the protocol.
+	\pe
+\end{proof}

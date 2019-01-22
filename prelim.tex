@@ -91,6 +91,7 @@ Let \UKA be uniform except probability $\epsilon$, then it is $Q$ multi-instance
 \end{lemma}
 \begin{proof}
 This follows straightforwardly from using a simple hybrid argument. Hybrid $\hyb_{i}$ samples $\mes_{\A,j}$ for $j\leq i$ from $\O_u$ and for $j>i$ from $\O_{\A}$. If there is an adversary that distinguishes $\hyb_i$ from $\hyb_{i+1}$ for any $i$, then we can break the uniformity of \UKA by distinguishing $\mes_{\A,i+1}$ from uniform.  
+\pe
 \end{proof}
 
 \begin{lemma}\label{lem:keytomultkey}
@@ -99,6 +100,7 @@ Let \UKA be key indistinguishable except probability $\epsilon$, then it is $(Q,
 
 \begin{proof}
 Again, we use a hybrid argument over hybrids $\hyb_i$. In $\hyb_i$, $(\mes_{\A,j},\mes_{\B,j}),\key_j$ is sampled from $\O_{\langle \A,\B\rangle}\times\O_u$ for $j\leq i$ and from $\O_{\langle \A,\B\rangle}\times\O_\key$ for $j>i$. If one distinguishes $\hyb_i$ from $\hyb_{i+1}$ for some $i$, one breaks the key indistinguishability. 
+\pe
 \end{proof}
 
 \begin{lemma}\label{lem:oneroundkeytomultkey}
@@ -107,6 +109,7 @@ Let a one-round \UKA be key indistinguishable except probability $\epsilon$, the
 
 \begin{proof}
 This lemma follows for the same reason as \lemmaref{lem:keytomultkey}.
+\pe
 \end{proof}
 
 \subsection{Oblivious Transfer}

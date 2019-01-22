@@ -1,5 +1,6 @@
 \section{From Key Agreement to Oblivious Transfer}\label{sec:endemicOT}
 
+In \figureref{fig:KAtoOT}, we present the generic construction from any two round key agreement to a two round OT. More efficient is the construction presented in \figureref{fig:oneroundKAtoOT} that transforms a one round key agreement into a one round OT. In \theoremref{thm:KAtoOT}, we show that both constructions yield an endemically secure OT.
 
 
 
@@ -114,6 +115,7 @@ $$
 &=& \epsilon_{\OT} +(1-\delta)(\Pr[ \D((\Adv,s_{\B,i})_{\D_{\UKA}^{\O_{u}}})=1]-\Pr[ \D((\Adv,s_{\A,i})_{\D_{\UKA}^{\O_{u}}})=1\mid s_{\A,i}\neq s_{\B,i}])\\
 &\geq &\epsilon_{\OT}-(1-\delta).
 \end{eqnarray*}
+\pe
 \end{proof}
 
 We finish the proof of the theorem by showing that the \OT protocol is secure against a malicious receiver.
@@ -179,6 +181,7 @@ For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the
 &\leq &Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
 \end{eqnarray*}
 where $\set_{\A,i^*}:=(s_{1},\dots, s_{i^*-1},s_{\A,i^*},s_{i^*+1},\dots, s_{n})$.
+\pe
 \end{proof}
-
+\pe
 \end{proof}
