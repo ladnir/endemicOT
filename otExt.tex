@@ -84,9 +84,9 @@ where $\tt_i,\qq_i$ is the $i$-th row of $T_0,Q$, respectively, and $\bb:=(b_1,.
 	\qq_i + \mathcal{C}(\ww)\odot \bb =&  (\mathcal{C}(\ww_i)\odot \bb + \tt_i) + \mathcal{C}(\ww)\odot \bb\\
 	=& (\mathcal{C}(\ww_i) + \mathcal{C}(\ww)) \odot \bb +\tt_i.
 \end{align*}
-Let $\delta = \mathcal{C}(\ww_i) + \mathcal{C}(\ww)$. In the event that $\ww_i=\ww$, then $\delta=0$ and \send computes the same $\vv_{i,\ww_i}$ value as \rec. Otherwise the hamming distance $\textsf{HD}(\delta)\geq \dc\geq \kappa$ by construction of $\mathcal{C}$. For $\rec$ to generate any other OT message $\vv_{i,\ww}$ s.t. $\ww\neq \ww_i$, \rec must guess the value $\delta\odot \bb\in \mathbb{F}^\nc_2$ given $\delta$, which takes time $2^{\textsf{HD}(\delta)}=O(2^\kappa)$.
+Let $\delta = \mathcal{C}(\ww_i) + \mathcal{C}(\ww)$. In the event that $\ww_i=\ww$, then $\delta=0$ and \send computes the same $\vv_{i,\ww_i}$ value as \rec. Otherwise the hamming distance $\textsf{HD}(\delta)\geq \dc\geq \kappa$ by construction of $\mathcal{C}$. For $\rec$ to generate any other OT message $\vv_{i,\ww}$ s.t. $\ww\neq \ww_i$, \rec must guess the value $\delta\odot \bb\in \mathbb{F}^\nc_2$ given $\delta$, which can be done with probability $2^{-\textsf{HD}(\delta)}=O(2^{-\kappa})$.
 
-To realize the ideal Sender Chosen Message oracle $\OOT^\send$ \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15,RSA:OrrOrsSch17} specify two additional steps:
+We specify two additional steps to realize the ideal Sender Chosen Message functionality $\OOT^\send$ \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15,RSA:OrrOrsSch17}:
 \begin{enumerate}
 
 	\item A proof that all rows in $C$ can be decoded. Ishai et al. \cite{C:IKNP03} proposed a cut-and-choose approach while the more recent schemes \cite{C:KelOrsSch15,RSA:OrrOrsSch17} improve on the efficiency of these proofs by making \rec send random linear combinations of $\tt_i,\ww_i$ and having \send check they are consistent with same combination of $U$. We defer the details behind these proofs to \cite{C:KelOrsSch15,RSA:OrrOrsSch17}.
