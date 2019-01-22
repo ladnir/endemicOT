@@ -204,17 +204,18 @@ The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol description
 
 
 \begin{lemma} \label{lem:malRec}
-	There exists a ppt adversary $\Adv$ and distinguisher $D$ s.t. $\forall\Adv'$ 
+	There exists a ppt adversary $\Adv$ and distinguisher $\D$ s.t. $\forall\Adv'$ 
 	$$
-	|\Pr[D((\send, \Adv)_{\langle\send, \Adv\rangle})=1]-\Pr[D((\O^{\U}_{\textsf{OT,\send}}, \Adv')_{\langle\OOT^\U, \Adv'\rangle})=1]|=1-2^{-\kappa}
+	|\Pr[\D((\send, \Adv)_{\Pi^{\textsf{OOS}}})=1]-\Pr[\D((\OOT^{\U}, \Adv'))=1]|=1-2^{-\kappa}
 	$$
-	where $\langle\send, \Adv\rangle$ is the $\Pi^{\textsf{OOS}}$ protocol (\definitionref{def:OOS}), $\O^{\U}_{\textsf{OT,\send}}$ is the \send's side output within the view of $\OOT^{\U}$ and all algorithms additionally receive input $1^\kappa$. 
+	where $\Pi^{\textsf{OOS}}$ is the protocol in \definitionref{def:OOS} and all algorithms additionally receive input $1^\kappa$. 
 \end{lemma}
 \iffullversion
 \input{proofs/attack_BadT0.tex}
 \else
 \begin{proof}
 	See \appendixref{proof:Attack_BadT0}
+	\pe
 \end{proof}
 \fi
 
@@ -232,37 +233,37 @@ We now to our attention to a second class of adversary that can distinguish even
 The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can choose their selection \emph{after} seeing what their output message is. This allows \rec to correlate their selection with their message and there by distinguish. For example, let $v=\H(i,\tt_i)\mod N$ and then \rec makes their selection be $x_i=v$. This can not happen when interacting with $\OOT^\U$.
 
 \begin{lemma} \label{lem:malRec2}
-	There exists a ppt adversary $\Adv$ and distinguisher $D$ s.t.  $\forall\Adv'$ 
+	There exists a ppt adversary $\Adv$ and distinguisher $\D$ s.t.  $\forall\Adv'$ 
 	$$
-	|\Pr[D((\send, \Adv)_{\langle\send, \Adv\rangle})=1]-\Pr[D((\O^{\U}_{\textsf{OT,\send}}, \Adv')_{\langle\OOT^\U, \Adv'\rangle})=1]|=1-2^{-\kappa}
+	|\Pr[\D((\send, \Adv)_{\Pi^{\textsf{OOS+}}})=1]-\Pr[\D((\OOT^{\U}, \Adv'))=1]|=1-2^{-\kappa}
 	$$
-	where $\langle\send, \Adv\rangle$ is the $\Pi^{\textsf{OOS+}}$ protocol (\definitionref{def:OOS2}), $\O^{\U}_{\textsf{OT,\send}}$ is the \send's side output within the view of $\OOT^{\U}$ and all algorithms additionally receive input $1^\kappa$. 
+	where $\Pi^{\textsf{OOS+}}$ is the protocol in \definitionref{def:OOS2} and all algorithms additionally receive input $1^\kappa$. 
 \end{lemma}
 \iffullversion
 \input{proofs/attack_Selection.tex}
 \else
 \begin{proof}
-	See \appendixref{proof:Attack_Selection}
+	See \appendixref{proof:Attack_Selection} \pe
 \end{proof}
 \fi
 
 
 
 
-\lemmaref{lem:malSend} details another attack which performs an extension of size $m=\kappa$ and can distinguish the ideal oracle $\OOT^\U$ and $\Pi^{\textsf{OOS+}}$ with probability $1-2^m$. The core idea is that the malicious \send sets the base OT selection values to be $\mathbf{b}:=(1,...,1)\in [2]^\nc$. As such $\send$ learns the matrix $T_0$ in full. Recall that the output of \rec is defined to be the hash of the rows of $T_0$. Therefore \send can output the same message $\H(i, \tt_i)=\vv_{i,\ww_i}$ as \rec. For Sender Tweakable or Endemic security a viable simulation strategy is to extract $H(i, \tt_i)$ and define $\vv_{i,j}:=\H(i, \tt_i)$ for all $j$. However, there is no valid strategy for the Receiver Tweakable or Uniform Message security where the oracle samples some of the messages uniformly at random.
+\lemmaref{lem:malSend} details another attack which performs an extension of size $m=\kappa$ and can distinguish the ideal oracle $\OOT^\U$ and $\Pi^{\textsf{OOS+}}$ with probability $1-2^m$. The core idea is that the malicious \send sets the base OT selection values to be $\mathbf{b}:=(1,...,1)\in [2]^\nc$. As such $\send$ learns the matrix $T_0$ in full. Recall that the output of \rec is defined to be the hash of the rows of $T_0$. Therefore \send can output the same message $\H(i, \tt_i)=\vv_{i,\ww_i}$ as \rec. For Sender Chosen Message or Endemic security a viable simulation strategy is to extract $H(i, \tt_i)$ and define $\vv_{i,j}:=\H(i, \tt_i)$ for all $j$. However, there is no valid strategy for the Receiver Chosen or Uniform Message security where the oracle samples some of the messages uniformly at random.
 
 \begin{lemma} \label{lem:malSend}
-	There exists a ppt adversary $\Adv$ and distinguisher $D$ s.t. $\forall\Adv'$ 
+	There exists a ppt adversary $\Adv$ and distinguisher $\D$ s.t. $\forall\Adv'$ 
 	$$
-		|\Pr[D((\Adv, \rec)_{\langle\Adv,\rec\rangle})=1]-\Pr[D((\Adv', \O^{\E}_{\textsf{OT,\rec}})_{\langle\Adv',\O^{\U}_{\textsf{OT}}\rangle})=1]|=1-\negl
+		|\Pr[\D((\Adv, \rec)_{\Pi^{\textsf{OOS+}}})=1]-\Pr[\D((\Adv', \OOT^{\E}))=1]|=1-\negl
 	$$
-	where $\langle\Adv,\rec\rangle$ is the $\Pi^{\textsf{OOS+}}$ protocol (\definitionref{def:OOS2}), $\O^{\E}_{\textsf{OT,\rec}}$ is the \rec's side output within the view of $\OOT^{\E}$ and all algorithms additionally receive input $1^\kappa$. 
+	where $\Pi^{\textsf{OOS+}}$ is the protocol in \definitionref{def:OOS2} and all algorithms additionally receive input $1^\kappa$. 
 \end{lemma}
 \iffullversion
 \input{proofs/attack_AllOnes.tex}
 \else
 \begin{proof}
-	See \appendixref{proof:Attack_AllOnes}
+	See \appendixref{proof:Attack_AllOnes} \pe
 \end{proof}
 \fi
 
@@ -285,7 +286,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 \begin{proof}
 	Correctness of the protocol was demonstrated by \cite{RSA:OrrOrsSch17}.% The rest of the proof is essentially the same as \cite{RSA:OrrOrsSch17} except that the simulator extracts the messages from the malicious party.
 	\begin{claim}[Malicious Sender Security]\label{claim:ext-E-MalSender}
-		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\E$ oracle.
+		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
 	\end{claim}
 	\begin{proof}
 		Consider the following hybrids which will define the simulator $\Adv'$. 
@@ -294,7 +295,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 			
 			\item[Hybrid 2.] For \stepref{step:extSendU} $\Adv'$ does not sample $\tt^j_{1-\bb_j}$ and instead uniformly samples $U\gets\mathbb{F}^{m'\times \nc}_2$. $\Adv'$ sends $U$ to \Adv and then computes $Q$ as \send would. The view of $\Adv$ is identically distributed. This follows from the fact that $\tt^j_{1-\bb_j}$ is uniformly distributed in the view of \Adv and masks the $j$-th column of $U$ in the previous hybrid. 
 			
-			\item[Hybrid 3.]\label{hybrid:malSendExtract} For each row $\qq_i$, $\Adv'$ defines the circuit $\mathcal{M}_i:[N]\rightarrow\{0,1\}^\kappa$ such that on input $j\in[N]$ it outputs $\H(i, \qq_i+\bb\odot \mathcal{C}(map(j)))$. $\Adv'$ sends $\mathcal{M}_i$ to the ideal oracle $\OOT^\E$ as the sender's input to the $i$-th OT instance. This change allows the ideal oracle to output the same distribution as the real protocol. The view of $\Adv$ is unmodified.
+			\item[Hybrid 3.]\label{hybrid:malSendExtract} For each row $\qq_i$, $\Adv'$ defines the circuit $\mathcal{M}_i:[N]\rightarrow\{0,1\}^\kappa$ such that on input $j\in[N]$ it outputs $\H(i, \qq_i+\bb\odot \mathcal{C}(map(j)))$. $\Adv'$ sends $\mathcal{M}_i$ to the ideal functionality $\OOT^\E$ as the sender's input to the $i$-th OT instance. This change allows the ideal functionality to output the same distribution as the real protocol. The view of $\Adv$ is unmodified.
 			
 			Note, $\Adv$ can influence $\mathcal{M}_i(j)=\H(i, \qq_i+\bb\odot \mathcal{C}(map(j)))=H(i, (c_i + \mathcal{C}(map(j)) \odot \bb + \tt_i)$ by choosing $\bb$ and the bits $\{\tt_i[j] \mid \bb_j=0\}$.
 			
@@ -302,15 +303,16 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 			
 			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec since it was not used. \rec only interacts with $\OOT^\E$. This change is identically distributed.
 		\end{enumerate}
+		\pe
 	\end{proof}
 
 	\begin{claim}[Malicious Receiver Security]\label{claim:ext-E-MalReceiver}
-	$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\E$ oracle.
+	$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
 	\end{claim}
 	\begin{proof}
 				Consider the following hybrids which will define the simulator $\Adv'$. 
 		\begin{enumerate}[leftmargin=1.8cm]
-			\item[Hybrid 1.] $\Adv'$ internally runs \Adv while plays the role of $\send$ and base OT oracle $\OOT=\OOT^\E$. $\Adv'$ receives $\{\tt^j_0,\tt^j_1\}_{i\in\nc}$ from \Adv in \stepref{step:extInit}. $\Adv'$ outputs whatever \Adv outputs. The view of $\Adv$ is unmodified.
+			\item[Hybrid 1.] $\Adv'$ internally runs \Adv while plays the role of $\send$ and base OT functionality $\OOT=\OOT^\E$. $\Adv'$ receives $\{\tt^j_0,\tt^j_1\}_{i\in\nc}$ from \Adv in \stepref{step:extInit}. $\Adv'$ outputs whatever \Adv outputs. The view of $\Adv$ is unmodified.
 			
 			\item[Hybrid 2.] In \stepref{step:extSendU} $\Adv'$ receives $U$ from $\Adv$, computes $C:=T_0+T_1$ and uniformly samples $\bb\gets\mathbb{F}^\nc_2$. Let  $B_i:=\{j \mid \bb_j = i\}$. For all $i\in[m]$, $\Adv'$ attempts to erasure decode $\cc_i$ with erasures indexed by $B_0$. If $\cc_i$ failed to decode, then there does not exist a $w\in\mathbb{F}^\kc_2$ s.t. $0=\bb\odot (\cc_i+\mathcal{C}(w))$ and $\Adv'$ aborts in \stepref{step:consistency} as \send would. Otherwise, let $\cc_i$ decode to $\ww_i$ and $\Adv'$ computes $x_i$ s.t. $\ww_i=map(x_i)$
 			
@@ -343,7 +345,9 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 			
 			\item[Hybrid 5.] $\Adv'$ does not take the input of \send and does not program $\H$ in \hybridref{hybrid:simOutput}. \send only interacts with $\OOT^\E$. This change is identically distributed.
 		\end{enumerate}
+		\pe
 	\end{proof}
+	\pe
 \end{proof}
 
 \iffullversion
@@ -378,7 +382,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 	
 	
 	\begin{claim}[Malicious Sender Security]\label{claim:ext-Su-MalSender}
-		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\rec$ oracle.
+		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\rec$ functionality.
 	\end{claim}
 	\begin{proof}
 		The general security of this claim also follows from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}. What remains to be shown is that the random oracle can be programmed appropriately so that it is consistent with the ideal oracle. Observe that the honest receiver uniformly chooses $\tt_0^j$ and $\bb\in\{0,1\}^\nc$ is uniformly sampled by the $\OOT^{\send u}$ oracle. Now observe that all of the outputs strings are of the form
@@ -392,8 +396,10 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 		$$
 			\bb \odot \mathcal{C}(map(x)) = \bb \odot \mathcal{C}(map(x'))
 		$$
-		as this would result in $\H(i,\qq_i + \bb \odot \mathcal{C}(map(x)))=\vv_{i,x}=\vv_{i,x'}=\H(i,\qq_i + \bb \odot \mathcal{C}(map(x')))$ and thereby allow \Adv to distinguish. However, this happens with negligible probability as described in claim 2, hybrid 4 of \lemmaref{lem:ext-E} .
+		as this would result in $\H(i,\qq_i + \bb \odot \mathcal{C}(map(x)))=\vv_{i,x}=\vv_{i,x'}=\H(i,\qq_i + \bb \odot \mathcal{C}(map(x')))$ and thereby allow \Adv to distinguish. However, this happens with negligible probability as described in claim 2, hybrid 4 of \lemmaref{lem:ext-E}.
+		\pe
 	\end{proof}
+\pe
 \end{proof}
 
 
@@ -420,6 +426,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 
 	\begin{proof}
 		The simulation follows the same strategy as \lemmaref{lem:ext_Su_R} except now $\Adv$ is allowed to sample $k$ and have the parties output messages of the form $\vv_{i,x}:=\H(i, k + \tt_i + \bb \odot (\cc_i + \mathcal{C}(map(x))))$. The simulator $\Adv'$ samples $\tt_i$ uniformly at random after $\Adv$ is bound to their choice of $k$ and therefore its easy to verify that \Adv has negligible probability of querying $\H$ on such an input before receiving $k$.
+		\pe
 	\end{proof}
 	
 	\begin{claim}[Malicious Receiver Security]\label{claim:ext-Su-U-MalReceiver}
@@ -434,7 +441,9 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 			\item At this point $\Adv'$ has received $U$ in step \stepref{step:extSendU} and $\Adv$ send a valid proof for \stepref{step:consistency} (by assumption or $\Adv'$ would have aborted). $\Adv'$ now uniformly samples $k\gets\mathbb{F}^\nc_2$ and programs the commitment random oracle to decommit to $k$. $\Adv'$ then programs $\H'$ to output the ideal output $\vv_{i,x_i}$ of \rec for the query $\H'(i,k + \tt_i)$. Since $k\in\mathbb{F}^\nc_2$ is uniformly distributed in the view of $\Adv$, it follows that $\Adv$ has probability at most $q 2^{-\nc}\leq q2^{-\kappa}=\negl$ probability of querying the oracle at this point, where $q$ is the number of queries that \Adv has made.
 			\item $\Adv'$ then sends the decommits of $k$ to $\Adv$ and completes the simulation as \lemmaref{lem:ext_Su_R} does.
 		\end{enumerate} 
+		\pe
 	\end{proof}
+	\pe
 \end{proof}
 
 
@@ -459,6 +468,7 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 \else
 \begin{proof}
 	See \appendixref{proof:ext_R_S}.
+	\pe
 \end{proof}
 \fi
 
@@ -479,6 +489,7 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 \else
 \begin{proof}
 See \appendixref{proof:ext_U_U}.
+\pe
 \end{proof}
 \fi
 

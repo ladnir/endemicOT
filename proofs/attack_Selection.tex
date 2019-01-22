@@ -2,5 +2,6 @@
 \begin{proof}\label{proof:Attack_Selection}
 	For simplicity let $N=2$ and $m=\kappa$. We define $\Adv$ as follows. $\Adv$ plays the role of \rec and receives the strings $\tt_0^j,\tt_1^j\in \{0\}^{m'}$ from \OOT. $\Adv$ redefines the selection values $x_1,...,x_m\in[2]$ of \rec such that $x_i:=\textsc{lsb}(\H(i, \tt_i))+1$. That is, $x_i$ equals the least significant bit of $\vv_{i,x_i}=\H(i, \tt_i)$ plus 1. \Adv executes the rest of the protocol as \rec would and outputs $(x_i)_{i\in [m]}$.
 	
-	We define $D$ as follows. $D$ executes \send and \Adv. \send outputs $(\vv_{i,1},\vv_{i,2})_{i\in[m]}$ and $D$ outputs 1 if $\forall i\in[m], \textsc{lsb}(\vv_{i,x_i})+1=x_i$ and 0 otherwise. In the real interaction it clearly holds that $\Pr[D((\send, \Adv)_{\langle\send, \Adv\rangle})=1]=1$. In the ideal interaction the honest \send will output a uniformly distributed $\vv_{i,1},\vv_{i,2}\in\{0,1\}^\kappa$ which are independent of $x_i$ and therefore $\Pr[D((\O^{\U}_{\textsf{OT,\send}}, \Adv')_{\langle\OOT^\U, \Adv'\rangle})=1]=2^{-\kappa}$.
+	We define $\D$ as follows. $\D$ executes \send and \Adv. \send outputs $(\vv_{i,1},\vv_{i,2})_{i\in[m]}$ and $\D$ outputs 1 if $\forall i\in[m], \textsc{lsb}(\vv_{i,x_i})+1=x_i$ and 0 otherwise. In the real interaction it clearly holds that $\Pr[\D((\send, \Adv)_{\Pi^{\textsf{OOS+}}})=1]=1$. In the ideal interaction the honest \send will output a uniformly distributed $\vv_{i,1},\vv_{i,2}\in\{0,1\}^\kappa$ which are independent of $x_i$ and therefore $\Pr[\D((\OOT^{\U}, \Adv'))=1]=2^{-\kappa}$.
+	\pe
 \end{proof}

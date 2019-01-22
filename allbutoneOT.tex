@@ -40,9 +40,9 @@ Security against a malicious sender follows by the claim below.
 \begin{claim}\label{claim:malsender}
 Given a $\delta$ correct and $\epsilon$ uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
 $$
-|\Pr[\D((\Adv,\rec)_{\langle \Adv, \rec\rangle})=1] -\Pr[\D( (\Adv', \O_{\OT, \rec}^\send)_{\langle \Adv', \OOT^\send\rangle})=1]|\leq \epsilon+(1-\delta),
+|\Pr[\D((\Adv,\rec)_{\Pi})=1] -\Pr[\D( (\Adv', \OOT^\send))=1]|\leq \epsilon+(1-\delta),
 $$
-where $\O_{\OT, \rec}^\send$ is the \rec's side output within the view of $\OOT^\send$ and all algorithms receive input $1^\sec$. \rec additionally receives input \set.
+where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 \end{claim}
 
 
@@ -50,10 +50,10 @@ By a second claim, the protocol is secure against a malicious receiver.
 \begin{claim}\label{claim:malreceiver}
 Given a $\delta$ correct, $\epsilon_u$ $Q$ multi-instance uniform, $\epsilon_k$ $(Q,1)$ multi-instance key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
 $$
-|\Pr[\D((\send, \Adv)_{\langle \send, \Adv\rangle})=1] -\Pr[\D((\O_{\OT,\send}^\rec,\Adv')_{\langle \OOT^\rec , \Adv' \rangle})=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
+|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D((\OOT^\rec,\Adv'))=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
 $$
-where $\O_{\OT,\send}^\rec$ is  the \send's side output within the view of $\OOT^\rec$ and all algorithms receive input $1^\sec$.
+where all algorithms receive input $1^\sec$.
 \end{claim}
-
+\pe
 \end{proof}
 
