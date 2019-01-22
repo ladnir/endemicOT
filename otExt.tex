@@ -9,66 +9,6 @@
 \section{OT Extension} \label{sec:otext}
 
 
-In this section we explore the rich implications Endemic OT has on efficient 1-out-of-$N$ OT extension along with presenting three new attacks and fixes of existing OT extension protocols\cite{C:KelOrsSch15,RSA:OrrOrsSch17} with Uniform Message security\footnote{\cite{C:KelOrsSch15,RSA:OrrOrsSch17} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$}. These protocols are derived from the seminal black-box protocol of Ishia, Kilian, Nissim and Petrank\cite{C:IKNP03}. We note that in all cases the Sender Chosen Message variant of these protocols\cite{C:IKNP03,C:KelOrsSch15,RSA:OrrOrsSch17} are secure. %In particular, these Sender Chosen Message protocol perform the following transformations $\OOT^\send\overset{\pi_1}{\rightarrow} \OOT^\E \overset{\pi_2}{\rightarrow} \OOT^\send$. However, as we will explore later, \figureref{fig:OTExtrelations} suggestions that a more efficient transformation exists where $\pi_1$ takes $\OOT^\E$ as input, e.g. a two round extension protocol satisfying $\OOT^\rec$.
-
-
-
-The functionality of 1-out-of-$N$ OT extension allows $\nc\approx\kappa$ instances of 1-out-of-2 OTs to be transformed into $m=\textsf{poly}(\kappa)$ instances of 1-out-of-$N$ OTs. There are several advantages of this transformation 1) $m$ can be polynomial times larger than $\nc$. 2) Only symmetric key cryptography is required which provides a larger performance improvement. 3) In some cases $N$ can be exponential in the security parameter $\kappa$. The 1-out-of-2 OTs that are being transformed are referred to as \emph{Base OTs}. Existing protocols\cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15,RSA:OrrOrsSch17} have called for the use of base OTs with the Sender Tweakable Message Security notion, e.g. $\OOT^\send$. However, this requirement can be relaxed to allow the base OTs to only achieve Endemic security. As shown by \figureref{fig:OTExtrelations}, in both cases ($\OOT^\send$ or $\OOT^\E$ base OTs) the OT extension protocol outputs messages that satisfy the Endemic security notion.  Tradition OT extension protocols, e.g. \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15}, then apply the $\Pi^{\send}_{1,N}$ transform from \figureref{fig:protoSendOT} to realize the Sender Chosen Message functionality $\OOT^\send$. This observation suggests that more efficient OT extension can be realized by replacing Sender Chosen Message base OTs with Endemic OTs, e.g. our protocol.
-
-In addition, the authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} suggest that the $\Pi^{\send}_{1,N}$ transform that was originally specified by \cite{C:IKNP03} can be removed and resulting protocol would satisfy the Uniform Message security notion. However, as previously stated, we show this not to be the case and that the protocol only achieve Endemic security. We note that many protocols that utilize Uniform Message security can likely tolerate the weaker notion of Endemic security, e.g. \cite{EC:RinRos17,CCS:RinRos17}.  However, other protocols such as the set inclusion protocol of \cite[Figure 5]{RSA:OrrOrsSch17} are insecure\footnote{The sender set all the OT messages to be the same value and force the receiver to conclude their item is in the sender's set.} when Uniform Message security is not satisfied. 
-
-Uniform Message security can be achieved in several ways. One solution is the the black-box transformation $\Pi^\U_{1,N}$ of \figureref{fig:uniformOT} which lifts an OT protocol with Endemic security to satisfy Uniform Message security. However, this would require additional rounds and significant communication. We demonstrate an alternative solution which replaces the base OTs with a protocol that satisfies Uniform Message, Uniform Selection security $\OOT^{\U u}$ and prove that this yields an OT extension protocol with Uniform Message security without the need to modify the extension protocol. More generally, \figureref{fig:OTExtrelations} shows the relation between different base OT security notions and the resulting OT extension message security. For example, the protocols of \cite{C:IKNP03,EC:ALSZ15, C:KelOrsSch15} perform
-$$
-\OOT^\send \xrightarrow{\Pi^{\textsf{ext}}} \OOT^\E \xrightarrow{\Pi^{\send}_{1,2}} \OOT^\send
-$$
-where $\Pi^\textsf{ext}$ is their respective extension protocol up to hashing.
-
-\begin{figure}[h!]
-	\centering
-	\begin{tikzpicture}[scale=0.5]\small
-	\node (pi) at (6,4.5) {\normalsize $\Pi^\textsf{ext}$};
-	\node (Base) at (0,5) {\underline{\normalsize Base OT Security}};
-	\node (U) at (0,4) {Uniform Security $\OOT^{\U u}$};
-	\node (SCu) at (-0.1,3) {Sender Tweakable $\OOT^{\send u}$};
-	\node (SC) at (-0.1,2) {Sender Tweakable $\OOT^{\send}$};
-	\node (RC) at (-0.35,1) {Receiver Tweakable  $\OOT^{\rec}$};
-	\node (E) at (-0.05,0) {Endemic Security  $\OOT^{\E}$};
-	
-	
-	\node (Ext) at (12,5) {\underline{\normalsize OT Extension Security}};
-	\node (EU) at (12,4) {Uniform Security $\OOT^{\U}$};
-	\node (ESC) at (12.13,3) {Sender Tweakable $\OOT^{\send}$};
-	\node (ERC) at (12.38,1) {Receiver Tweakable  $\OOT^{\rec}$};
-	\node (EE) at (12.07,0) {Endemic Security  $\OOT^{\E}$};
-%	\draw [-implies,double equal sign distance] (U) -- (SC);
-%	\draw [-implies,double equal sign distance] (U) -- (RC);
-%	\draw [-implies,double equal sign distance] (SC) -- (E);
-%	\draw [-implies,double equal sign distance] (RC) -- (E);
-	\draw [->, thick, dashed] (U) -- (EU);
-	\draw [->, thick] (E) -- (EE);
-	\draw [->, thick] (SCu.east) -- (ERC.175);
-	\draw [->, thick, dashed] (RC.east) -- (ESC.185);
-	\draw [->, thick] (SC.east) -- (EE.175);
-	
-%	\draw [-, thick] (5,2.5)-- (TC);
-%	\draw [->, thick] (E) .. controls (1,0.75) .. (SC);
-%	\draw [->, thick] (E) .. controls (7,0.75) .. (RC);
-	\end{tikzpicture}
-	\label{fig:OTExtrelations}
-	\caption{
-		The figure depicts the implication different Base OT security notions (\definitionref{def:otSec}) have on the result OT extension protocol.  $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed by $\Pi^\textsf{ext}$ into an OT extension realizing security $B$, where $\Pi^\textsf{ext}$ is the protocol of \figureref{fig:otExt} such that $\OOT$ is the left hand side oracle. The dashed arrows are the same expect $\Pi^{\textsf{ext}}$ must be slightly modified. 
-	}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
 Next we review the OT extension protocol of \cite{RSA:OrrOrsSch17} which we describe in \figureref{fig:otExt}. The base OTs are performed on inputs that are sampled uniformly at random where the roles of the sender and receiver are reversed with respect to the OTs that are output by the extension. That is, \send will receiver $(b_j, \tt^j_{b_j})\in\mathbb{F}_2\times \mathbb{F}_2^m$ while $\rec$ will receive $(\tt^j_0,\tt^j_1)\in\mathbb{F}_2^m\times \mathbb{F}_2^m$ for $j\in[\nc]$.
 
 \rec forms two matrices $T_0,T_1\in \mathbb{F}_2^{m\times \nc}$ by concatenating the base OT messages as column vectors, i.e. $T_i:=(\tt^1_i ... \tt^\nc_i)$. Similarly, \send forms the matrix $T_{\text{\textbf{b}}}:=(\tt^1_{b_1}...\tt^\nc_{b_\nc})$. \rec then encodes their 1-out-of-$N$ selections $\ww_1,...,\ww_m$ into a matrix $C\in \mathbb{F}_2^{m\times \nc}$. Each row $\cc_i$ is the codeword $\mathcal{C}(\ww_i)$ of \rec's $i$-th selection $\ww_i\in [N]$, $\mathcal{C}$ is a binary code of length $\nc$, dimension $\kc=\log_2\kappa$ and minimum distance $\dc\geq\kappa$. \rec sends the matrix
@@ -185,7 +125,7 @@ To realize the ideal Sender Chosen Message oracle $\OOT^\send$ \cite{C:IKNP03,EC
 
 \subsection{OT Extension Attacks}\label{sec:extAttack}
 
-The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol descriptions that are intended to satisfy the Uniform Message security notion, \definitionref{def:otSec}, but we show this to not be the case. For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks on Uniform Message security also apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail two attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
+The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol descriptions that are intended to satisfy the Uniform Message security notion, \definitionref{def:otSec}, but we show this to not be the case. These protocols can be summarized as the previous protocol description there the $\Pi^{\send}_{1,N}$ transformation is not applied.  For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks on Uniform Message security also apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail three attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
 
 
 \begin{definition}\label{def:OOS}
@@ -200,7 +140,7 @@ The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol description
 \fi
 
 
-\lemmaref{lem:malRec} details an attack which allows \R to bias the output $\vv_{i,x_i}$ to be $\H(i,x)$ for any $x\in\mathbb{F}^{\nc}_2$. The distinguisher compares the output of \send with $\vv_{i,x_i}$ and outputs 1 if they are equal. 
+\lemmaref{lem:malRec} details an attack which allows \R to bias the output $\vv_{i,x_i}$ to be $\H(i,x)$ for any $x\in\mathbb{F}^{\nc}_2$. The core idea behind this attack is that \rec has complete control over the matrix $T_0$ since they input it to the base OTs. As such, \rec can choose their output messages to be $\vv_{i,x_i}=\H(i,\tt_i)$ for any $\tt_i$. For example, let $\tt_1=\tt_{i'}$ for all $i'\in[m]$. Then the distinguisher can compare the output of \send and  outputs 1 if $\vv_{i,x_i}=\vv_{i',x_{i'}}$. 
 
 
 \begin{lemma} \label{lem:malRec}
@@ -208,7 +148,7 @@ The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol description
 	$$
 	|\Pr[\D((\send, \Adv)_{\Pi^{\textsf{OOS}}})=1]-\Pr[\D((\OOT^{\U}, \Adv'))=1]|=1-2^{-\kappa}
 	$$
-	where $\Pi^{\textsf{OOS}}$ is the protocol in \definitionref{def:OOS} and all algorithms additionally receive input $1^\kappa$. 
+	where $\Pi^{\textsf{OOS}}$ is the protocol in \definitionref{def:OOS}. All algorithms also receive input $1^\kappa$. 
 \end{lemma}
 \iffullversion
 \input{proofs/attack_BadT0.tex}
@@ -230,7 +170,7 @@ We now to our attention to a second class of adversary that can distinguish even
 \end{definition}
 
 
-The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can choose their selection \emph{after} seeing what their output message is. This allows \rec to correlate their selection with their message and there by distinguish. For example, let $v=\H(i,\tt_i)\mod N$ and then \rec makes their selection be $x_i=v$. This can not happen when interacting with $\OOT^\U$.
+The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can choose their selection \emph{after} seeing what their output message is, i.e. $H(i,\tt_i)$. This allows \rec to correlate their selection $x_i$ with their message $H(i,\tt_i)$ and there by distinguish. For example, let $v=\H(i,\tt_i)\mod N$ and then \rec makes their selection be $x_i=v$. This can not happen when interacting with $\OOT^\U$.
 
 \begin{lemma} \label{lem:malRec2}
 	There exists a ppt adversary $\Adv$ and distinguisher $\D$ s.t.  $\forall\Adv'$ 
@@ -250,7 +190,7 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 
 
 
-\lemmaref{lem:malSend} details another attack which performs an extension of size $m=\kappa$ and can distinguish the ideal oracle $\OOT^\U$ and $\Pi^{\textsf{OOS+}}$ with probability $1-2^m$. The core idea is that the malicious \send sets the base OT selection values to be $\mathbf{b}:=(1,...,1)\in [2]^\nc$. As such $\send$ learns the matrix $T_0$ in full. Recall that the output of \rec is defined to be the hash of the rows of $T_0$. Therefore \send can output the same message $\H(i, \tt_i)=\vv_{i,\ww_i}$ as \rec. For Sender Chosen Message or Endemic security a viable simulation strategy is to extract $H(i, \tt_i)$ and define $\vv_{i,j}:=\H(i, \tt_i)$ for all $j$. However, there is no valid strategy for the Receiver Chosen or Uniform Message security where the oracle samples some of the messages uniformly at random.
+\lemmaref{lem:malSend} details another attack which performs an extension of size $m=\kappa$ and can distinguish the ideal oracle $\OOT^\U$ and $\Pi^{\textsf{OOS+}}$ with probability $1-2^m$. The core idea is that the malicious \send sets the base OT selection values to be $\mathbf{b}:=(1,...,1)\in [2]^\nc$. As such $\send$ learns the matrix $T_0$ in full. Recall that the output of \rec is defined to be the hash of the rows of $T_0$. Therefore \send can output the same message $\H(i, \tt_i)=\vv_{i,\ww_i}$ as \rec. For Sender Chosen Message or Endemic security a viable simulation strategy is to extract $H(i, \tt_i)$ and define $\vv_{i,j}:=\H(i, \tt_i)$ for all $j$. However, there is no valid strategy for the Receiver Chosen or Uniform Message security where the oracle samples some of the messages uniformly.
 
 \begin{lemma} \label{lem:malSend}
 	There exists a ppt adversary $\Adv$ and distinguisher $\D$ s.t. $\forall\Adv'$ 
@@ -272,6 +212,8 @@ The core idea behind this attack against $\Pi^{\textsf{OOS+}}$ is that \rec can 
 
 
 \subsection{OT Extension with a Random Oracle}\label{sec:extSec}
+
+We now give new security proofs (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch15,RSA:OrrOrsSch17} protocols with respect to the $\OOT^\E$ functionality. We then given new 
 
 
 \begin{definition}\label{def:ext_E_E}
