@@ -356,7 +356,7 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 \fi
 
 \begin{definition}\label{def:ext_U_U}
-	Let $\Pi^{\textsf{ext-U}u\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
+	Let $\Pi^{\textsf{ext-U}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
 	\begin{enumerate}
 		\item In round one, \send samples $k\gets\{0,1\}^{\kappa}$ and sends a commitment of $k$ to \rec.
 		\item After \stepref{step:consistency}, \send decommits $k$ to \rec who aborts if it fails.
@@ -365,7 +365,7 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 \end{definition}
 
 \begin{lemma}\label{lem:ext_U_U}
-	The $\Pi^{\textsf{ext-U}u\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security, for $N=\textsf{poly}(\kappa)$.
+	The $\Pi^{\textsf{ext-U}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security, for $N=\textsf{poly}(\kappa)$.
 \end{lemma}
 \iffullversion
 \input{proofs/ext_U_U.tex}
