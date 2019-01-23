@@ -57,64 +57,8 @@ where $u$ is a uniform element from \G and $\mes_\A\leftarrow\A(\tape_\A)$.
 When \A and \B can send their messages concurrently, we call it a $1$-round \UKA otherwise a $2$-round \UKA.
 \end{definition}
 
-\begin{definition}[One-Round Uniform Key Agreement]
-We call a \UKA \emph{One-Round Uniform Key Agreement} if the function $\mes_{\B}\leftarrow\B(\tape_{\B},\mes_\A)$ does not depend on $\mes_A$ and can be computed solely using input $\tape_{\B}$. More precisely, there is a function $\B'$ such that for any $\mes_{\A}$, $\B'(\tape_{\B})=\B(\tape_{\B},\mes_{\A})$, which we will in the following refer to with $\B$ as well. 
-\end{definition}
+In Appendix~\ref{sec:addKA}, we define different security notions when executing multiple instances of a key agreement. All the considered notions follow from the standard notions from above, but potentially with a polynomial security loss. 
 
-\begin{definition}[Multi-Instance Uniformity]
-We call a \UKA $Q$ \emph{multi-instance uniform} if for any ppt distinguisher \D,
-$$
-|\Pr[\D^{\O_{\A}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=\negl,
-$$
-where $\O_{\A}$ outputs $\mes_\A\leftarrow\A(\tape_\A)$ for fresh randomness $\tape_\A$ and $\O_u$ outputs $u\leftarrow\G$ and $Q$ is a bound on the amount of queries to $\O_{u}$, $\O_{\A}$.
-\end{definition}
-
-
-
-\begin{definition}[Multi-Instance Key Indistinguishability]
-We call a \UKA $(Q,n)$ \emph{multi-instance key indistinguishable} if for any ppt distinguisher \D,
-$$
-|\Pr[\D^{\O_{\langle \A,\B\rangle}, \O_{\key}}(1^{\sec})]=1]-Pr[\D^{\O_{\langle \A,\B\rangle},\O_{u}}(1^{\sec})=1]|=\negl,
-$$
-where $\O_{\langle \A,\B\rangle}$ outputs on the $i$-th query a transcript $\T_i:=\langle \A_i,\B_i\rangle$, $\O_{\key}$ outputs on query $j$, key $\key_j=\EK(\tape_{\A,j},\mes_{\B,j})=\EK(\tape_{\B,j},\mes_{\A,j})$ that matches transcript $\T_i$. $\O_u$ outputs a uniform element $u$ from the key domain. $\O_{\langle \A,\B\rangle}$ uses fresh random tapes $\tape_{\A,i},\tape_{\B,i}\leftarrow\bits^*$ for every query. $Q$ is a bound on the amount of queries to $\O_{\langle \A,\B\rangle}$, where $n$ bounds the amount of queries to $\O_{\key}$, $\O_{u}$. 
-\end{definition}
-
-In case of a one-round \UKA, we define a stronger version of the multi-instance key indistinguishability, which we call one-round multi-instance key indistinguishability.
-
-\begin{definition}[One Round Multi-Instance Key Indistinguishability]
-We call a one-round \UKA $(Q,n)$ \emph{one-round multi-instance key indistinguishability} if for any ppt distinguisher \D,
-$$
-|\Pr[\D^{\O_{\A}, \O_{\key}}(1^{\sec},\mes_\B)]=1]-Pr[\D^{\O_{\A},\O_{u}}(1^{\sec},\mes_\B)=1]|=\negl,
-$$
-where $\mes_{\B}\leftarrow\B(\tape_{\B})$ for uniform $\tape_{\B}$. $\O_{\A}$ outputs on the $i$-th query $\mes_{\A,i}\leftarrow \A(\tape_{\A,i})$ for uniform $\tape_{\A,i}$. $\O_{\key}$ outputs on query $j$, key $\key_j=\EK(\tape_{\A,j},\mes_{\B})=\EK(\tape_{\B},\mes_{\A})$. $\O_u$ outputs a uniform element $u$ from the key domain. $Q$ is a bound on the amount of queries to $\O_{\A}$, where $n$ bounds the amount of queries to $\O_{\key}$, $\O_{u}$. 
-\end{definition}
-
- 
-\begin{lemma}\label{lem:multuniform}
-Let \UKA be uniform except probability $\epsilon$, then it is $Q$ multi-instance uniform except at most probability $Q\epsilon$.
-\end{lemma}
-\begin{proof}
-This follows straightforwardly from using a simple hybrid argument. Hybrid $\hyb_{i}$ samples $\mes_{\A,j}$ for $j\leq i$ from $\O_u$ and for $j>i$ from $\O_{\A}$. If there is an adversary that distinguishes $\hyb_i$ from $\hyb_{i+1}$ for any $i$, then we can break the uniformity of \UKA by distinguishing $\mes_{\A,i+1}$ from uniform.  
-\pe
-\end{proof}
-
-\begin{lemma}\label{lem:keytomultkey}
-Let \UKA be key indistinguishable except probability $\epsilon$, then it is $(Q,n)$ multi-instance key indistinguishable except at most probability $Q\epsilon$. 
-\end{lemma}
-
-\begin{proof}
-Again, we use a hybrid argument over hybrids $\hyb_i$. In $\hyb_i$, $(\mes_{\A,j},\mes_{\B,j}),\key_j$ is sampled from $\O_{\langle \A,\B\rangle}\times\O_u$ for $j\leq i$ and from $\O_{\langle \A,\B\rangle}\times\O_\key$ for $j>i$. If one distinguishes $\hyb_i$ from $\hyb_{i+1}$ for some $i$, one breaks the key indistinguishability. 
-\pe
-\end{proof}
-
-\begin{lemma}\label{lem:oneroundkeytomultkey}
-Let a one-round \UKA be key indistinguishable except probability $\epsilon$, then it is $(Q,n)$ one-round multi-instance key indistinguishable except at most probability $Q\epsilon$. 
-\end{lemma}
-
-\begin{proof}
-This lemma follows for the same reason as \lemmaref{lem:keytomultkey}.
-\pe
-\end{proof}
 
 \subsection{Oblivious Transfer}
 

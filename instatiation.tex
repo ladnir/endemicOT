@@ -8,13 +8,7 @@ Afterwards, we show how to instantiate the construction in \figureref{fig:KAtoOT
 
 In this subsection we use a group \G of prime order $p$ and $g$ is a generator or \G. For simplicity, we use the bracket notation $\lb a\rb$ to denote $g^a$, in particular $\lb 1\rb:=g$. For vector $\vec{a}=(a_1,\ldots,a_n)$, we use $\lb \vec{a}\rb$ to denote $(\lb a_1\rb,\ldots,\lb a_n\rb)$. We use the same notation, i.e. $\lb A\rb$, also for a matrix $A$.
 
-\begin{definition}[Decisional Diffie-Hellman (DDH) Assumption]
-For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
-$$
-|\Pr\lb \D(1^\sec,\lb 1\rb,\lb a\rb,\lb b\rb,\lb ab\rb)=1\rb-\Pr\lb D(1^\sec,g,\lb a\rb,\lb b\rb,\lb c\rb)=1\rb|=\negl,
-$$
-where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$.
-\end{definition}
+
 
 \begin{definition}[$n$ Multi-Instance DDH Assumption]
 For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
@@ -24,16 +18,7 @@ $$
 where $\vec{a}\leftarrow\Z_p^n$, $b\leftarrow\Z_p$ and $\vec{c}\leftarrow\Z_p^n$.
 \end{definition}
 
-\begin{lemma}\label{lem:DHuniform}
-Let DDH be secure over \G except advantage $\epsilon$, then $n$ multi-instance DDH is secure over \G except at most advantage $n\epsilon$.
-\end{lemma}
-
-\begin{proof}
-This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as the distribution over $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, where for all $j\leq i$, $c_j=a_jb$ and for $j>i$, $c_j\leftarrow\Z_p$. If $\D$ distinguishes hybrid $\hyb_i$ from $\hyb_{i+1}$, it breaks the DDH assumption over \G.
-\pe
-\end{proof}
-
-\input{figures/DH.tex}
+In Appendix~\ref{sec:DDH}, we show that $n$ multi-instance DDH is secure under the DDH assumption with a security loss of $n$. In the following we show that the Diffie-Hellman key exchange is tightly multi-instance secure under multi-instance DDH. 
 
 \begin{lemma}\label{lem:DDH}
 Let $Q$ and $n$ be polynomial in $\sec$.

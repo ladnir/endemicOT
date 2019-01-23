@@ -1,5 +1,4 @@
-\section{Additional Definitions and Lemmas}
-
+\section{Additional Preliminary Definitions and Lemmata}\label{sec:defsandlems}
 
 
 \begin{definition}[Generalize Ideal $k$-out-of-$n$ Oblivious Transfer]\label{def:got}
@@ -42,6 +41,74 @@ An \emph{ideal coin tossing} is a functionality denoted with $\F^{\coin}$ that i
 \end{definition}
 
 
+\subsection{Key Agreement}\label{sec:addKA}
+We give the following additional security definition for key agreement protocols.
+
+\begin{definition}[One-Round Uniform Key Agreement]
+We call a \UKA \emph{One-Round Uniform Key Agreement} if the function $\mes_{\B}\leftarrow\B(\tape_{\B},\mes_\A)$ does not depend on $\mes_A$ and can be computed solely using input $\tape_{\B}$. More precisely, there is a function $\B'$ such that for any $\mes_{\A}$, $\B'(\tape_{\B})=\B(\tape_{\B},\mes_{\A})$, which we will in the following refer to with $\B$ as well. 
+\end{definition}
+
+\begin{definition}[Multi-Instance Uniformity]
+We call a \UKA $Q$ \emph{multi-instance uniform} if for any ppt distinguisher \D,
+$$
+|\Pr[\D^{\O_{\A}}(1^{\sec})]=1]-Pr[\D^{\O_{u}}(1^{\sec})=1]|=\negl,
+$$
+where $\O_{\A}$ outputs $\mes_\A\leftarrow\A(\tape_\A)$ for fresh randomness $\tape_\A$ and $\O_u$ outputs $u\leftarrow\G$ and $Q$ is a bound on the amount of queries to $\O_{u}$, $\O_{\A}$.
+\end{definition}
+
+
+
+\begin{definition}[Multi-Instance Key Indistinguishability]
+We call a \UKA $(Q,n)$ \emph{multi-instance key indistinguishable} if for any ppt distinguisher \D,
+$$
+|\Pr[\D^{\O_{\langle \A,\B\rangle}, \O_{\key}}(1^{\sec})]=1]-Pr[\D^{\O_{\langle \A,\B\rangle},\O_{u}}(1^{\sec})=1]|=\negl,
+$$
+where $\O_{\langle \A,\B\rangle}$ outputs on the $i$-th query a transcript $\T_i:=\langle \A_i,\B_i\rangle$, $\O_{\key}$ outputs on query $j$, key $\key_j=\EK(\tape_{\A,j},\mes_{\B,j})=\EK(\tape_{\B,j},\mes_{\A,j})$ that matches transcript $\T_i$. $\O_u$ outputs a uniform element $u$ from the key domain. $\O_{\langle \A,\B\rangle}$ uses fresh random tapes $\tape_{\A,i},\tape_{\B,i}\leftarrow\bits^*$ for every query. $Q$ is a bound on the amount of queries to $\O_{\langle \A,\B\rangle}$, where $n$ bounds the amount of queries to $\O_{\key}$, $\O_{u}$. 
+\end{definition}
+
+In case of a one-round \UKA, we define a stronger version of the multi-instance key indistinguishability, which we call one-round multi-instance key indistinguishability.
+
+\begin{definition}[One Round Multi-Instance Key Indistinguishability]
+We call a one-round \UKA $(Q,n)$ \emph{one-round multi-instance key indistinguishability} if for any ppt distinguisher \D,
+$$
+|\Pr[\D^{\O_{\A}, \O_{\key}}(1^{\sec},\mes_\B)]=1]-Pr[\D^{\O_{\A},\O_{u}}(1^{\sec},\mes_\B)=1]|=\negl,
+$$
+where $\mes_{\B}\leftarrow\B(\tape_{\B})$ for uniform $\tape_{\B}$. $\O_{\A}$ outputs on the $i$-th query $\mes_{\A,i}\leftarrow \A(\tape_{\A,i})$ for uniform $\tape_{\A,i}$. $\O_{\key}$ outputs on query $j$, key $\key_j=\EK(\tape_{\A,j},\mes_{\B})=\EK(\tape_{\B},\mes_{\A})$. $\O_u$ outputs a uniform element $u$ from the key domain. $Q$ is a bound on the amount of queries to $\O_{\A}$, where $n$ bounds the amount of queries to $\O_{\key}$, $\O_{u}$. 
+\end{definition}
+
+In the next lemmata, we show that all the security notions are implied by the standard definitions, but potentially with a polynomial security loss.
+ 
+\begin{lemma}\label{lem:multuniform}
+Let \UKA be uniform except probability $\epsilon$, then it is $Q$ multi-instance uniform except at most probability $Q\epsilon$.
+\end{lemma}
+\begin{proof}
+This follows straightforwardly from using a simple hybrid argument. Hybrid $\hyb_{i}$ samples $\mes_{\A,j}$ for $j\leq i$ from $\O_u$ and for $j>i$ from $\O_{\A}$. If there is an adversary that distinguishes $\hyb_i$ from $\hyb_{i+1}$ for any $i$, then we can break the uniformity of \UKA by distinguishing $\mes_{\A,i+1}$ from uniform.  
+\pe
+\end{proof}
+
+\begin{lemma}\label{lem:keytomultkey}
+Let \UKA be key indistinguishable except probability $\epsilon$, then it is $(Q,n)$ multi-instance key indistinguishable except at most probability $Q\epsilon$. 
+\end{lemma}
+
+\begin{proof}
+Again, we use a hybrid argument over hybrids $\hyb_i$. In $\hyb_i$, $(\mes_{\A,j},\mes_{\B,j}),\key_j$ is sampled from $\O_{\langle \A,\B\rangle}\times\O_u$ for $j\leq i$ and from $\O_{\langle \A,\B\rangle}\times\O_\key$ for $j>i$. If one distinguishes $\hyb_i$ from $\hyb_{i+1}$ for some $i$, one breaks the key indistinguishability. 
+\pe
+\end{proof}
+
+\begin{lemma}\label{lem:oneroundkeytomultkey}
+Let a one-round \UKA be key indistinguishable except probability $\epsilon$, then it is $(Q,n)$ one-round multi-instance key indistinguishable except at most probability $Q\epsilon$. 
+\end{lemma}
+
+\begin{proof}
+This lemma follows for the same reason as \lemmaref{lem:keytomultkey}.
+\pe
+\end{proof}
+
+
+\subsection{Oblivious Transfer}\label{sec:addOT}
+
+
+
 \begin{figure}
 \centering
 \framebox{
@@ -74,6 +141,7 @@ An \emph{ideal coin tossing} is a functionality denoted with $\F^{\coin}$ that i
 \end{figure}
 
 
+
 \begin{lemma}
 	$\Pi^{\E u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Endemic Message OT $\OOT^{\send u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\send}$ hybrid.
 \end{lemma}
@@ -87,3 +155,28 @@ An \emph{ideal coin tossing} is a functionality denoted with $\F^{\coin}$ that i
 	Consider a corrupt \send. Due to $\set'$ being uniformly distributed, so is $\set=\pi(\set')$ since $\pi$ is one to one. Consider a corrupt \rec. The simulator receives $\set'$ from \rec and the $\set,(s_i)_{i\in\set}$ from $\OOT^{\send u}$. The simulator uniformly samples $\pi$ s.t. $\{s_i\}_{i\in\set} =\{s_{\pi(i)}\}_{i\in\set'}$ and completes the protocol.
 	\pe
 \end{proof}
+
+
+\subsection{Diffie-Hellman Key Exchange}\label{sec:DDH}
+In \figureref{fig:DH}, we depict the Diffie-Hellman key exchange. 
+\input{figures/DH.tex}
+It can be proven secure under the decisional Diffie-Hellman (DDH) assumption.
+\begin{definition}[Decisional Diffie-Hellman (DDH) Assumption]
+For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
+$$
+|\Pr\lb \D(1^\sec,\lb 1\rb,\lb a\rb,\lb b\rb,\lb ab\rb)=1\rb-\Pr\lb D(1^\sec,g,\lb a\rb,\lb b\rb,\lb c\rb)=1\rb|=\negl,
+$$
+where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$.
+\end{definition}
+
+The following lemma states that multi-instance DDH is secure under the DDH assumption with a security loss equal to the ammount of instances.
+
+\begin{lemma}\label{lem:DHuniform}
+Let DDH be secure over \G except advantage $\epsilon$, then $n$ multi-instance DDH is secure over \G except at most advantage $n\epsilon$.
+\end{lemma}
+
+\begin{proof}
+This lemma follows from a simple hybrid argument. We define hybrid $\hyb_i$ as the distribution over $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, where for all $j\leq i$, $c_j=a_jb$ and for $j>i$, $c_j\leftarrow\Z_p$. If $\D$ distinguishes hybrid $\hyb_i$ from $\hyb_{i+1}$, it breaks the DDH assumption over \G.
+\pe
+\end{proof}
+
