@@ -4,6 +4,19 @@
 An \emph{ideal coin tossing} is a functionality denoted with $\F^{\coin}$ that interacts with two parties \A and \B, samples a uniform string $r\in\bits^*$ and sends $r$ to $\A$ and $\B$.
 \end{definition}
 
+\newcommand{\extract}{\ensuremath{\mathsf{ext}}\xspace}
+
+\begin{definition}[Extractable Commitments]\label{def:com}
+An \emph{extractable commitment scheme} consists of three algorithms.
+\begin{description}
+\item[$\com(x,r)$:] Commits to $x$ using randomness $r$. 
+\item[$\open(\com,x,r)$:] Outputs $1$ if commitment $\com\in\com(x,r)$.
+\item[$\extract(\com,\aux)$:] Given some auxiliary information, it extracts committed value $x$. 
+\end{description}
+For security, we ask that it is hiding, i.e. for any $x,m$, $x, \com(x,r)$ is indistinguishable from $m,\com(x,r)$ and that it is binding, i.e. for any $x$, $\extract(\com(x,r))$ outputs $x$.
+\end{definition}
+
+An extractable commitment can easily constructed using a random oracle by defining $\com(x,r):=H(x,r)$, $\open$ simply evaluates $\H$ and checks equality and the $\extract$ algorithm observes the random oracle queries from which $x$ can be learned.
 
 \subsection{Key Agreement}\label{sec:addKA}
 We give the following additional security definition for key agreement protocols.
