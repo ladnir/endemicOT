@@ -1,39 +1,46 @@
 
-\section{OT Extension Appendix}\label{sec:extApp}
+\section{OT Extension }\label{sec:extApp}
 
 
 \iffullversion
 \else
 
-\subsection{Definition of \definitionref{def:ext_S_R}}
-
-\begin{definition}\label{def:ext_S_R}
-	Let $\Pi^{\textsf{ext-S}u\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\send u}$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: $\H(x)=\pi(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal permutation. Note: the $i$ parameter of $\H$ is removed.
-\end{definition}
-\begin{lemma}\label{lem:ext_S_R}
-	The $\Pi^{\textsf{ext-S}u\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\rec$-security, for $N=\textsf{poly}(\kappa)$.
-\end{lemma}
-\begin{proof}
-	See full version.
-\end{proof}
 
 
-\subsection{Proof of \lemmaref{lem:malRec}}
+\subsection{Proof of \lemmaref{lem:malRec} (Attack of $\Pi^\textsf{OOS}$)}
 \input{proofs/attack_BadT0.tex}
 
 
-\subsection{Proof of \lemmaref{lem:malRec2}}
+\subsection{Proof of \lemmaref{lem:malRec2} (Attack of $\Pi^\textsf{OOS+}$)}
 \input{proofs/attack_Selection.tex}
 
 
-\subsection{Proof of \lemmaref{lem:malSend}}
+\subsection{Proof of \lemmaref{lem:malSend} (Attack of $\Pi^\textsf{OOS+}$)}
 \input{proofs/attack_AllOnes.tex}
 
+\subsection{Proof of \lemmaref{lem:ext_R_S}: $\OOT^\U$ Extension with a Random Oracle}
+\input{proofs/ext_S_U.tex}
 
-\subsection{Proof of \lemmaref{lem:ext_R_S}}
+
+\subsection{Proof of \lemmaref{lem:ext_R_S}: $\OOT^\send$ Extension with an Ideal Cipher}
 \input{proofs/ext_R_S.tex}
 
 
-\subsection{Proof of \lemmaref{def:ext_U_U}}
+\subsection{Proof of \lemmaref{def:ext_U_U}:  $\OOT^\U$ Extension with an Ideal Cipher}
 \input{proofs/ext_U_U.tex}
+
+
+
+\subsection{ $\OOT^\rec$ Extension with an Ideal Cipher}
+
+\begin{definition}\label{def:ext_S_R}
+	Let $\Pi^{\textsf{ext-\rec}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: $\H(x)=\pi(x)+x$ where $\pi: \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal permutation. Note: the $i$ parameter of $\H$ is removed.
+\end{definition}
+\begin{lemma}\label{lem:ext_S_R}
+	The $\Pi^{\textsf{ext-\rec}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\rec$-security, for $N=\textsf{poly}(\kappa)$.
+\end{lemma}
+\begin{proof}[sketch]
+	The proof follows the same strategy as \lemmaref{proof:ext_U_U} except $\pi$ is not keyed. As such, \rec can compute $\H(\tt_i)$ \emph{before} making their selection $x_i$. This can be simulator by having the simulator extract $\H(\tt_i)$ as their chosen message. 
+\end{proof}
+
 \fi

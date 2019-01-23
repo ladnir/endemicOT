@@ -1,5 +1,41 @@
 \section{Additional Preliminary Definitions and Lemmata}\label{sec:defsandlems}
 
+
+\begin{definition}[Generalize Ideal $k$-out-of-$n$ Oblivious Transfer]\label{def:got}
+	A (generalized) \emph{ideal $k$-out-of-$n$ oblivious transfer} is a functionality that interacts with two parties, a sender \send and a receiver \rec. Let $\set\subseteq[n]$ of size $k$ and  $s_1,...,s_n\in \{0,1\}^\ell$.
+	
+	The functionality is publicly parameterized by one of the following message sampling methods:
+	\begin{description}
+		\item[] \textsc{Sender Chosen Message:} $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_i:=\mathcal{M}(i)$.
+		
+		\item[] \textsc{Receiver Chosen Message:} \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in\set\setminus[n]$.
+		
+		\item[] \textsc{Uniform Message:} The functionality uniformly samples $s_i\gets\{0,1\}^{\ell}$ for $i\in[n]$. 
+		
+		\item[] \textsc{Endemic Chosen Message:} If $\send$ is corrupt, then $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_i:=\mathcal{M}(i)$.
+		
+		If \rec is corrupt, \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$.
+		
+		All remaining $s_i$ for $i\in [n]$ are uniformly samples $s_i\gets\{0,1\}^\ell$.
+	\end{description}
+	
+	The functionality is publicly parameterized by one of the following selection methods:
+	\begin{description}
+		\item[] \textsc{Receiver Selection:} \rec sends the circuit $\mathcal{S}:[n]\rightarrow\{0,1\}$ to the functionality where the support of $\mathcal{S}$ is of size $k$. The functionality defines $\set:=\{i \mid \mathcal{S}(i)=1\}$.
+		\item[] \textsc{Uniform Selection:} The functionality uniformly samples $\set\gets\mathbb{P}([n])$ s.t. $|\set|=k$.
+	\end{description}
+	
+	As specified by the message sampling method, the oracle receives the circuit $\mathcal{M}$ from the appropriate party if one is called for.  As specified by the selection method, the functionality receives the circuit $\mathcal{S}$ if one is called for. 
+	Thereafter, upon receiving the message $(\textsc{Output}, i)$ from \send, respond with $s_i$. Upon receiving $(\textsc{Output}, i)$ from \rec and if $i\in \set$,  respond with $s_i$. 
+	
+	We denote the ideal functionalities for Sender Chosen, Receiver Chosen, Uniform and Endemic Chosen Message with Receiver Selection as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. The analogous oracles for Uniform Selection are denoted as  $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively.
+\end{definition}
+\begin{remark}
+	When $n$ is polynomial in the security parameter $\kappa$, we simplify the above definition to \definitionref{def:ot} to allow the parties directly input the appropriate $s_i$ messages as opposed to specifying a circuit $\mathcal{M}$. Similarly for the set $\set:=\{i \mid \mathcal{S}(i)=1\}$. Lastly, instead of querying the oracle with $(\textsc{Output}, i)$, the oracle sends $(s_i)_{i\in [n]}$ to \send and $(\set, (s_i)_{i\in\set})$ to \rec. This simplification can trivially be simulated when $n=\textsf{poly}(\kappa)$.
+\end{remark}
+
+
+
 \begin{definition}[Coin Tossing]\label{def:coin}
 An \emph{ideal coin tossing} is a functionality denoted with $\F^{\coin}$ that interacts with two parties \A and \B, samples a uniform string $r\in\bits^*$ and sends $r$ to $\A$ and $\B$.
 \end{definition}
