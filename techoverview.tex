@@ -5,7 +5,7 @@
 \item[Uniform Message Security:] The ideal functionality $\OOT^{\U}$ samples the OT strings uniformly and outputs them to sender and one to the receiver.
 \item[Sender Chosen Message Security:] The ideal functionality $\OOT^{\send}$ receives the OT strings from the sender and outputs one of the strings to the receiver.
 \item[Receiver Chosen Message Security:] The ideal functionality $\OOT^{\rec}$ receives one of the OT strings from the receiver, samples the other one uniformly at random and outputs the strings to the sender.
-\item[Endemic Security] If the sender is malicious, it chooses both strings. If the receiver is malicious, it chooses one of the strings. All strings that are not choosen yet, are sampled uniformly by the functionality $\OOT^{\E}$. The sender obtains both strings and the receiver obtains one. 
+\item[Endemic Security] If the sender is malicious, it chooses both strings. If the receiver is malicious, it chooses one of the strings. All strings that are not chosen yet, are sampled uniformly by the functionality $\OOT^{\E}$. The sender obtains both strings and the receiver obtains one. 
 \end{description}
 
 Notice that endemic security gives the weakest security guarantees, no matter whether the receiver or the sender is malicious, the malicious party can always determine the output distribution. Uniform message security gives very strong security guarantees since a malicious party can never influence the distribution.
