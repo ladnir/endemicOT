@@ -1,0 +1,378 @@
+
+% C:IKNP03 https://www.iacr.org/archive/crypto2003/27290145/27290145.pdf
+% Nie07  "Extending Oblivious Transfers Efficiently How to get Robustness Almost for Free"
+% C:KelOrsSch15  https://eprint.iacr.org/2015/546.pdf
+% RSA:OrrOrsSch17  https://eprint.iacr.org/2016/933.pdf
+% EC:ALSZ15 https://eprint.iacr.org/2015/061.pdf
+
+
+\section{OT Extension} \label{sec:otext}
+
+
+Next we review the OT extension protocol of \cite{RSA:OrrOrsSch17} which we describe in \figureref{fig:otExt}. The base OTs are performed on inputs that are sampled uniformly at random where the roles of the sender and receiver are reversed with respect to the OTs that are output by the extension. That is, \send will receiver $(b_j, \tt^j_{b_j})\in\mathbb{F}_2\times \mathbb{F}_2^m$ while $\rec$ will receive $(\tt^j_0,\tt^j_1)\in\mathbb{F}_2^m\times \mathbb{F}_2^m$ for $j\in[\nc]$.
+
+\rec forms two matrices $T_0,T_1\in \mathbb{F}_2^{m\times \nc}$ by concatenating the base OT messages as column vectors, i.e. $T_i:=(\tt^1_i ... \tt^\nc_i)$. Similarly, \send forms the matrix $T_{\text{\textbf{b}}}:=(\tt^1_{b_1}...\tt^\nc_{b_\nc})$. \rec then encodes their 1-out-of-$N$ selections $\ww_1,...,\ww_m$ into a matrix $C\in \mathbb{F}_2^{m\times \nc}$. Each row $\cc_i$ is the codeword $\mathcal{C}(\ww_i)$ of \rec's $i$-th selection $\ww_i\in [N]$, $\mathcal{C}$ is a binary code of length $\nc$, dimension $\kc=\log_2\kappa$ and minimum distance $\dc\geq\kappa$. \rec sends the matrix $U=T_0+T_1+C$
+to \send. Observe that $U$ encodes the selections of \rec but the selection is perfectly masked/encrypted due to the $j$-th column of $U$ being masked by the column $\tt^j_{1-b_j}$ which is uniformly distributed in the view of \send. Upon receiving $U$, \send computes $Q\in\mathbb{F}^{m\times\nc}$ where the $j$-th column is defined as $\qq^j:=b_j\cdot \uu^j+\tt^j_{b_j}=b_j\cdot \cc^j+\tt^j_0$. It holds that 
+$$
+	\qq_i=\cc_i\odot \bb + \tt_i
+$$
+where $\tt_i,\qq_i$ is the $i$-th row of $T_0,Q$, respectively, and $\bb:=(b_1,...,b_\nc)\in \mathbb{F}^\nc_2$. \rec will output $\vv_{i,\ww_i}:=\H(i, \tt_i)$. \send can then generate any OT message by computing $\vv_{i,\ww}:=\H(i, \qq_i + \mathcal{C}(\ww)\odot \bb)$. Correctness of this operation follows from 
+\begin{align*}
+	\qq_i + \mathcal{C}(\ww)\odot \bb =&  (\mathcal{C}(\ww_i)\odot \bb + \tt_i) + \mathcal{C}(\ww)\odot \bb\\
+	=& (\mathcal{C}(\ww_i) + \mathcal{C}(\ww)) \odot \bb +\tt_i.
+\end{align*}
+Let $\delta = \mathcal{C}(\ww_i) + \mathcal{C}(\ww)$. In the event that $\ww_i=\ww$, then $\delta=0$ and \send computes the same $\vv_{i,\ww_i}$ value as \rec. Otherwise the hamming distance $\textsf{HD}(\delta)\geq \dc\geq \kappa$ by construction of $\mathcal{C}$. For $\rec$ to generate any other OT message $\vv_{i,\ww}$ s.t. $\ww\neq \ww_i$, \rec must guess the value $\delta\odot \bb\in \mathbb{F}^\nc_2$ given $\delta$, which can be done with probability $2^{-\textsf{HD}(\delta)}=O(2^{-\kappa})$.
+
+We specify two additional steps to realize the ideal Sender Chosen Message functionality $\OOT^\send$ \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15,RSA:OrrOrsSch17}:
+\begin{enumerate}
+
+	\item A proof that all rows in $C$ can be decoded. Ishai et al. \cite{C:IKNP03} proposed a cut-and-choose approach while the more recent schemes \cite{C:KelOrsSch15,RSA:OrrOrsSch17} improve on the efficiency of these proofs by making \rec send random linear combinations of $\tt_i,\ww_i$ and having \send check they are consistent with same combination of $U$. We defer the details behind these proofs to \cite{C:KelOrsSch15,RSA:OrrOrsSch17}.
+	
+	\item The parties apply the Sender Chosen OT transformation $\Pi^{\send}_{1,N}$ from \figureref{fig:protoSendOT} which reduces sender chosen to endemic OT. That is, \send must send their chosen messages $(x_{i,1},...,x_{i,N})_{i\in [m]}$ encrypted under the corresponding key $(\vv_{i,1},...,\vv_{i,N})_{i\in [m]}$, e.g. \send sends $e_{i,j}:=x_{i,j}+\vv_{i,j}$ to \rec who outputs $x_{i,\ww_i}=e_{i,\ww_i}+\vv_{i,\ww_i}$. Note, this step is not included in \figureref{fig:otExt}. Next we will show without this step the protocol only achieves endemic security.
+\end{enumerate}
+
+
+
+
+\begin{figure}[t!]
+	\vspace{-1cm}
+	\framebox{\begin{minipage}{0.95\linewidth}\small
+			\textsc{Parameters:} $\kappa$ is the computational security parameter. $m$ denotes the number of OTs. $N$ denotes the number of messages each OT has. $\mathcal{C}$ is an $[\nc,\kc,\dc]$ binary linear code such that $\kc=\log_2 N$ and $\dc\geq \kappa$. A bijective map $map : [N]\rightarrow\mathbb{F}^\kc$.\\
+			\textsc{Requirements:} $\H : [m] \times \mathbb{F}_2^\nc \rightarrow \mathbb{F}_2^\kappa$ is a random oracle.			
+			Let $m'=m+s$ where $s$ is defined in \stepref{step:consistency}. \OOT is an 1-out-of-2 OT oracle with output messages in $\mathbb{F}_2^{m'}$.
+			\\
+			
+			\textsc{Extend:} On input $(\textsc{Extend})$ from \send and $(\textsc{Extend}, (x_1,...,x_m)\in[N]^m)$ from \rec.
+			\begin{enumerate}
+				\item\label{step:extInit} Both parties invoke $\nc$  instances of $\OOT$  where \send takes the role of the receiver. If $\OOT$ has inputs, the corresponding party  locally samples them uniformly from the input domains. \send receives $(\bb'\in\{1,2\}^\nc, \{\tt^j_{b_j}\}_{j\in [\nc]})$ where $\bb_i=(\bb_i'-1)\in\{0,1\}$. \rec receives $\{(\tt^j_0,\tt^j_1)\}_{j\in [\nc]}$. Let $T_i\in \mathbb{F}^{m'\times \nc}_2$ denote the matrix formed by concatenating the column vectors $\tt^1_i||...||\tt^\nc_i$. \\
+				
+				%				\item \rec constructs matrices $T_0,T_1\in \mathbb{F}^{m'\times \nc}_2$ from the seeds $\{(\rr^j_0,\rr^j_1)\}_{j\in [\nc]}$ so that the respective columns are:
+				%				$$
+				%					\tt^j_0 := \PRG(\rr^j_0)\in \mathbb{F}^{m'}_2,\qquad \tt^j_1 := \PRG(\rr^j_1)\in \mathbb{F}^{m'}_2,\qquad \forall j\in[\nc]
+				%				$$
+				%				In the same way \send produces $\tt^j_{b_j}$, for each $j\in[\nc]$. Summarizing, \rec holds $\{(\tt^j_0,\tt^j_1)\}_{j\in[\nc]}$ and \send holds $\{\tt^j_{b_j}\}_{j\in[\nc]}$.
+				%				
+				\item\label{step:extSendU} \rec  defines $\ww_i:=map(x_i)$ for $i\in[m]$ and  samples random $\ww_{m+\ell}\gets \mathbb{F}^\kc_2$, for $\ell\in[s]$. Then constructs a matrix $C\in\mathbb{F}^{m'\times \nc}_2$ such that each row $\cc_i$ is the codeword $\mathcal{C}(\ww_i)$. Then, \rec sends to \send the values
+				$$
+				\uu^j :=\tt^j_0 +\tt^j_1+\cc^j, \qquad \forall j\in[\nc],
+				$$
+				where $\cc^j$ is the $j$-th column of $C$.
+				
+				\item\label{step:extCompQ} \send receives $\uu^j\in\mathbb{F}^{m'}_2$ and computes
+				$$
+				\qq^j := b_j \cdot \uu^j +\tt^j_{b_j} = b_j\cdot \cc^j+\tt^j_0,\qquad \forall j\in[\nc]
+				$$
+				that form the columns of an $(m'\times \nc)$ matrix $Q$. Denoting the rows of $T_0,T_1, Q$ by $\tt_i, \tt_{1,i},\qq_i$, \rec now holds $\cc_i,\tt_i$ and \send holds $\bb, \qq_i$ so that 
+				$$
+				\qq_i = \cc_i\odot \bb+\tt_i,\qquad \forall i\in[m'].
+				$$
+				
+				\item \emph{Consistency check:}\label{step:consistency} \rec  proves in zero knowledge that %given their view $\textsc{view}_\rec$:
+				\begin{center}
+					$	\forall i\in[m], \exists w\in\mathbb{F}^\kc_2 \mid  0=\bb\odot (\uu_i+\tt_i+\tt_{1,i} +\mathcal{C}(w))$
+				\end{center}
+				Note: $\bb\in\mathbb{F}^\nc_2$ is distributed uniformly in the view of \rec.
+								%					$ \text{ erasure decodes to } w $\\ 
+								%					{ with erasures indexed by } $\{j \mid \bb_j = 0 \} \quad  \text{and}$ \\
+								%					$\forall$ ppt $\Adv\in\{0,1\}^*, w'\in\mathbb{F}^\kc_2\setminus\{w\},$ \\
+								%					$\Pr_{\bb}[\Adv(\textsc{view}_\rec)=(\cc_i+\mathcal{C}(w'))\odot \bb]=\negl$
+				%In particular, using a sigma protocol with the first message being $U$, \rec proves in zero knowledge to \send that for all $i\in[m], \exists \ww_i$ s.t. $\cc_i\odot \bb$ erasure decodes to $\ww_i$ with erasures indexed by $\{j \mid \bb_j=0 \}$. Note, \send does \emph{not} send $\bb$.
+				
+				 For example, the proof of \cite{C:KelOrsSch15} for $N=2$ or \cite{RSA:OrrOrsSch17} otherwise. $s\geq0$ is specified by the proof protocol.
+%				\begin{itemize}
+%					\item Both parties query the challenge oracle $\O^{\textsf{chllng}}$ on input $u^j$ for $j\in[\nc]$  which samples and returns $X=\{(x_1^{\ell}, ...,x_m^{\ell} )\in \mathbb{F}^m_2\}_{\ell\in[s]}$ % := H'(\uu^1|| ... || \uu^\nc).
+%					to both parties.
+%					
+%					\item \rec computes and sends, for $\ell \in[s]$:
+%					$$
+%					\widehat \tt^{\ell} := \sum_{i\in[m]} \tt_i \cdot x_i^\ell + \tt_{m+\ell}, \qquad \widehat \ww^\ell := \sum_{i\in[m]} \ww_i \cdot x_i^\ell + \ww_{m+\ell}
+%					$$
+%					
+%					\item \send computes $\widehat \qq^\ell := \sum_{i\in[m]} \qq_i \cdot x^\ell_i + \qq_{m+\ell}$, and checks that:
+%					$$
+%					\widehat\tt^\ell + \widehat\qq^\ell = \mathcal{C}(\widehat\ww^\ell) \odot \bb, \qquad \forall\ell\in[s].
+%					$$
+%					If the check fails, \send sends $\textsf{Abort}$, and otherwise continues.
+%				\end{itemize}
+				\item \rec outputs $\vv_{i, x_j}:=\H(i,\tt_i)$ for all $i\in[m]$.
+			\end{enumerate}
+			
+			
+			\textsc{Output:} On input $(\textsc{Output}, (i,x))$ from \send. If $i\in[m],j\in[N]$, then \send outputs $\vv_{i,x}:=\H(i,\qq_i+\mathcal{C}(map(x))\odot \bb)$.
+	\end{minipage}}
+	\caption{ 1-out-of-$N$ OT Extension.}
+	\label{fig:otExt}
+\end{figure}
+
+
+%\begin{figure}[t]
+%	\framebox{\begin{minipage}{0.95\linewidth}\small
+%			\textsc{Parameters:} $\lambda$ is the statistical security parameter.
+%			
+%			\textbf{Inputs:} \send inputs $U\in\mathbb{F}^{(m+\lambda)\times n}_2$ and \rec inputs $U'$.
+%			\begin{enumerate}
+%				\item \send uniformly samples $X\gets \mathbb{F}^{m\times n}_2$ and sends it to \rec.
+%				\item Both parties output $X$.
+%			\end{enumerate}
+%	\end{minipage}}
+%	\caption{ Challenge Protocol $\Pi^\textsf{chllng}$ implementing $\O^\textsf{chllng}$.}
+%	\label{fig:OChallenge}
+%\end{figure}
+
+
+\subsection{OT Extension Attacks}\label{sec:extAttack}
+
+The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol descriptions that are intended to satisfy the Uniform Message security notion, \definitionref{def:otSec}, but we show this to not be the case. These protocols can be summarized as the previous protocol description there the $\Pi^{\send}_{1,N}$ transformation is not applied.  For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks on Uniform Message security also apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail three attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
+
+
+\begin{definition}\label{def:OOS}
+	Let $\Pi^{\textsf{OOS}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\send$.
+	 %(\definitionref{def:ot}), i.e.  \cite[Protocol 2]{RSA:OrrOrsSch17}.
+\end{definition}
+
+\iffullversion
+\begin{remark}\label{remark:oosROT}
+	\cite{RSA:OrrOrsSch17} is inconsistent which type of base OTs should be used, switching between standard Sender Chosen Message OT ($\OOT^\send=\mathcal{F}^{\kappa,\nc}_{\textsf{2-OT}}$) in the protocol description, theorem statements and Uniform Message OT ($\OOT^\U=\mathcal{F}^{\kappa,\nc}_{\textsf{2-ROT}}$) in their proof. \lemmaref{lem:malRec} only applies to $\OOT^\send=\mathcal{F}^{\kappa,\nc}_{\textsf{2-OT}}$ while \lemmaref{lem:malRec2} and \ref{lem:malSend} apply even with $\OOT^\U=\mathcal{F}^{\kappa,\nc}_{\textsf{2-ROT}}$ base OTs. All three attacks apply to \cite{C:KelOrsSch15} which uses $\OOT^\send=\mathcal{F}^{\kappa,\nc}_{\textsf{2-OT}}$.
+\end{remark}
+\fi
+
+
+\lemmaref{lem:malRec} details an attack which allows \R to bias the output $\vv_{i,x_i}$ to be $\H(i,x)$ for any $x\in\mathbb{F}^{\nc}_2$. The core idea behind this attack is that \rec has complete control over the matrix $T_0$ since they input it to the base OTs. As such, \rec can choose their output messages to be $\vv_{i,x_i}=\H(i,\tt_i)$ for any $\tt_i$. For example, let $\tt_1=\tt_{i'}$ for all $i'\in[m]$. Then the distinguisher can compare the output of \send and  outputs 1 if $\vv_{i,x_i}=\vv_{i',x_{i'}}$. 
+\iffullversion
+\input{proofs/attack_BadT0.tex}
+\else
+See \appendixref{proof:Attack_BadT0} for details.
+\fi
+
+
+
+
+We now to our attention to a second class of adversary that can distinguish even when the base OTs output uniformly distributed messages, i.e. $\OOT^\U$.\cite{RSA:OrrOrsSch17} is inconsistent which type of base OTs should be used, switching between $\OOT^\send$ in the protocol and $\OOT^\U$ in the proof. Regardless the next two attacks apply. 
+\begin{definition}\label{def:OOS2}
+	Let $\Pi^{\textsf{OOS+}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\U$.
+\end{definition}
+The core idea behind the \lemmaref{lem:malRec} attack against $\Pi^{\textsf{OOS+}}$ is that \rec can choose their selection \emph{after} seeing their output message, i.e. $H(i,\tt_i)$. This allows \rec to correlate their selection $x_i$ with their message $H(i,\tt_i)$ and there by distinguish. For example, let $v=\H(i,\tt_i)\mod N$ and then \rec makes their selection be $x_i=v+1$. This can not happen when interacting with $\OOT^\U$. 
+\iffullversion
+\input{proofs/attack_Selection.tex}
+\else
+See \appendixref{proof:Attack_Selection} for details.
+\fi
+
+
+
+
+\lemmaref{lem:malSend} details another attack where a malicious \send sets the base OT selection values to be $\widehat\bb:=(1,...,1)\in \{1,2\}^\nc$. As such $\send$ learns the matrix $T_0$ in full. Therefore \send can always output the same message $\H(i, \tt_i)=\vv_{i,\ww_i}$ as \rec. For Sender Chosen Message or Endemic security a viable simulation strategy is to extract $H(i, \tt_i)$ and define $\vv_{i,j}:=\H(i, \tt_i)$ for all $j$. However, there is no valid strategy for the Receiver Chosen or Uniform Message security where the oracle samples some of the messages uniformly. This attack breaks the security of the set inclusion protocol described by \cite[Figure 5]{RSA:OrrOrsSch17}.
+\iffullversion
+\input{proofs/attack_AllOnes.tex}
+\else
+See \appendixref{proof:Attack_AllOnes} for details.
+\fi
+
+
+
+
+
+\subsection{OT Extension with a Random Oracle}\label{sec:extSec}
+
+We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch15,RSA:OrrOrsSch17} protocols with respect to the $\OOT^\E$ ideal functionality. We then given new enhancements (\definitionref{def:ext_Su_R}, \ref{def:ext_Su_U}, \ref{def:ext_R_S}) to this protocol that provider stronger notions of security at a modest overhead, e.g. $\OOT^\U$.
+
+
+\begin{definition}\label{def:ext_E_E}
+	Let $\Pi^{\textsf{ext-E}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\E$.
+\end{definition}
+
+
+
+\begin{lemma}\label{lem:ext-E}
+	The $\Pi^{\textsf{ext-E}}$ protocol (\definitionref{def:ext_E_E}) is a 1-out-of-$N$ Oblivious Transfer ($\OOT^\E$) satisfying Endemic Message and Receiver Selection Security.
+\end{lemma}
+\begin{proof}
+	Correctness of the protocol was demonstrated by \cite{RSA:OrrOrsSch17}.% The rest of the proof is essentially the same as \cite{RSA:OrrOrsSch17} except that the simulator extracts the messages from the malicious party.
+	\begin{claim}[Malicious Sender Security]\label{claim:ext-E-MalSender}
+		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
+	\end{claim}
+	\begin{proof}
+		Consider the following hybrids which will define the simulator $\Adv'$. 
+		\begin{enumerate}[leftmargin=1.8cm]
+			\item[Hybrid 1.] $\Adv'$ internally runs \Adv while plays the role of $\rec$ and base OT oracle $\OOT=\OOT^\E$. For $j\in[\nc]$, $\Adv'$ receives $(\bb'_j,\tt^j_{\bb_j})\in [2]\times \mathbb{F}^{m'}_2$ from \Adv in \stepref{step:extInit} where $\bb_j:=\bb_j'-1$. $\Adv'$ uniformly samples $\tt^j_{1-\bb_j}$ as $\OOT=\OOT^\E$ would. $\Adv'$ sends $(\bb', \{\tt^j_{\bb}\})$ to $\Adv$ on behalf of \OOT. $\Adv'$ outputs whatever \Adv outputs. The view of $\Adv$ is unmodified.
+			
+			\item[Hybrid 2.] For \stepref{step:extSendU} $\Adv'$ does not sample $\tt^j_{1-\bb_j}$ and instead uniformly samples $U\gets\mathbb{F}^{m'\times \nc}_2$. $\Adv'$ sends $U$ to \Adv and then computes $Q$ as \send would. The view of $\Adv$ is identically distributed. This follows from the fact that $\tt^j_{1-\bb_j}$ is uniformly distributed in the view of \Adv and masks the $j$-th column of $U$ in the previous hybrid. 
+			
+			\item[Hybrid 3.]\label{hybrid:malSendExtract} For each row $\qq_i$, $\Adv'$ defines the circuit $\mathcal{M}_i:[N]\rightarrow\{0,1\}^\kappa$ such that on input $j\in[N]$ it outputs $\H(i, \qq_i+\bb\odot \mathcal{C}(map(j)))$. $\Adv'$ sends $\mathcal{M}_i$ to the ideal functionality $\OOT^\E$ as the sender's input to the $i$-th OT instance. This change allows the ideal functionality to output the same distribution as the real protocol. The view of $\Adv$ is unmodified.
+			
+			Note, $\Adv$ can influence $\mathcal{M}_i(j)=\H(i, \qq_i+\bb\odot \mathcal{C}(map(j)))=H(i, (c_i + \mathcal{C}(map(j)) \odot \bb + \tt_i)$ by choosing $\bb$ and the bits $\{\tt_i[j] \mid \bb_j=0\}$.
+			
+			\item[Hybrid 4.] For \stepref{step:consistency} $\Adv'$ simulates the consistency proof.
+			
+			\item[Hybrid 5.] $\Adv'$ does not take the input of \rec since it was not used. \rec only interacts with $\OOT^\E$. This change is identically distributed.
+		\end{enumerate}
+		\pe
+	\end{proof}
+
+	\begin{claim}[Malicious Receiver Security]\label{claim:ext-E-MalReceiver}
+	$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
+	\end{claim}
+	\begin{proof}
+				Consider the following hybrids which will define the simulator $\Adv'$. 
+		\begin{enumerate}[leftmargin=1.8cm]
+			\item[Hybrid 1.] $\Adv'$ internally runs \Adv while plays the role of $\send$ and base OT functionality $\OOT=\OOT^\E$. $\Adv'$ receives $\{\tt^j_0,\tt^j_1\}_{i\in\nc}$ from \Adv in \stepref{step:extInit}. $\Adv'$ outputs whatever \Adv outputs. The view of $\Adv$ is unmodified.
+			
+			\item[Hybrid 2.] In \stepref{step:extSendU} $\Adv'$ receives $U$ from $\Adv$, computes $C:=T_0+T_1$ and uniformly samples $\bb\gets\mathbb{F}^\nc_2$. Let  $B_i:=\{j \mid \bb_j = i\}$. For all $i\in[m]$, $\Adv'$ attempts to erasure decode $\cc_i$ with erasures indexed by $B_0$. If $\cc_i$ failed to decode, then there does not exist a $w\in\mathbb{F}^\kc_2$ s.t. $0=\bb\odot (\cc_i+\mathcal{C}(w))$ and $\Adv'$ aborts in \stepref{step:consistency} as \send would. Otherwise, let $\cc_i$ decode to $\ww_i$ and $\Adv'$ computes $x_i$ s.t. $\ww_i=map(x_i)$
+			
+			%$\Adv'$ performs the proof of \stepref{step:consistency} as \send would. If the proof fails, $\Adv'$ aborts as \send would. Otherwise, by the correctness of the proof, $\cc_i$ decodes to $\ww_i$  and computes $x_i$ s.t. $\ww_i=map(x_i)$.
+			
+			$\Adv'$ defines the circuit $\mathcal{S}_i[1]\rightarrow\{0,1\}$ with support $\{x_i\}$ and $\mathcal{M}_i:[1]\rightarrow\mathbb{F}^\kappa_2$ s.t. $\mathcal{M}_i(1)=\H(i, \tt_i)$. $\Adv'$ sends $\mathcal{S}_i$ and $\mathcal{M}_i$ to $\OOT^\E$ as the receiver's input to the $i$-th OT instance. The view of \Adv is unmodified and the ideal and real output agree on output $\vv_{i,x_i}$.
+			
+			
+			\item[Hybrid 3.]\label{hybrid:simOutput} Assuming $\Adv'$ did not abort in \stepref{step:consistency}, let $E=\{j \mid \exists i\in[m], (\cc_i\oplus \mathcal{C}(\ww_i))_j = 1\}$ index the columns of $C$ where $\Adv$ added an error to any codeword $\cc_i$ (w.r.t $\ww_i$). By the correctness of \stepref{step:consistency}, it holds that $E\subseteq B_0$, otherwise the consistency proof would have failed. By passing the consistency proof, \Adv learns what $\bb_j=0$ for all $j\in E$. Similarly, the probability of passing the check and $\Pr[|E|=d]=\Pr[\bb_j=0 \mid \forall j\in E]=2^{-d}$ due to the proof being independent of $\bb$. We will see that this is equivalent to \Adv simply guessing $E$ (which is correct with the same probability) and then being honest. 
+			
+			For all $w\neq \ww_i$, \Adv  has $\negl$ probability of computing $g=\qq_i+\bb\odot \mathcal{C}(w)$. If this was not the case, then \Adv  could compute
+			\begin{align*}
+			%g +\tt_i &=\qq_i+\bb\odot \mathcal{C}(w)+\tt_i\\
+			%&=\cc_i\odot\bb+\tt_i+\bb\odot \mathcal{C}(w)+\tt_i\\
+			g +\tt_i &=(\cc_i+\mathcal{C}(w))\odot \bb\\
+			&=(\mathcal{C}(\ww_i)+\mathcal{C}(w))\odot \bb
+			\end{align*}
+			This last equality holds due to $\Adv'$ aborting if $(\cc_i+\mathcal{C}(\ww_i))\odot \bb\neq 0$. Recall that $\mathcal{C}$ has minimum distance $\dc\geq \kappa$ and therefore computing $g$ is equivalent $\Adv$ guessing $\dc\geq \kappa$ bits of $\bb$ which happens with probability $2^{-\dc}\leq 2^{-\kappa}$.  As such, the probability that \Adv has made a query of the form $\H(i,\qq_i+\bb\odot \mathcal{C}(w))$ for $w\neq \ww_i$ is also negligible. If such as query does happen $\Adv'$ aborts. This hybrid is indistinguishably distributed from the previous. 
+			
+			
+			\item[Hybrid 4.] \label{hybrid:simOutput2} when \send makes an $\H$ query of the form $\H(i,h)$ which has not previously be queries, $\Adv'$ must determine if there is a unique $x\in[N]$ such that $h=\qq_i+\bb\odot \mathcal{C}(map(x))$. First, let us assume there exists two distinct $w,w'\in\mathbb{F}^\kc_2$ which satisfies this. That is,
+			\begin{align*}
+			\bb \odot (c_i + \mathcal{C}(w)) &= \bb \odot (c_i + \mathcal{C}(w'))\\
+			%\bb \odot \mathcal{C}(w) &=			\bb \odot \mathcal{C}(w') \\
+			0 &= \bb \odot (\mathcal{C}(w) + \mathcal{C}(w'))
+			\end{align*}			
+			Recall that $\mathcal{C}$ by construction has minimum distance $\dc\geq\kappa$ and that $\bb$ is uniformly distributed. Let $\delta=\mathcal{C}(w) + \mathcal{C}(w')$ and $E=\{i \mid \delta_i=1\}$, then $|E|\geq \dc\geq \kappa$ and for the above to hold we require $\bb_i=0 \mid \forall i\in E$ which occurs with probability $\Pr[\bb_i=0 \mid \forall i\in E]=2^{-|E|}\leq 2^{-\dc}\leq2^{-\kappa}$. In such an event the simulations fails but this occurs with negligible probability.			
+			
+			$\Adv'$ checks that $(h+\qq_i)_\ell =0$ for all $\ell\in \{i \mid \bb_i=0\}$ and if so tries to use Gaussian elimination to determine if there exists a $w$ such that $h+\qq_i$ erasure decodes to $w$ where the erasures are index by $\{i \mid \bb_i=0\}$. If so, $\Adv'$ computes $x$ s.t. $map(x)=w$ and sends $(\textsc{Output}, x)$ to the $i$-th instance of $\OOT^E$ and receives $\vv_{i,x}\gets\{0,1\}^\ell$ in response. $\Adv'$ programs $\H$ to output $\vv_{i,x}$ on this query. All other $\H$ queries are answered as normal. The distribution of $\H$ after being programmed is identical since the input has not previously been queried and in both cases the result is uniformly distributed.			
+			
+			\item[Hybrid 5.] $\Adv'$ does not take the input of \send and does not program $\H$ in \hybridref{hybrid:simOutput}. \send only interacts with $\OOT^\E$. This change is identically distributed.
+		\end{enumerate}
+		\pe
+	\end{proof}
+	\pe
+\end{proof}
+
+%\iffullversion
+%
+%\begin{definition}\label{def:ext_S_U}
+%	Let $\Pi^{\textsf{ext-S}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\send$.
+%\end{definition}
+%\begin{lemma}
+%	The $\Pi^\textsf{ext-S}$ protocol realizes 1-out-of-$N$ $\OOT^\E$ security.
+%\end{lemma}
+%\begin{proof}
+%	Follows directly from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}.
+%\end{proof}
+%\begin{lemma}
+%		The $\Pi^\textsf{ext-S}$ protocol does not realizes 1-out-of-$N$ $\OOT^\send$ or $\OOT^\rec$ security.
+%\end{lemma}
+%\begin{proof}
+%	Follows directly from \lemmaref{lemma:is_a} with \lemmaref{lem:malRec2} for $\OOT^\send$ and \ref{lem:malSend} for $\OOT^\rec$.
+%\end{proof}
+%\fi
+
+
+
+\begin{definition}\label{def:ext_Su_R}
+	Let $\Pi^{\textsf{ext-R}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\send u}$.
+\end{definition}
+\begin{lemma}\label{lem:ext_Su_R}
+	The $\Pi^{\textsf{ext-R}}$ protocol realizes 1-out-of-$N$ $\OOT^\rec$ security.
+\end{lemma}
+\begin{proof}
+	Security against a malicious receiver follows from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}. 
+	
+	
+	\begin{claim}[Malicious Sender Security]\label{claim:ext-Su-MalSender}
+		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\rec$ functionality.
+	\end{claim}
+	\begin{proof}
+		The general security of this claim also follows from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}. What remains to be shown is that the random oracle can be programmed appropriately so that it is consistent with the ideal functionality. Observe that the honest receiver uniformly chooses $\tt_0^j$ and $\bb\in\{0,1\}^\nc$ is uniformly sampled by the $\OOT^{\send u}$ functionality. Now observe that all of the outputs strings are of the form
+		\begin{align*}
+			\vv_{i,j}&=\H(i,\qq_i + \bb \odot \mathcal{C}(map(x)))\\
+					 &=\H(i,\, \tt_i + \bb \odot (c_i + \mathcal{C}(map(x)))).
+		\end{align*}
+		Prior to receiving the output of $\OOT^{\send u}$, $\tt_i$ is uniformly distributed in the view of \Adv. As such, $\Adv$ has negligible probability of querying strings of this form. Therefore, $\H$ can be programmed to return the ideal output of $\OOT^\rec$ when \Adv queries it.
+		
+		The second concern is there does not exist distinct $x,x'\in[N]$ s.t. 
+		$$
+			\bb \odot \mathcal{C}(map(x)) = \bb \odot \mathcal{C}(map(x'))
+		$$
+		as this would result in $\H(i,\qq_i + \bb \odot \mathcal{C}(map(x)))=\vv_{i,x}=\vv_{i,x'}=\H(i,\qq_i + \bb \odot \mathcal{C}(map(x')))$ and thereby allow \Adv to distinguish. However, this happens with negligible probability as described in claim 2, hybrid 4 of \lemmaref{lem:ext-E}.
+		\pe
+	\end{proof}
+\pe
+\end{proof}
+
+
+
+
+\begin{definition}\label{def:ext_Su_U}
+	Let $\Pi^{\textsf{ext-U}}$ be the protocol of \definitionref{def:ext_Su_R} where the random oracle $\H$ is redefined as follows. 
+	\begin{enumerate}
+		\item Let $\H':\{0,1\}^{[m]\times \mathbb{F}^\nc_2}\rightarrow\{0,1\}^\kappa$ be a random oracle.
+		\item In \stepref{step:extInit}, \send samples $k\gets\mathbb{F}^\nc_2$ sends an extractable commitment of $k$ to \rec. 
+		\item After receiving $U$ in \stepref{step:extSendU}, \send decommits to $k$ to \rec who aborts is the decommitment fails.
+		\item Both parties define $\H(i,x)=\H'(i,x+k)$.
+	\end{enumerate}
+\end{definition}
+\begin{lemma}
+	The $\Pi^{\textsf{ext-U}}$ protocol realizes 1-out-of-$N$ $\OOT^\U$ security.
+\end{lemma}
+%
+\iffullversion
+\input{proofs/ext_S_U.tex}
+\else
+\begin{proof}[sketch]
+	The intuition of this statement is that \rec must commit to their selection $x_1,...,x_m$ before knowing $k$. As such, the simulator can first extract $x_i$ and then program the oracle. The probability of \rec querying the oracle at $\H'(i,y+k)$ where $y$ has the form $y=\qq_i + \bb \odot\mathcal{C}(w)$ is negligible. See \appendixref{proof:ext_S_U} for details.
+\end{proof}
+\fi
+
+
+\subsection{OT Extension with an Ideal Cipher}\label{sec:extIdealCipher}
+We now discuss how to efficiently implement OT extension by restricting the input domain of the random oracle $\H$ to be $\{0,1\}^\nc$. In particular, we are interested in the 1-out-of-2 OT case where $\nc=\kappa=128$. The core motivation for OT extension in this setting is the pervasive support for hardware based implementations of AES, which we will then use as an ideal cipher to hash the output messages. In this model we design two new protocols that satisfy $\OOT^\send$ and $\OOT^\U$-security respectively and achieve better concrete performance than the protocols analyzed in the \sectionref{sec:extSec}. These previous protocols have required a random oracle with input domain $[m]\times \mathbb{F}^\nc_2$ which we reduce to $\mathbb{F}^\nc_2$ while maintaining security. 
+
+Interestingly, existing implementations\cite{libOTe,encrypto,KOS,EMP} have either instantiated $\H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The authors of \cite{EMP} independently identified the same implementation issue concurrently to us. \cite{EMP} securely implement $\H(i,x)$. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_2,c_2\in\mathbb{Z}_1$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security. For example, let $c_1=c_2=1$, then \rec can choose $T_0$ such that $\tt_i+i=\tt_{i'}+i'$. It then holds that all the output messages of the receiver will be the same value.  That is, for all $i,i'\in[m],x\in[N]$, it holds that $\vv_{i,x}=\vv_{i',x}$. 
+
+%The motivation for deviating from protocol specification of $\H(i,x)$ is for the case of 1-out-of-2 OT where $x\in\{0,1\}^{\kappa}$ where $\kappa=128$. In this case it can be temping to use AES with a fixed key to implement $\H$ since hardware based AES is roughly 45 times faster than optimized hashing implementations\cite{blake2} in our experiments. 
+
+One solution is to implement $\H$ directly as a random oracle as opposed to first adding the input together. However, in the case of 1-out-of-2 OT this would prevent the efficient use of AES based random oracle. We take a different approach by removing the requirement for inputting $i$ into the hash function, i.e. \rec outputs $\H(\tt_i)$ as opposed to $\H(i,\tt_i)$. We prove this approach secure given that $T_0$ is sampled uniformly. Intuitively, this condition is sufficient due to collisions on the input to $\H$ being negligible, i.e. the set $\{\tt_i + \bb\oplus\mathcal{C}(x) \mid \forall i,x\}$ does not collide\footnote{Assuming $\bb$ is uniformly sampled.}.
+
+%We begin with the $\Pi^{\textsf{ext-R}}$ protocol defined in \definitionref{def:ext_R_S}.
+\begin{definition}\label{def:ext_R_S}
+	Let $\Pi^{\textsf{ext-R}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+\end{definition}
+\begin{lemma}\label{lem:ext_R_S}
+	The $\Pi^{\textsf{ext-R}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security, for $N=\textsf{poly}(\kappa)$. Against a malicious \rec,  $\Pi^{\textsf{ext-R}\pi}$ realizes $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
+\end{lemma}
+\iffullversion
+\input{proofs/ext_R_S.tex}
+\else
+\begin{proof}
+	See \appendixref{proof:ext_R_S}.
+	\pe
+\end{proof}
+\fi
+
+\begin{definition}\label{def:ext_U_U}
+	Let $\Pi^{\textsf{ext-U}u\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
+	\begin{enumerate}
+		\item In round one, \send samples $k\gets\{0,1\}^{\kappa}$ and sends a commitment of $k$ to \rec.
+		\item After \stepref{step:consistency}, \send decommits $k$ to \rec who aborts if it fails.
+		\item Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+	\end{enumerate}
+\end{definition}
+
+\begin{lemma}\label{lem:ext_U_U}
+	The $\Pi^{\textsf{ext-U}u\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security, for $N=\textsf{poly}(\kappa)$.
+\end{lemma}
+\iffullversion
+\input{proofs/ext_U_U.tex}
+\else
+\begin{proof}
+See \appendixref{proof:ext_U_U}.
+\pe
+\end{proof}
+\fi
+
