@@ -50,7 +50,7 @@ we give an overview over these implications and transformations.
 
 We also show that endemic OT is weaker than the other notions but at the same time this allows a minimal round complexity of a single round. More precisely, we show that there is no one round OT that achieves sender or receiver chosen message security.
 
-\paragraph{From Key Agreement to OT.} A common strategy to construct OT from PKE is to use a PKE where the public keys form a group \cite{C:PeiVaiWat08}, which we will denote with $(\G,\oplus)$. By giving a challenge $c$ and forcing the receiver to generate two public keys $\pk_0$ and $\pk_1$ s.t. $c=\pk_0\oplus \pk_1$, he can intuitively only decrypt ciphertexts with respect to one of them. But this does actually not follow from the standard notion of PKE since an adversary could generate $\pk_0$ and $\pk_1$ jointly given $c$. It requires a dual-mode cryptosystem \cite{C:PeiVaiWat08} that is tailored towards this property. Dual-mode cryptosystems are known from DDH, QR and LWE \cite{C:PeiVaiWat08} but is not clear how to extend these results to other assumptions.\footnote{Barreto et al. \cite{EPRINT:BDDMN17b} claim to construct a dual-mode cryptosystem with search hardness from coding based assumptions, but their security analysis has significant gaps, namely it lacks a security reduction.}
+\paragraph{From Key Agreement to OT.} A common strategy to construct OT from PKE is to use a PKE where the public keys form a group \cite{C:PeiVaiWat08}, which we will denote with $(\G,\oplus)$. By giving a challenge $c$ and forcing the receiver to generate two public keys $\pk_0$ and $\pk_1$ s.t. $c=\pk_0\oplus \pk_1$, he can intuitively only decrypt ciphertexts with respect to one of them. But this does not actually follow from the standard notion of PKE since an adversary could generate $\pk_0$ and $\pk_1$ jointly given $c$. It requires a dual-mode cryptosystem \cite{C:PeiVaiWat08} that is tailored towards this property. Dual-mode cryptosystems are known from DDH, QR and LWE \cite{C:PeiVaiWat08} but is not clear how to extend these results to other assumptions.\footnote{Barreto et al. \cite{EPRINT:BDDMN17b} claim to construct a dual-mode cryptosystem with search hardness from coding based assumptions, but their security analysis has significant gaps, namely it lacks a security reduction.}
 
 Another approach \cite{C:OstRicSca15,cryptoeprint:2018:473} uses specific commitment protocols which forces the receiver to commit to a public key before $c$ is known. The drawback of this approach is that it requires four rounds and the known constructions of such a commitment protocol are not efficient \cite{STOC:Kilian92,C:OstRicSca15}. 
 
@@ -67,15 +67,15 @@ In \sectionref{sec:otext} we explore the rich implications endemic security has 
 \iffullversion
 These protocols are derived from the seminal black-box protocol of Ishia, Kilian, Nissim and Petrank\cite{C:IKNP03}. We note that in all cases the Sender Chosen Message variant of these protocols\cite{C:IKNP03,C:KelOrsSch15,RSA:OrrOrsSch17} are secure. 
 \fi
-The functionality of 1-out-of-$N$ OT extension allows $\nc\approx\kappa$ instances of 1-out-of-2 OTs to be transformed into $m=\textsf{poly}(\kappa)$ instances of 1-out-of-$N$ OTs. There are several advantages of this transformation 1) $m$ can be polynomial times larger than $\nc$. 2) Only symmetric key cryptography is required which provides a larger performance improvement. 3) In some cases $N$ can be exponential in the security parameter $\kappa$ which we indicate with the use of capital $N$. 
+The functionality of 1-out-of-$N$ OT extension allows $\nc\approx\kappa$ instances of 1-out-of-2 OTs to be transformed into $m=\textsf{poly}(\kappa)$ instances of 1-out-of-$N$ OTs. There are several advantages of this transformation. 1) $m$ can be polynomial times larger than $\nc$. 2) Only symmetric key cryptography is required which provides a larger performance improvement. 3) In some cases $N$ can be exponential in the security parameter $\kappa$ which we indicate with the use of capital $N$. 
 
-The 1-out-of-2 OTs that are being transformed are referred to as \emph{base OTs}. Existing protocols \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15,RSA:OrrOrsSch17} have called for the use of base OTs with the sender chosen message security notion, e.g. $\OOT^\send$. However, we show that this requirement can be relaxed to allow the base OTs to only achieve endemic security. In both cases ($\OOT^\send$ or $\OOT^\E$ base OTs) the OT extension protocol outputs messages that satisfy the Endemic security notion.  Tradition OT extension protocols, e.g. \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15}, then apply the $\Pi^{\send}_{1,N}$ transform from \figureref{fig:protoSendOT} to realize the Sender Chosen Message functionality $\OOT^\send$.
+The 1-out-of-2 OTs that are being transformed are referred to as \emph{base OTs}. Existing protocols \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15,RSA:OrrOrsSch17} have called for the use of base OTs with the sender chosen message security notion, e.g. $\OOT^\send$. However, we show that this requirement can be relaxed to allow the base OTs to only achieve endemic security. In both cases ($\OOT^\send$ or $\OOT^\E$ base OTs) the OT extension protocol outputs messages that satisfy the Endemic security notion.  Tradition OT extension protocols, e.g. \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15}, then apply the $\Pi^{\send}_{1,N}$ transform from \figureref{fig:protoSendOT} to realize the sender chosen message functionality $\OOT^\send$.
 \iffullversion
  This observation suggests that more efficient OT extension can be realized by replacing Sender Chosen Message base OTs with Endemic OTs, e.g. our protocol.
 \fi
-The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} suggest that the $\Pi^{\send}_{1,N}$ transform  can be removed and resulting protocol would satisfy the Uniform Message security notion, but in  \ref{sec:extAttack} we show this to not be the case. 
+The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} suggest that the $\Pi^{\send}_{1,N}$ transform  can be removed and resulting protocol would satisfy the Uniform Message security notion, but in  \sectionref{sec:extAttack} we show this to not be the case. 
 \iffullversion
-In particular, \ref{sec:extAttack} detail three attacks where the first  allows a malicious party to bias the OT messages that they output while the second and third attacks succeed even when base OTs with uniform message security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random. Therefore, we show that the protocol only achieves Endemic security.
+In particular, \sectionref{sec:extAttack} detail three attacks where the first  allows a malicious party to bias the OT messages that they output while the second and third attacks succeed even when base OTs with uniform message security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random. Therefore, we show that the protocol only achieves Endemic security.
 
 We note that many protocols that utilize Uniform Message security can likely tolerate the weaker notion of Endemic security, e.g. \cite{EC:RinRos17,CCS:RinRos17}.  However, other protocols such as the set inclusion protocol of \cite[Figure 5]{RSA:OrrOrsSch17} are insecure\footnote{The sender set all the OT messages to be the same value and force the receiver to conclude their item is in the sender's set.} when Uniform Message security is not satisfied. 
 \fi
@@ -84,19 +84,19 @@ We note that many protocols that utilize Uniform Message security can likely tol
 	\centering
 	\begin{tikzpicture}[scale=0.5]\small
 	\node (pi) at (6,4.5) {\normalsize $\Pi^\textsf{ext}$};
-	\node (Base) at (0,5) {\underline{\normalsize Base OT Security}};
-	\node (U) at (0,4) {Uniform Security $\OOT^{\U u}$};
-	\node (SCu) at (-0.1,3) {Sender Chosen $\OOT^{\send u}$};
-	\node (SC) at (-0.1,2) {Sender Chosen $\OOT^{\send}$};
-	\node (RC) at (-0.35,1) {Receiver Chosen  $\OOT^{\rec}$};
-	\node (E) at (-0.05,0) {Endemic Security  $\OOT^{\E}$};
+	\node (Base) at (0.4,5) {\underline{\normalsize Base OT Security}};
+	\node (U)  [anchor=east] at (3.3,4) {Uniform Security $\OOT^{\U u}$};
+	\node (SCu)[anchor=east] at (3.3,3) {Sender Chosen $\OOT^{\send u}$};
+	\node (SC) [anchor=east] at (3.3,2) {Sender Chosen $\OOT^{\send}$};
+	\node (RC) [anchor=east] at (3.3,1) {Receiver Chosen  $\OOT^{\rec}$};
+	\node (E)  [anchor=east] at (3.3,0) {Endemic Security  $\OOT^{\E}$};
 	
 	
-	\node (Ext) at (12,5) {\underline{\normalsize OT Extension Security}};
-	\node (EU) at (12,4) {Uniform Security $\OOT^{\U}$};
-	\node (ESC) at (12.13,3) {Sender Chosen $\OOT^{\send}$};
-	\node (ERC) at (12.38,1) {Receiver Chosen  $\OOT^{\rec}$};
-	\node (EE) at (12.07,0) {Endemic Security  $\OOT^{\E}$};
+	\node (Ext)  at (12,5) {\underline{\normalsize OT Extension Security}};
+	\node (EU)  [anchor=west] at (8.5,4) {Uniform Security $\OOT^{\U}$};
+	\node (ESC) [anchor=west] at (8.5,3) {Sender Chosen $\OOT^{\send}$};
+	\node (ERC) [anchor=west] at (8.5,1) {Receiver Chosen  $\OOT^{\rec}$};
+	\node (EE)  [anchor=west] at (8.5,0) {Endemic Security  $\OOT^{\E}$};
 %	\draw [-implies,double equal sign distance] (U) -- (SC);
 %	\draw [-implies,double equal sign distance] (U) -- (RC);
 %	\draw [-implies,double equal sign distance] (SC) -- (E);
@@ -113,11 +113,11 @@ We note that many protocols that utilize Uniform Message security can likely tol
 	\end{tikzpicture}
 	\label{fig:OTExtrelations}
 	\caption{
-		The figure depicts the implication different Base OT security notions (\definitionref{def:otSec}) have on the result OT extension protocol.  $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed by $\Pi^\textsf{ext}$ into an OT extension realizing security $B$, where $\Pi^\textsf{ext}$ is the protocol of \figureref{fig:otExt} such that $\OOT$ is the left hand side oracle. The dashed arrows are the same expect $\Pi^{\textsf{ext}}$ must be slightly modified. Note, $\OOT^{*u}$ denotes $\OOT^*$ security where the receiver's selection is uniformly sampled by the functionality.
+		The figure depicts the implication different Base OT security notions (\definitionref{def:otSec}) have on the result OT extension protocol.  $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed by $\Pi^\textsf{ext}$ into an OT extension realizing security $B$, where $\Pi^\textsf{ext}$ is the protocol of \figureref{fig:otExt}. The dashed arrows are the same expect $\Pi^{\textsf{ext}}$ must be slightly modified. Note, $\OOT^{*u}$ denotes $\OOT^*$ security where the receiver's selection is uniformly sampled by the functionality \definitionref{def:ot},\ref{def:got}.
 	}
 \end{figure}
 
-From endemic OT extension uniform message security can be achieved in several ways. One solution is the black-box transformation $\Pi^\U_{1,N}$ of \figureref{fig:uniformOT} which lifts an OT protocol with Endemic security to satisfy Uniform Message security. However, this would require additional rounds and significant communication. We demonstrate an alternative solution which replaces the base OTs with a protocol that satisfies Uniform Message, Uniform Selection security $\OOT^{\U u}$ and prove that this yields an OT extension protocol with Uniform Message security without the need to modify the extension protocol. More generally, \figureref{fig:OTExtrelations} shows the relation between different base OT security notions and the resulting OT extension message security. 
+Uniform message security can be achieved from endemic OT extension in several ways. One solution is the black-box transformation $\Pi^\U_{1,N}$ of \figureref{fig:uniformOT} which lifts an OT protocol with Endemic security to satisfy Uniform Message security. However, this would require additional rounds and significant communication. We demonstrate an alternative solution which replaces the base OTs with a protocol that satisfies Uniform Message, Uniform Selection security $\OOT^{\U u}$ and prove that this yields an OT extension protocol with Uniform Message security with minimal need to modify the extension protocol. More generally, \figureref{fig:OTExtrelations} shows the relation between different base OT security notions and the resulting OT extension message security. 
 \iffullversion
 For example, the protocols of \cite{C:IKNP03,EC:ALSZ15,C:KelOrsSch15} perform
 $$
@@ -135,5 +135,5 @@ We also instantiate it based on the Kyber key exchange \cite{EPRINT:BDKLLS17,NIS
 
 We give implementations and benchmarks for two OT protocols based on DDH and one based on LWE as well as five implementations of OT extension protocols. Both our OT protocols can perform an OT in one millisecond. We compare our results with the OTs of Chou \& Claudio \cite{LC:ChoOrl15} and Naor \& Pinkas \cite{SODA:NaoPin01}. In a WAN network setting we observe that our one round DDH protocol is the fastest, requiring 110ms. The next fastest framework was the two round protocol of \cite{LC:ChoOrl15}, requiring 210ms. In addition to being faster than \cite{LC:ChoOrl15} in the WAN setting, our protocols achieve full simulation based security without performing addition rounds as \cite{LC:ChoOrl15} requires. 
 
-Our communication optimized OT extension protocol achieving endemic security requires two rounds of communication and can processes 2 million OTs per second. This is on par with a throughput optimized version of \cite{C:KelOrsSch15,libOTe} in the LAN setting. In the WAN setting our protocol becomes 2.5 times faster than \cite{C:KelOrsSch15} (which achieves stronger security). Our computation optimized protocol in the ideal cipher model can process 23 million OTs per second over the course of 5 rounds and achieves full uniform message security.
+Our communication optimized OT extension protocol achieving endemic security requires two rounds of communication and can processes 2 million OTs per second. This is on par with a throughput optimized version of \cite{C:KelOrsSch15,libOTe} in the LAN setting. In the WAN setting our protocol becomes 2.5 times faster than \cite{C:KelOrsSch15} (which achieves stronger security). Our computation optimized protocol in the ideal cipher model can process 23 million OTs per second in the LAN over the course of 5 rounds and achieves full uniform message security.
 
