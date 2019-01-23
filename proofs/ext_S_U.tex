@@ -1,0 +1,27 @@
+\begin{proof}\label{proof:ext_S_U}
+
+	\begin{claim}[Malicious Sender Security]\label{claim:ext-Su-U-MalSender}
+		$\Pi^{\textsf{ext-S}u+}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+
+	\begin{proof}
+		The simulation follows the same strategy as \lemmaref{lem:ext_Su_R} except now $\Adv$ is allowed to sample $k$ and have the parties output messages of the form $\vv_{i,x}:=\H(i, k + \tt_i + \bb \odot (\cc_i + \mathcal{C}(map(x))))$. The simulator $\Adv'$ samples $\tt_i$ uniformly at random after $\Adv$ is bound to their choice of $k$ and therefore its easy to verify that \Adv has negligible probability of querying $\H$ on such an input before receiving $k$.
+		\pe
+	\end{proof}
+	
+	\begin{claim}[Malicious Receiver Security]\label{claim:ext-Su-U-MalReceiver}
+		$\Pi^{\textsf{ext-S}u+}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ oracle.
+	\end{claim}
+	\begin{proof}
+		The simulation also follows the same strategy as \lemmaref{lem:ext_Su_R} with a few key differences. 
+		\begin{enumerate}
+			\item $\Adv'$ sends a dummy commitment in place of the commitment to $k$, i.e. a uniform string from the same distribution.
+			\item Then $\Adv'$ runs the normal simulation described by  \lemmaref{lem:ext_Su_R} up to the point that \send would decommit to $k$ except that $\Adv'$ does not program $\H$ as described.
+			
+			\item At this point $\Adv'$ has received $U$ in step \stepref{step:extSendU} and $\Adv$ send a valid proof for \stepref{step:consistency} (by assumption or $\Adv'$ would have aborted). $\Adv'$ now uniformly samples $k\gets\mathbb{F}^\nc_2$ and programs the commitment random oracle to decommit to $k$. $\Adv'$ then programs $\H'$ to output the ideal output $\vv_{i,x_i}$ of \rec for the query $\H'(i,k + \tt_i)$. Since $k\in\mathbb{F}^\nc_2$ is uniformly distributed in the view of $\Adv$, it follows that $\Adv$ has probability at most $q 2^{-\nc}\leq q2^{-\kappa}=\negl$ probability of querying the oracle at this point, where $q$ is the number of queries that \Adv has made.
+			\item $\Adv'$ then sends the decommits of $k$ to $\Adv$ and completes the simulation as \lemmaref{lem:ext_Su_R} does.
+		\end{enumerate} 
+		\pe
+	\end{proof}
+	\pe
+\end{proof}
