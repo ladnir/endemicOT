@@ -1,5 +1,5 @@
 \section{Instantiations}\label{sec:inst}
-In the following, we first show how to efficiently instantiate the construction in \figureref{fig:oneroundKAtoOT} using the Diffie-Hellman key exchange. In particular, we show how a tighter security reduction can be obtained using the random selfreducibility of the DDH assumption.
+In the following, we first show how to efficiently instantiate the construction in \figureref{fig:oneroundKAtoOT} using the Diffie-Hellman key exchange. In particular, we show how a tighter security reduction can be obtained using the random self-reducibility of the DDH assumption.
 
 Afterwards, we show how to instantiate the construction in \figureref{fig:KAtoOT} based on the lattice based Kyber key agreement. 
 
@@ -95,7 +95,7 @@ Further, Crystals-Kyber specifies the following algorithms.
 \end{description}
 \end{definition}
 
-It is important to know, that $\cdt:=\kenc_{d_t}(\kcom_q(\mt, d_t)$, where $\mt$ is computationally indistinguishable from a uniform element in $\R_q^{\kLWE}$ based on the \MLWE assumption. In the following, we will choose $d_t=13$ such that $q<2^{d_t}$ and no compression takes place. This will help us to avoid complications and does not decrease efficiency besides a sligthly larger public key $\pk$. Further, we will keep component $\rho$ of $\pk$ consistent between all $\pk$ used in a single $1$ out of $n$ OT.
+It is important to know, that $\cdt:=\kenc_{d_t}(\kcom_q(\mt, d_t)$, where $\mt$ is computationally indistinguishable from a uniform element in $\R_q^{\kLWE}$ based on the \MLWE assumption. In the following, we will choose $d_t=13$ such that $q<2^{d_t}$ and no compression takes place. This will help us to avoid complications and does not decrease efficiency besides a slightly larger public key $\pk$. Further, we will keep component $\rho$ of $\pk$ consistent between all $\pk$ used in a single $1$ out of $n$ OT.
 
 In order to instantiate our framework, we need to define a group operation $\pk\oplus\pk$ and a hash functions that maps to a uniform $\cdt$ component of $\pk$, i.e. a uniform element in $\R_q^{\kLWE}$. For the latter, we use a hash function that produces an output bit stream, which is in $\kB^{*}$, and use $\kLWE$ different parts of the stream and apply $\kparse$ to the $\kLWE$ streams to obtain a (pseudo) uniform element in $\R_q^{\kLWE}$ whenever the bit streams are (pseudo) uniform.
 
@@ -107,4 +107,4 @@ By using \theoremref{thm:KAtoOT}, \lemmaref{lem:multuniform} and \lemmaref{lem:k
 When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Crystals-Kyber, then in the programmable random oracle model the resulting endemic OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\MLWE}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}
 
-In the following, we will instatiate Kyber with $k=3$ which is claimed to have a qbit security level of $161$ bit. This security level does not immediatly carry over to our Kyber based OT, there is an additional security loss of $Q^2$. Though we are unaware of an attack that is significantly more efficient on our Kyber based OT than the attacks on Kyber.
+In the following, we will instantiate Kyber with $k=3$ which is claimed to have a qbit security level of $161$ bit. This security level does not immediately carry over to our Kyber based OT, there is an additional security loss of $Q^2$. Though we are unaware of an attack that is significantly more efficient on our Kyber based OT than the attacks on Kyber.

@@ -18,7 +18,7 @@ Let the scheme be $\delta$ correct, for $\delta\geq 1-\negl$. Then, the probabil
 $$
 \Pr[(s_{0,1},s_{1,2})=(s_0,s_1)]\geq \left(\frac{3}{4}\delta\right)^2> \frac{1}{2},
 $$
-where $(s_0,s_1)=f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$. A malicious receiver interacting with the ideal OT can achieve this at most with probability $\frac{1}{2}$. Hence, there is a distinguisher that breaks the sender tweakable security of the OT.
+where $(s_0,s_1)=f_{\OT,\send}(\tape_{\send},\mes_{\rec},\aux)$. A malicious receiver interacting with the ideal OT can achieve this at most with probability $\frac{1}{2}$. Hence, there is a distinguisher that breaks the sender chosen message security of the OT.
 
 Now assume that for any $(s_0,s_1)$,
 \begin{eqnarray}\label{eqn:noncomm}
@@ -85,7 +85,7 @@ Therefore,
 &\geq & \frac{2^{\ell}-1}{2^{\ell+1}}+\frac{2^{\ell}}{2^{\ell+1}}\frac{9}{16}-\negl\geq
 \frac{1}{2}+\frac{1}{32}-\frac{1}{2^{\ell+1}}+\frac{1}{4}-\negl
 \end{eqnarray*}
-where we apply a union bound to argue that the outputs are correct and corresponds to the receivers choice. Given that $\ell\geq 1$, the malicious sender guesses $b$ correctly with at least probability $\frac{1}{2}+\frac{1}{32}-\negl$. Since in the ideal model, an adversary can guess $b$ only with probability $\frac{1}{2}$, this constitutes a break of receiver tweakable security.
+where we apply a union bound to argue that the outputs are correct and corresponds to the receivers choice. Given that $\ell\geq 1$, the malicious sender guesses $b$ correctly with at least probability $\frac{1}{2}+\frac{1}{32}-\negl$. Since in the ideal model, an adversary can guess $b$ only with probability $\frac{1}{2}$, this constitutes a break of receiver chosen message security.
 
 In the case two, for any $s_b$,
 $$
