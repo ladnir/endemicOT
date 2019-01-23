@@ -86,16 +86,16 @@ We note that many protocols that utilize Uniform Message security can likely tol
 	\node (pi) at (6,4.5) {\normalsize $\Pi^\textsf{ext}$};
 	\node (Base) at (0,5) {\underline{\normalsize Base OT Security}};
 	\node (U) at (0,4) {Uniform Security $\OOT^{\U u}$};
-	\node (SCu) at (-0.1,3) {Sender Tweakable $\OOT^{\send u}$};
-	\node (SC) at (-0.1,2) {Sender Tweakable $\OOT^{\send}$};
-	\node (RC) at (-0.35,1) {Receiver Tweakable  $\OOT^{\rec}$};
+	\node (SCu) at (-0.1,3) {Sender Chosen $\OOT^{\send u}$};
+	\node (SC) at (-0.1,2) {Sender Chosen $\OOT^{\send}$};
+	\node (RC) at (-0.35,1) {Receiver Chosen  $\OOT^{\rec}$};
 	\node (E) at (-0.05,0) {Endemic Security  $\OOT^{\E}$};
 	
 	
 	\node (Ext) at (12,5) {\underline{\normalsize OT Extension Security}};
 	\node (EU) at (12,4) {Uniform Security $\OOT^{\U}$};
-	\node (ESC) at (12.13,3) {Sender Tweakable $\OOT^{\send}$};
-	\node (ERC) at (12.38,1) {Receiver Tweakable  $\OOT^{\rec}$};
+	\node (ESC) at (12.13,3) {Sender Chosen $\OOT^{\send}$};
+	\node (ERC) at (12.38,1) {Receiver Chosen  $\OOT^{\rec}$};
 	\node (EE) at (12.07,0) {Endemic Security  $\OOT^{\E}$};
 %	\draw [-implies,double equal sign distance] (U) -- (SC);
 %	\draw [-implies,double equal sign distance] (U) -- (RC);
@@ -113,7 +113,7 @@ We note that many protocols that utilize Uniform Message security can likely tol
 	\end{tikzpicture}
 	\label{fig:OTExtrelations}
 	\caption{
-		The figure depicts the implication different Base OT security notions (\definitionref{def:otSec}) have on the result OT extension protocol.  $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed by $\Pi^\textsf{ext}$ into an OT extension realizing security $B$, where $\Pi^\textsf{ext}$ is the protocol of \figureref{fig:otExt} such that $\OOT$ is the left hand side oracle. The dashed arrows are the same expect $\Pi^{\textsf{ext}}$ must be slightly modified. 
+		The figure depicts the implication different Base OT security notions (\definitionref{def:otSec}) have on the result OT extension protocol.  $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed by $\Pi^\textsf{ext}$ into an OT extension realizing security $B$, where $\Pi^\textsf{ext}$ is the protocol of \figureref{fig:otExt} such that $\OOT$ is the left hand side oracle. The dashed arrows are the same expect $\Pi^{\textsf{ext}}$ must be slightly modified. Note, $\OOT^{*u}$ denotes $\OOT^*$ security where the receiver's selection is uniformly sampled by the functionality.
 	}
 \end{figure}
 
