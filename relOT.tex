@@ -10,15 +10,15 @@ Then $\OOT^\U$-security implies $\OOT^{\send}$ as well as $\OOT^\rec$-security. 
 \input{proofs/is_a.tex}
 \else
 \begin{proof}[sketch]
-	The intuition behind  \lemmaref{lemma:is_a} is that uniform message security only restricts the power of an adversary as compared to sender or receiver chosen message security. At such, any attack an adversary can perform in the present of a uniform message secure OT also holds when that OT is replaced by sender or receiver chosen message secure OT. 
+	The intuition behind  \lemmaref{lemma:is_a} is that uniform message security only restricts the power of an adversary as compared to sender or receiver chosen message security. At such, any attack an adversary can perform in the present of a uniform message secure OT also holds when that OT is replaced by sender or receiver chosen message secure OT, since they can input uniform strings.
 	
-	Similarly, sender or receiver chosen message security is also a restriction of what an adversary can do compared to endemic security. It is important to distinguish that while security will not be violated, replacing a sender or receiver chosen message OT protocol with a uniform message OT protocol may result in the larger protocol aborting due to the distribution of the messages being uniform as opposed to chosen. See  \appendixref{sec:addOT} for a formal proof of \lemmaref{lemma:is_a}.
+	Similarly, sender or receiver chosen message security is also a restriction of what an adversary can do compared to endemic security. It is important to distinguish that while security will not be violated, replacing a sender or receiver chosen message OT protocol with a uniform message OT protocol may result in the larger protocol aborting due to the distribution of the messages being uniform as opposed to chosen. See  \appendixref{sec:addOT} for a formal proof of \lemmaref{lemma:is_a}.\pe
 \end{proof}
 \fi
 
 
 
-Even though endemic security is implied by all the other security notions and could be seen as the weakest, it is still sufficient to obtain any of the other notions by using very simple transformations. In the following lemmas we show these transformations and prove their security.   
+Even though endemic security is implied by all the other security notions and could be seen as the weakest, it is still sufficient to obtain any of the other notions by using very simple transformations. In the following lemmas we show these transformations and sketch their security.   
 
 \begin{figure}[t]
 \centering
@@ -54,7 +54,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:EtoS}
-	$\Pi^{\send}_{k,n}$ of \figureref{fig:protoSendOT} realizes the Sender Chosen Ideal OT $\OOT^{\send}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
+	$\Pi^{\send}_{k,n}$ of \figureref{fig:protoSendOT} realizes the sender chosen message ideal OT $\OOT^{\send}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
 \end{lemma}
 
 \iffullversion
@@ -75,7 +75,7 @@ Even though endemic security is implied by all the other security notions and co
 \end{proof}
 \else
 \begin{proof}[sketch]	
-	The case of a corrupt sender is straight forward. The simulator receives $(m_i)_{i\in[n]},(r_i)_{i\in[n]}$ from \rec and sends $(m_i\oplus r_i)_{i\in[n]}$ to $\OOT^\send$. The output distribution is identical to the real protocol. Consider a corrupt receiver. The simulator receives their set and strings $(m_i)_{i\in\in{\set}}$. All other $(m_i)_{i\in\in{[n]\setminus\set}}$ are uniformly distributed in their view. Therefore, so is $(m_i+r_i)_{i\in\in{[n]\setminus\set}}$ and the simulator can then replace these strings with $(r_i)_{i\in\in{[n]\setminus\set}}$.
+	The case of a corrupt sender is straight forward. The simulator receives $(m_i)_{i\in[n]},(r_i)_{i\in[n]}$ from \rec and sends $(m_i\oplus r_i)_{i\in[n]}$ to $\OOT^\send$. The output distribution is identical to the real protocol. Consider a corrupt receiver. The simulator receives their set \set and strings $(m_i)_{i\in{\set}}$. All other $(m_i)_{i\in{[n]\setminus\set}}$ are uniformly distributed in their view. Therefore, so is $(m_i+r_i)_{i\in{[n]\setminus\set}}$ and the simulator can then replace these strings with $(r_i)_{i\in{[n]\setminus\set}}$.
 \pe
 \end{proof}
 \fi
@@ -116,7 +116,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:EtoR}
-	$\Pi^{\rec}_{k,n}$ of \figureref{fig:protoRecvOT} realizes the Receiver Chosen Ideal OT $\OOT^{\rec}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
+	$\Pi^{\rec}_{k,n}$ of \figureref{fig:protoRecvOT} realizes the receiver chosen message ideal OT $\OOT^{\rec}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E$ hybrid.
 \end{lemma}
 \iffullversion
 \begin{proof}
@@ -136,8 +136,8 @@ Even though endemic security is implied by all the other security notions and co
 \end{proof}
 \else
 \begin{proof}[sketch]
-	Consider a corrupt sender. First, \send sends $(m_i)_{i\in[n]}$ to the simulator and $\OOT^\rec$ sends $(s_i)_{i\in[n]}$. $k$ of the $s_i$ strings will have a distribution specified by $\rec$ while the other are uniform. For all of them, the simulator computes $r_i:=s_i+m_i$ and sends $r_i$ to \send. For the uniform $s_i$, adding another uniform value does not change the distribution. The other messages have an identical distribution.	
-	For a corrupt receiver, the $(m_i)_{i\in[n]\setminus\set}$ are uniformly distributed in their view. Therefore, so is $(m_i+r_i)_{i\in [n]\setminus\set}$. 
+	Consider a corrupt sender. First, \send sends $(m_i)_{i\in[n]}$ to the simulator and $\OOT^\rec$ sends $(s_i)_{i\in[n]}$. $k$ of the $s_i$ strings will have a distribution specified by $\rec$ while the other are uniform. For all of them, the simulator computes $r_i:=s_i\oplus m_i$ and sends $r_i$ to \send. % For the uniform $s_i$, adding another uniform value does not change the distribution. The other messages have an identical distribution.	
+	For a corrupt receiver, the $(m_i)_{i\in[n]\setminus\set}$ are uniformly distributed in their view. Therefore, so is $(m_i+r_i)_{i\in [n]\setminus\set}$.
 \pe
 \end{proof}
 \fi
@@ -182,7 +182,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:EtoU}
-	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the Uniform Ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ (\definitionref{def:coin}) hybrid.
+	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the uniform message ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ (\definitionref{def:coin}) hybrid.
 \end{lemma}
 \iffullversion
 \begin{proof}

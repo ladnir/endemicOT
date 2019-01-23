@@ -71,7 +71,7 @@ The functionality is publicly parameterized by one of the following message samp
 \begin{description}
 \item[] \textsc{Sender Chosen Message:} $\send$ sends the messages $(m_i)_{i\in[n]}$ to the functionality who sets $s_i:=m_i$.
 
-\item[] \textsc{Receiver Chosen Message:} \rec sends the messages $(m_i)_{i\in[n]}$ to the functionality who sets $s_{\set_i}:=s'_i$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in[n]\setminus\set$.
+\item[] \textsc{Receiver Chosen Message:} \rec sends the messages $(m_i)_{i\in[k]}$ to the functionality who sets $s_{\set_i}:=s'_i$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in[n]\setminus\set$.
 
 \item[] \textsc{Uniform Message:} The functionality uniformly samples $(s_1,...,s_n)\gets\{0,1\}^{\ell\times n}$. 
  
