@@ -36,7 +36,7 @@ An \emph{ideal cipher} over a set of tuples of domains and an image is a collect
 
 \begin{definition}[(Two Message) Uniform Key Agreement (\UKA)] 
 Let \G be a group.
-We call a protocol $\Pi$ between two ppt parties \A and \B (two message) uniform key agreement if \A first sends a message $\mes_\A\in\G$ to \B and \B responds with a final message $\mes_\B$ and in the end, both establish a common key $\key$ (see Figure~\ref{fig:UKA}) using a key establish algorithm \EK. Further, we require three properties:
+We call a protocol $\Pi$ between two ppt parties \A and \B (two message) uniform key agreement if \A first sends a message $\mes_\A\in\G$ to \B and \B responds with a final message $\mes_\B$ and in the end, both establish a common key $\key$ (see Figure~\ref{fig:UKA}) using a key establishing algorithm \EK. Further, we require three properties:
 \begin{description}
 \item[Correctness:]
 $$
@@ -69,20 +69,20 @@ An \emph{ideal $k$-out-of-$n$ oblivious transfer} is a functionality that intera
 
 The functionality is publicly parameterized by one of the following message sampling methods:
 \begin{description}
-\item[] \textsc{Sender Chosen Message:} $\send$ sends the messages $(m_i)_{i\in[n]}$ to the functionality who set $s_i:=m_i$.
+\item[] \textsc{Sender Chosen Message:} $\send$ sends the messages $(m_i)_{i\in[n]}$ to the functionality who sets $s_i:=m_i$.
 
 \item[] \textsc{Receiver Chosen Message:} \rec sends the messages $(m_i)_{i\in[n]}$ to the functionality who sets $s_{\set_i}:=s'_i$ for $i\in[k]$ and uniformly samples $s_i\gets\{0,1\}^\ell$ for $i\in[n]\setminus\set$.
 
 \item[] \textsc{Uniform Message:} The functionality uniformly samples $(s_1,...,s_n)\gets\{0,1\}^{\ell\times n}$. 
  
-\item[] \textsc{Endemic Chosen Message:} If $\send$ is corrupt, $\send$ sends the messages $(s_i)_{i\in[n]}$ to the functionality. If \rec is corrupt, \rec sends the messages $(s'_i)_{i\in[n]}$ to the functionality who sets $s_{\set_i}:=s'_i$ for $i\in[k]$.
-All remaining $s_i$ for $i\in [n]$ are uniformly samples $s_i\gets\{0,1\}^\ell$ by  the functionality.
+\item[] \textsc{Endemic:} If $\send$ is corrupt, $\send$ sends the messages $(s_i)_{i\in[n]}$ to the functionality. If \rec is corrupt, \rec sends the messages $(s'_i)_{i\in[n]}$ to the functionality who sets $s_{\set_i}:=s'_i$ for $i\in[k]$.
+All remaining $s_i$ for $i\in [n]$ are uniformly sampled $s_i\gets\{0,1\}^\ell$ by  the functionality.
 \end{description}
 
-As specified by the message sampling method, the functionality constructs messages $(s_i)_{i\in[n]}$. Thereafter, the functionality sends $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in \set}$ to \rec. We denote the ideal functionalities for Sender Chosen, Receiver Chosen, Uniform and Endemic Chosen Message as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. %
+As specified by the message sampling method, the functionality constructs messages $(s_i)_{i\in[n]}$. Thereafter, the functionality sends $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in \set}$ to \rec. We denote the ideal functionalities for sender chosen, receiver chosen, uniform message and endemic as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. %
 \end{definition}
 \begin{remark}
-	We generalize this definition for the case where $n$ can be exponential. In addition, we consider the case when the set $\set$ is sampled uniformly by the functionality. We call this \emph{Uniform Selection} as opposed to \emph{Receiver Selection}. In this case, we denote the analogous oracles for $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$ as $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively. See \definitionref{def:got}.
+	We generalize this definition for the case where $n$ can be exponential. In addition, we consider the case when the set $\set$ is sampled uniformly by the functionality. We call this \emph{uniform selection} as opposed to \emph{receiver selection}. In this case, we denote the analogous oracles for $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$ as $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively. See \definitionref{def:got}.
 \end{remark}
 
 
@@ -104,7 +104,7 @@ where all algorithms receive input $1^\sec$.
 \end{description}
 
 
-We distinguish four different message security notions.
+We distinguish four different security notions.
 \begin{description}
 \item[Uniform Message Security:] The OT is secure with respect to $\OOT^\U$, i.e. $\OOT^\U$-secure.
 \item[Sender Chosen Message Security:] The OT is secure with respect to $\OOT^{\send}$, i.e. $\OOT^{\send}$-secure.
