@@ -1,6 +1,6 @@
 \section{From Key Agreement to Oblivious Transfer}\label{sec:endemicOT}
 
-In \figureref{fig:KAtoOT}, we present the generic construction from any two round key agreement to a two round OT. More efficient is the construction presented in \figureref{fig:oneroundKAtoOT} that transforms a one round key agreement into a one round OT. In \theoremref{thm:KAtoOT}, we show that both constructions yield an endemically secure OT.
+In \figureref{fig:KAtoOT}, we present the generic construction from any two round key agreement to a two round OT. More efficient is the construction presented in \figureref{fig:oneroundKAtoOT} that transforms a one round key agreement into a one round OT. In \theoremref{thm:KAtoOT}, we show that both constructions yield an endemically secure OT. We emphasize that both protocols can be easily adapted to yield an all but one OT. We give the details in Appendix~\ref{sec:allbutone}.
 
 
 
@@ -55,7 +55,9 @@ In \figureref{fig:KAtoOT}, we present the generic construction from any two roun
 
  
 \begin{theorem}\label{thm:KAtoOT}
+
 Given a correct and secure [one-round] \UKA scheme, then the $1$ out of $n$ oblivious transfer in [\figureref{fig:oneroundKAtoOT}] \figureref{fig:KAtoOT}   is an endemic $\OT_{1,n}$ in the programmable random oracle model. 
+
 \end{theorem}
 
 \begin{proof}
