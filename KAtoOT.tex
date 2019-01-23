@@ -59,7 +59,7 @@ Given a correct and secure [one-round] \UKA scheme, then the $1$ out of $n$ obli
 \end{theorem}
 
 \begin{proof}
-The security of the protocols in \figureref{fig:oneroundKAtoOT} and \figureref{fig:KAtoOT} are basically identical except one small difference. Therefore, we focus in this proof on proving the security of the protocol in \figureref{fig:KAtoOT}. We will point out the one small change that one needs to make in order to prove security of the protocol in \figureref{fig:oneroundKAtoOT}. These change occures when using the key indistinguishability of the \UKA scheme. 
+The security of the protocols in \figureref{fig:oneroundKAtoOT} and \figureref{fig:KAtoOT} are basically identical except one small difference. Therefore, we focus in this proof on proving the security of the protocol in \figureref{fig:KAtoOT}. We will point out the one small change that one needs to make in order to prove security of the protocol in \figureref{fig:oneroundKAtoOT}. These change occurs when using the key indistinguishability of the \UKA scheme. 
 We start with proving that the scheme is secure against a malicious sender. 
 \begin{claim}\label{claim:malsender}
 Given a $\delta$ correct and $\epsilon$ $(n-1)$-multi instance uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D

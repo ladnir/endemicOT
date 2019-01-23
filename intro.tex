@@ -22,9 +22,9 @@ For efficiency, we ask for a minimal round complexity, low computational complex
 
 We revisit the security definition of maliciously secure oblivious transfer. We observe that there is very basic security definition which has not been considered in previous literature. We call this security \emph{endemic} security and denote an OT that is endemically secure with endemic OT. 
 
-While the new security defintion might seem unnatural at the first glance, it turns out to be very important to achieve a minimal round complexity as well as to analyze the security of optimized existing OT and OT extension protocols.
+While the new security definition might seem unnatural at the first glance, it turns out to be very important to achieve a minimal round complexity as well as to analyze the security of optimized existing OT and OT extension protocols.
 
-In \sectionref{sec:relot}, we compare our new security notion with previous notions and show that an endemic OT can efficiently  be tranformed such that classical security notions are achieved but potentially at the cost of a higher round complexity. We also show that classical security notions do not permit a one round OT.
+In \sectionref{sec:relot}, we compare our new security notion with previous notions and show that an endemic OT can efficiently  be transformed such that classical security notions are achieved but potentially at the cost of a higher round complexity. We also show that classical security notions do not permit a one round OT.
 
 Given this novel security definition, we give in \sectionref{sec:endemicOT} a construction in the ROM that transforms any two message key agreement protocol, where the distribution of one of the messages is computationally close to uniform, into an endemically secure two message $1$-out-of-$n$ oblivious transfer\footnote{In \namedref{Appendix}{sec:allbutone}, we show how the framework can be adapted to obtain an endemically secure $(n-1)$-out-of-$n$ OT.}. Further, 
 if the key agreement protocol is a one round protocol, we obtain a one round endemic OT. This implies that we get a one round endemic OT from DDH, CDH and two round endemic OT from LWE, LPN, McEliece and Subset Sum.
