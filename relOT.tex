@@ -1,4 +1,4 @@
-\section{Relations between OT Security Notions}\label{sec:relot}
+\section{Relations Between OT Security Notions}\label{sec:relot}
 
 We show now how endemic security relates to the other security notions of uniform, receiver and sender chosen message security. For an overview, see \figureref{fig:OTrelations}.
 \begin{lemma}\label{lemma:is_a}
@@ -10,9 +10,11 @@ Then $\OOT^\U$-security implies $\OOT^{\send}$ as well as $\OOT^\rec$-security. 
 \input{proofs/is_a.tex}
 \else
 \begin{proof}[sketch]
-	The intuition behind  \lemmaref{lemma:is_a} is that uniform message security only restricts the power of an adversary as compared to sender or receiver chosen message security. At such, any attack an adversary can perform in the present of a uniform message secure OT also holds when that OT is replaced by sender or receiver chosen message secure OT, since they can input uniform strings.
+	The intuition behind  \lemmaref{lemma:is_a} is that uniform message security only restricts the power of an adversary $\Adv'$ as compared to sender or receiver chosen message security. Therefore it is harder to construct $\Adv'$ given an adversary $\Adv$ against the protocol.
 	
-	Similarly, sender or receiver chosen message security is also a restriction of what an adversary can do compared to endemic security. It is important to distinguish that while security will not be violated, replacing a sender or receiver chosen message OT protocol with a uniform message OT protocol may result in the larger protocol aborting due to the distribution of the messages being uniform as opposed to chosen. See  \appendixref{sec:addOT} for a formal proof of \lemmaref{lemma:is_a}.\pe
+	Similarly, sender or receiver chosen message security is also a restriction of what an adversary $\Adv'$ can do compared to the endemic security setting. 
+% 	It is important to distinguish that while security will not be violated, replacing a sender or receiver chosen message OT protocol with a uniform message OT protocol may result in the larger protocol aborting due to the distribution of the messages being uniform as opposed to chosen. 
+	See  \appendixref{sec:addOT} for a formal proof of \lemmaref{lemma:is_a}.\pe
 \end{proof}
 \fi
 
@@ -20,7 +22,7 @@ Then $\OOT^\U$-security implies $\OOT^{\send}$ as well as $\OOT^\rec$-security. 
 
 Even though endemic security is implied by all the other security notions and could be seen as the weakest, it is still sufficient to obtain any of the other notions by using very simple transformations. In the following lemmas we show these transformations and sketch their security.   
 
-\begin{figure}[t]
+\begin{figure}
 \centering
 \framebox{
 \begin{tikzpicture}
@@ -75,12 +77,12 @@ Even though endemic security is implied by all the other security notions and co
 \end{proof}
 \else
 \begin{proof}[sketch]	
-	The case of a corrupt sender is straight forward. The simulator receives $(m_i)_{i\in[n]},(r_i)_{i\in[n]}$ from \rec and sends $(m_i\oplus r_i)_{i\in[n]}$ to $\OOT^\send$. The output distribution is identical to the real protocol. Consider a corrupt receiver. The simulator receives their set \set and strings $(m_i)_{i\in{\set}}$. All other $(m_i)_{i\in{[n]\setminus\set}}$ are uniformly distributed in their view. Therefore, so is $(m_i+r_i)_{i\in{[n]\setminus\set}}$ and the simulator can then replace these strings with $(r_i)_{i\in{[n]\setminus\set}}$.
+	The case of a corrupt sender is straight forward. The simulator receives $(m_i)_{i\in[n]},(r_i)_{i\in[n]}$ from \send and sends $(m_i\oplus r_i)_{i\in[n]}$ to $\OOT^\send$. The output distribution is identical to the real protocol. Consider a corrupt receiver. The simulator receives \rec's set \set and strings $(m_i)_{i\in{\set}}$ and $(s_i)_{i\in\set}$ from $\OOT^\send$. He sets $(r_i)_{i\in\set}$ s.t. $s_i=m_i+r_i$. The other $r_i$'s are chosen uniformly.
 \pe
 \end{proof}
 \fi
 
-\begin{figure}[t]
+\begin{figure}
 \centering
 \framebox{
 \begin{tikzpicture}
@@ -110,7 +112,7 @@ Even though endemic security is implied by all the other security notions and co
 % 				\item \label{step:receiverChosen_step2}  $\rec$ sends the strings $r_1,...,r_n$ to $\send$ where $r_i:=s_i\oplus m_i$ for $i\in \set$ and $r_i\gets\{0,1\}^\ell$ for $i\in [n]\setminus\set$.
 % 				\item \label{step:receiverChosen_step3}  $\send$ outputs $(s_i)_{i\in [n]}$ where $s_i:=m_i\oplus r_i$.
 % 	\end{enumerate}\end{minipage}}
-	\caption{Receiver Chosen OT Protocol $\Pi^{\rec}_{k,n}$ in the $\OOT^\E$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
+	\caption{Receiver chosen OT protocol $\Pi^{\rec}_{k,n}$ in the $\OOT^\E$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:protoRecvOT}
 \end{figure}
 
@@ -143,7 +145,7 @@ Even though endemic security is implied by all the other security notions and co
 \fi
 
 
-\begin{figure}[t]
+\begin{figure}
 \centering
 \framebox{
 \begin{tikzpicture}
@@ -176,7 +178,7 @@ Even though endemic security is implied by all the other security notions and co
 % 				\item \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(s_i)_{i\in \set}$ where $s_i:=m_i\oplus r_i$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{ Uniform  OT Protocol $\Pi^{\U}_{k,n}$ in the $\OOT^\E,\F^{\coin}$ hybrid (\definitionref{def:ot}).  For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
+	\caption{ Uniform  OT protocol $\Pi^{\U}_{k,n}$ in the $\OOT^\E,\F^{\coin}$ hybrid (\definitionref{def:ot}).  For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:uniformOT}
 \end{figure}
 
@@ -235,7 +237,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 
-\begin{figure}[t]
+\begin{figure}
 \centering
 \framebox{
 \begin{tikzpicture}
@@ -257,13 +259,13 @@ Even though endemic security is implied by all the other security notions and co
 % 				\item \label{step:coin_step2} Both parties output the bits of $(s_i)_{i\in [k]}$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{Coin flipping Protocol $\Pi^{\coin}$ in the $\OOT^{\U}$ hybrid. For all $i\in[n]$, $m_i$ is in $\bits^\ell$.}
+	\caption{Coin flipping protocol $\Pi^{\coin}$ in the $\OOT^{\U}$ hybrid. For all $i\in[n]$, $m_i$ is in $\bits^\ell$.}
 	\label{fig:coinFlip}
 \end{figure}
 
 
 \begin{lemma}\label{lem:OTtoC}
-	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol (\definitionref{def:coin}) with unconditional security  in the $\O^{\U}$ hybrid  (\definitionref{def:ot}).
+	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol (\definitionref{def:coin}) with unconditional security  in the $\OOT^{\U}$ hybrid  (\definitionref{def:ot}).
 \end{lemma}
 \begin{proof}
 	Follows straigthforwardly from the definition of $\OOT^{\U}$ and the ideal coin tossing functionality $\F^{\coin}$, which outputs a random string to both parties.

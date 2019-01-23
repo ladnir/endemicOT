@@ -24,7 +24,7 @@ An extractable commitment can easily constructed using a random oracle by defini
 We give the following additional security definition for key agreement protocols.
 
 \begin{definition}[One-Round Uniform Key Agreement]
-We call a \UKA \emph{One-Round Uniform Key Agreement} if the function $\mes_{\B}\leftarrow\B(\tape_{\B},\mes_\A)$ does not depend on $\mes_A$ and can be computed solely using input $\tape_{\B}$. More precisely, there is a function $\B'$ such that for any $\mes_{\A}$, $\B'(\tape_{\B})=\B(\tape_{\B},\mes_{\A})$, which we will in the following refer to with $\B$ as well. 
+We call a \UKA \emph{one-round uniform key agreement} if the function $\mes_{\B}\leftarrow\B(\tape_{\B},\mes_\A)$ does not depend on $\mes_A$ and can be computed solely using input $\tape_{\B}$. More precisely, there is a function $\B'$ such that for any $\mes_{\A}$, $\B'(\tape_{\B})=\B(\tape_{\B},\mes_{\A})$, which we will in the following refer to with $\B$ as well. 
 \end{definition}
 
 \begin{definition}[Multi-Instance Uniformity]
@@ -106,7 +106,7 @@ In the following, we give a generalized definition of OT.
 		
 		\item[] \textsc{Uniform Message:} The functionality uniformly samples $s_i\gets\{0,1\}^{\ell}$ for $i\in[n]$. 
 		
-		\item[] \textsc{Endemic Chosen Message:} If $\send$ is corrupt, then $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_i:=\mathcal{M}(i)$.
+		\item[] \textsc{Endemic:} If $\send$ is corrupt, then $\send$ sends the circuit $\mathcal{M} : [n] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_i:=\mathcal{M}(i)$.
 		
 		If \rec is corrupt, \rec sends the circuit  $\mathcal{M} : [k] \rightarrow \{0,1\}^\ell$ to the functionality which defines $s_{\set_i}:=\mathcal{M}(i)$ for $i\in[k]$.
 		
@@ -122,7 +122,7 @@ In the following, we give a generalized definition of OT.
 	As specified by the message sampling method, the oracle receives the circuit $\mathcal{M}$ from the appropriate party if one is called for.  As specified by the selection method, the functionality receives the circuit $\mathcal{S}$ if one is called for. 
 	Thereafter, upon receiving the message $(\textsc{Output}, i)$ from \send, respond with $s_i$. Upon receiving $(\textsc{Output}, i)$ from \rec and if $i\in \set$,  respond with $s_i$. 
 	
-	We denote the ideal functionalities for Sender Chosen, Receiver Chosen, Uniform and Endemic Chosen Message with Receiver Selection as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. The analogous oracles for Uniform Selection are denoted as  $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively.
+	We denote the ideal functionalities for sender chosen, receiver chosen, uniform and endemic with receiver selection as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. The analogous oracles for Uniform Selection are denoted as  $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively.
 \end{definition}
 \begin{remark}
 	When $n$ is polynomial in the security parameter $\kappa$, we simplify the above definition to \definitionref{def:ot} to allow the parties directly input the appropriate $s_i$ messages as opposed to specifying a circuit $\mathcal{M}$. Similarly for the set $\set:=\{i \mid \mathcal{S}(i)=1\}$. Lastly, instead of querying the oracle with $(\textsc{Output}, i)$, the oracle sends $(s_i)_{i\in [n]}$ to \send and $(\set, (s_i)_{i\in\set})$ to \rec. This simplification can trivially be simulated when $n=\textsf{poly}(\kappa)$.
@@ -158,14 +158,14 @@ The following transformation allows to transform an OT where the receiver's choi
 % 				\item \label{step:uniformSelect_step3} \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(\set, (s_i)_{i\in\set})$ where $s_i:=s_{\pi(i)}'$ and $\set:=\{j \mid \exists i, j=\pi(i)\}$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{Uniform Selection $k$-out-of-$n$ OT protocol $\Pi^{\send u}$ in the $\OOT^{\send}$ hybrid. $\Pi([n])$ is the set of permutations over $[n]$.}
+	\caption{Uniform selection $k$-out-of-$n$ OT protocol $\Pi^{\send u}$ in the $\OOT^{\send}$ hybrid. $\Pi([n])$ is the set of permutations over $[n]$.}
 	\label{fig:uniformSelect}
 \end{figure}
 
 
 
 \begin{lemma}
-	$\Pi^{\send u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Sender Chosen Message OT $\OOT^{\send u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\send}$ hybrid.
+	$\Pi^{\send u}$ of \figureref{fig:uniformSelect} realizes the  ideal uniform selection sender chosen message OT $\OOT^{\send u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\send}$ hybrid.
 \end{lemma}
 
 \begin{remark}

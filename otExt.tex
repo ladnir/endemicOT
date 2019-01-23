@@ -122,7 +122,7 @@ We specify two additional steps to realize the ideal Sender Chosen Message funct
 
 \subsection{OT Extension Attacks}\label{sec:extAttack}
 
-The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol descriptions that are intended to satisfy the Uniform Message security notion, \definitionref{def:otSec}, but we show this to not be the case. These protocols can be summarized as the previous protocol description there the $\Pi^{\send}_{1,N}$ transformation is not applied.  For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks on Uniform Message security also apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail three attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
+The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol descriptions that are intended to satisfy the uniform message security notion, \definitionref{def:otSec}, but we show this to not be the case. These protocols can be summarized as the previous protocol description there the $\Pi^{\send}_{1,N}$ transformation is not applied.  For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks on uniform message security also apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail three attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
 
 
 \begin{definition}\label{def:OOS}
@@ -147,7 +147,7 @@ See \appendixref{proof:Attack_BadT0} for details.
 
 
 
-We now to our attention to a second class of adversary that can distinguish even when the base OTs output uniformly distributed messages, i.e. $\OOT^\U$.\cite{RSA:OrrOrsSch17} is inconsistent which type of base OTs should be used, switching between $\OOT^\send$ in the protocol and $\OOT^\U$ in the proof. Regardless the next two attacks apply. 
+We now focus our attention to a second class of adversary that can distinguish even when the base OTs output uniformly distributed messages, i.e. $\OOT^\U$. \cite{RSA:OrrOrsSch17} is inconsistent which type of base OTs should be used, switching between $\OOT^\send$ in the protocol and $\OOT^\U$ in the proof. Regardless the next two attacks apply. 
 \begin{definition}\label{def:OOS2}
 	Let $\Pi^{\textsf{OOS+}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\U$.
 \end{definition}
@@ -161,7 +161,7 @@ See \appendixref{proof:Attack_Selection} for details.
 
 
 
-\lemmaref{lem:malSend} details another attack where a malicious \send sets the base OT selection values to be $\widehat\bb:=(1,...,1)\in \{1,2\}^\nc$. As such $\send$ learns the matrix $T_0$ in full. Therefore \send can always output the same message $\H(i, \tt_i)=\vv_{i,\ww_i}$ as \rec. For Sender Chosen Message or Endemic security a viable simulation strategy is to extract $H(i, \tt_i)$ and define $\vv_{i,j}:=\H(i, \tt_i)$ for all $j$. However, there is no valid strategy for the Receiver Chosen or Uniform Message security where the oracle samples some of the messages uniformly. This attack breaks the security of the set inclusion protocol described by \cite[Figure 5]{RSA:OrrOrsSch17}.
+\lemmaref{lem:malSend} details another attack where a malicious \send sets the base OT selection values to be $\widehat\bb:=(1,...,1)\in \{1,2\}^\nc$. As such $\send$ learns the matrix $T_0$ in full. Therefore \send can always output the same message $\H(i, \tt_i)=\vv_{i,\ww_i}$ as \rec. For sender chosen message or endemic security a viable simulation strategy is to extract $H(i, \tt_i)$ and define $\vv_{i,j}:=\H(i, \tt_i)$ for all $j$. However, there is no valid strategy for the receiver chosen or uniform message security where the oracle samples some of the messages uniformly. This attack breaks the security of the set inclusion protocol described by \cite[Figure 5]{RSA:OrrOrsSch17}.
 \iffullversion
 \input{proofs/attack_AllOnes.tex}
 \else
@@ -184,12 +184,12 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 
 
 \begin{lemma}\label{lem:ext-E}
-	The $\Pi^{\textsf{ext-E}}$ protocol (\definitionref{def:ext_E_E}) is a 1-out-of-$N$ Oblivious Transfer ($\OOT^\E$) satisfying Endemic Message and Receiver Selection Security.
+	The $\Pi^{\textsf{ext-E}}$ protocol (\definitionref{def:ext_E_E}) is a 1-out-of-$N$ oblivious transfer ($\OOT^\E$) satisfying endemic and receiver selection Security.
 \end{lemma}
 \begin{proof}
 	Correctness of the protocol was demonstrated by \cite{RSA:OrrOrsSch17}.% The rest of the proof is essentially the same as \cite{RSA:OrrOrsSch17} except that the simulator extracts the messages from the malicious party.
 	\begin{claim}[Malicious Sender Security]\label{claim:ext-E-MalSender}
-		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
+		$\Pi^\textsf{ext-E}$ satisfies security against a malicious sender (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
 	\end{claim}
 	\begin{proof}
 		Consider the following hybrids which will define the simulator $\Adv'$. 
@@ -210,7 +210,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 	\end{proof}
 
 	\begin{claim}[Malicious Receiver Security]\label{claim:ext-E-MalReceiver}
-	$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
+	$\Pi^\textsf{ext-E}$ satisfies security against a malicious receiver (\definitionref{def:otSec}) with respect to the $\OOT^\E$ functionality.
 	\end{claim}
 	\begin{proof}
 				Consider the following hybrids which will define the simulator $\Adv'$. 
@@ -285,7 +285,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 	
 	
 	\begin{claim}[Malicious Sender Security]\label{claim:ext-Su-MalSender}
-		$\Pi^\textsf{ext-E}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\rec$ functionality.
+		$\Pi^\textsf{ext-E}$ satisfies security against a malicious sender (\definitionref{def:otSec}) with respect to the $\OOT^\rec$ functionality.
 	\end{claim}
 	\begin{proof}
 		The general security of this claim also follows from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}. What remains to be shown is that the random oracle can be programmed appropriately so that it is consistent with the ideal functionality. Observe that the honest receiver uniformly chooses $\tt_0^j$ and $\bb\in\{0,1\}^\nc$ is uniformly sampled by the $\OOT^{\send u}$ functionality. Now observe that all of the outputs strings are of the form
@@ -312,7 +312,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 	Let $\Pi^{\textsf{ext-U}}$ be the protocol of \definitionref{def:ext_Su_R} where the random oracle $\H$ is redefined as follows. 
 	\begin{enumerate}
 		\item Let $\H':\{0,1\}^{[m]\times \mathbb{F}^\nc_2}\rightarrow\{0,1\}^\kappa$ be a random oracle.
-		\item In \stepref{step:extInit}, \send samples $k\gets\mathbb{F}^\nc_2$ sends an extractable commitment of $k$ to \rec. 
+		\item In \stepref{step:extInit}, \send samples $k\gets\mathbb{F}^\nc_2$ sends an extractable commitment (\definitionref{def:com}) of $k$ to \rec. 
 		\item After receiving $U$ in \stepref{step:extSendU}, \send decommits to $k$ to \rec who aborts is the decommitment fails.
 		\item Both parties define $\H(i,x)=\H'(i,x+k)$.
 	\end{enumerate}
@@ -333,7 +333,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 \subsection{OT Extension with an Ideal Cipher}\label{sec:extIdealCipher}
 We now discuss how to efficiently implement OT extension by restricting the input domain of the random oracle $\H$ to be $\{0,1\}^\nc$. In particular, we are interested in the 1-out-of-2 OT case where $\nc=\kappa=128$. The core motivation for OT extension in this setting is the pervasive support for hardware based implementations of AES, which we will then use as an ideal cipher to hash the output messages. In this model we design two new protocols that satisfy $\OOT^\send$ and $\OOT^\U$-security respectively and achieve better concrete performance than the protocols analyzed in the \sectionref{sec:extSec}. These previous protocols have required a random oracle with input domain $[m]\times \mathbb{F}^\nc_2$ which we reduce to $\mathbb{F}^\nc_2$ while maintaining security. 
 
-Interestingly, existing implementations\cite{libOTe,encrypto,KOS,EMP} have either instantiated $\H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The authors of \cite{EMP} independently identified the same implementation issue concurrently to us. \cite{EMP} securely implement $\H(i,x)$. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_2,c_2\in\mathbb{Z}_1$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security. For example, let $c_1=c_2=1$, then \rec can choose $T_0$ such that $\tt_i+i=\tt_{i'}+i'$. It then holds that all the output messages of the receiver will be the same value.  That is, for all $i,i'\in[m],x\in[N]$, it holds that $\vv_{i,x}=\vv_{i',x}$. 
+Interestingly, existing implementations \cite{libOTe,encrypto,KOS,EMP} have either instantiated $\H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The authors of \cite{EMP} independently identified the same implementation issue concurrently to us. \cite{EMP} securely implement $\H(i,x)$. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_2,c_2\in\mathbb{Z}_1$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security. For example, let $c_1=c_2=1$, then \rec can choose $T_0$ such that $\tt_i+i=\tt_{i'}+i'$. It then holds that all the output messages of the receiver will be the same value.  That is, for all $i,i'\in[m],x\in[N]$, it holds that $\vv_{i,x}=\vv_{i',x}$. 
 
 %The motivation for deviating from protocol specification of $\H(i,x)$ is for the case of 1-out-of-2 OT where $x\in\{0,1\}^{\kappa}$ where $\kappa=128$. In this case it can be temping to use AES with a fixed key to implement $\H$ since hardware based AES is roughly 45 times faster than optimized hashing implementations\cite{blake2} in our experiments. 
 

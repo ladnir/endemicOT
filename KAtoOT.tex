@@ -4,7 +4,7 @@ In \figureref{fig:KAtoOT}, we present the generic construction from any two roun
 
 
 
-\begin{figure}[h!]
+\begin{figure}
 \centering
 \framebox{
 \begin{tikzpicture}
@@ -29,7 +29,7 @@ In \figureref{fig:KAtoOT}, we present the generic construction from any two roun
 \label{fig:KAtoOT}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}
 \centering
 \framebox{
 \begin{tikzpicture}
@@ -55,11 +55,11 @@ In \figureref{fig:KAtoOT}, we present the generic construction from any two roun
 
  
 \begin{theorem}\label{thm:KAtoOT}
-Given a correct and secure [one-round] \UKA scheme, then the $1$ out of $n$ oblivious transfer in [\figureref{fig:oneroundKAtoOT}] \figureref{fig:KAtoOT}   is an Endemic $\OT_{1,n}$ in the programmable random oracle model. 
+Given a correct and secure [one-round] \UKA scheme, then the $1$ out of $n$ oblivious transfer in [\figureref{fig:oneroundKAtoOT}] \figureref{fig:KAtoOT}   is an endemic $\OT_{1,n}$ in the programmable random oracle model. 
 \end{theorem}
 
 \begin{proof}
-The security of the protocols in \figureref{fig:oneroundKAtoOT} and \figureref{fig:KAtoOT} are basically identical except one small difference. Therefore, we focus in this proof on proving the security of the protocol in \figureref{fig:KAtoOT}. We will point out the one small change that one needs to make in order to prove security of the protocol in \figureref{fig:oneroundKAtoOT}. These change occurs when using the key indistinguishability of the \UKA scheme. 
+The security of the protocols in \figureref{fig:oneroundKAtoOT} and \figureref{fig:KAtoOT} are basically identical except one small difference. Therefore, we focus in this proof on proving the security of the protocol in \figureref{fig:KAtoOT}. We will point out the one small change that one needs to make in order to prove security of the protocol in \figureref{fig:oneroundKAtoOT}. This change occurs when using the key indistinguishability of the \UKA scheme. 
 We start with proving that the scheme is secure against a malicious sender. 
 \begin{claim}\label{claim:malsender}
 Given a $\delta$ correct and $\epsilon$ $(n-1)$-multi instance uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
@@ -90,7 +90,7 @@ then it implicitly breaks the $(n-1)$-multi instance uniformity of the \UKA prot
 &\geq & \epsilon_{\D}.
 \end{eqnarray*}
 
-For finishing the proof of the claim, we now need to show that given the output of \Adv, $\D$ cannot distinguish the output of \rec, i.e. $s_{\A,i}$,  from the output of the ideal OT. The ideal OT will output the string that is consistent with \send's view, i.e. $s_{\B,i}$.
+For finishing the proof of the claim, we now need to show that given the output of \Adv, $\D$ cannot distinguish the output of \rec, i.e. $s_{\A,i}$,  from the output of $\OOT^\E$. $\OOT^\E$ will output the string that is consistent with \send's view, i.e. $s_{\B,i}$.
 Given that \UKA is correct with probability $\delta$, i.e. 
 $$
 \Pr[s_{\A,i}=\UKA.\EK(\tape_{\A,i},\mes_{\B,i})=\UKA.\EK(\tape_{\B,i},\mes_{\A,i})=s_{\B,i}]= \delta, 
@@ -133,12 +133,12 @@ Again, we start by giving a description of \Adv'. \Adv' guesses a query index $\
 When \Adv makes an oracle query $q$ to \H, \Adv' and the query number is less or equal to $\inda$, \Adv responds with a random group element $\H(q)\leftarrow\G$. 
 If the query number equals $\inda$, \Adv' stores $(g^*_i)_{i\in[n-1]}:=q_{\inda}$. 
 For all following random oracle queries, i.e. the query number $j$ is higher than $\inda$, \Adv ' responds with a random group element $\H(q)\leftarrow\G$ if $q_j$ does not contain $n-2$ elements of $(g^*_i)_{i\in[n-1]}$  and the order is of the form $g^*_1,\dots, g^*_{\ell-1},g,g^*_{\ell},\dots, g^*_{n-1}$, where $g$ is not contained in $(g^*_i)_{i\in[n-1]}$ and $\ell\in[n-1]$. Otherwise \Adv' picks the element $g^*_{\indb_j}\in(g^*_i)_{i\in[n-1]}$ that is missing in $q_j$,  samples random tape $\tape_j\leftarrow\bits^*$ and computes $\mes_{j}\leftarrow\UKA.\A(\tape_j)$. 
-It responds with $\H(q_j):=\mes_j\ominus g^*_{\beta_j}$. When \Adv sends $(r_i)_{i\in[n]}$, \Adv' aborts if $q_{\inda}$ is not the first query with $q_{\inda}=(r_i)_{i\in[n]\setminus{j}}$ for a $j\in[n]$. \Adv' sends $i^*$ to the ideal OT $\OOT^{\rec}$. \Adv' computes for all $i\in[n]$ $\mes_{\A,i}:=r_i\oplus\H((r_\ell)_{\ell\in[n]\setminus\{i\}})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\UKA.\B(\tape_{\B,i},\mes_{\A,i})$. It also computes $s_{\B,i^*}:=\UKA.\EK(\tape_{\B,i^*},\mes_{\A,i^*})$.
-\Adv' sends $s_{\B,i^*}$ to $\OOT^{\rec}$, $(\mes_{\B,i})_{i\in[n]}$ to \Adv and outputs the output of \Adv.
+It responds with $\H(q_j):=\mes_j\ominus g^*_{\beta_j}$. When \Adv sends $(r_i)_{i\in[n]}$, \Adv' aborts if $q_{\inda}$ is not the first query with $q_{\inda}=(r_i)_{i\in[n]\setminus{j}}$ for a $j\in[n]$. \Adv' sends $i^*$ to $\OOT^\E$. \Adv' computes for all $i\in[n]$ $\mes_{\A,i}:=r_i\oplus\H((r_\ell)_{\ell\in[n]\setminus\{i\}})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\UKA.\B(\tape_{\B,i},\mes_{\A,i})$. It also computes $s_{\B,i^*}:=\UKA.\EK(\tape_{\B,i^*},\mes_{\A,i^*})$.
+\Adv' sends $s_{\B,i^*}$ to $\OOT^\E$, $(\mes_{\B,i})_{i\in[n]}$ to \Adv and outputs the output of \Adv.
 
 Let there be a distinguisher $\D$ with
 $$
-\epsilon_{\D}:=|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D(((s_{\B,i})_{i\in[n]},\Adv')_{\Pi^{ \OOT^\rec , \Adv'}})=1]|,
+\epsilon_{\D}:=|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D(((s_{\B,i})_{i\in[n]},\Adv')_{\Pi^{ \OOT^\E , \Adv'}})=1]|,
 $$
 where $(s_{\B,i})_{i\in[n]}$ are the outputs of $\UKA.\EK(\tape_{\B,i},\mes_{\A,i})$. Then there is a distinguisher $\D_u$ breaking the $Q$-multi instance uniformity of the \UKA protocol. $\D_u$ gets access to an oracle $\O$ which is either outputs uniform messages, i.e. $\O_u$ or messages of  the form $\mes_\A\leftarrow\A(\tape_\A)$ for $\tape_\A\leftarrow\bits^*$. $\D_u$ invokes \D and creates its input as follows. It invokes $\Adv$ and interacts with him as \Adv' does with the difference that $\mes_j$ are requested from $\O$ rather than computing them.  After receiving the output, $\D_u$ uses it as input for $\D$ together with $(s_{\B,i})_{i\in[n]}$, where $s_{\B,i}\leftarrow\UKA.\EK(\tape_{\B,i},\mes_{\A,i})$. $\D_u$ outputs the output of \D. If $\Adv'$ aborts, we let $\D_u$ output $0$.
 

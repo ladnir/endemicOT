@@ -1,7 +1,7 @@
 
 \begin{proof}\label{proof:ext_R_S}
 		\begin{claim}[Malicious Sender Security]\label{claim:ext-R-S-MalSender}
-		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Sender (\definitionref{def:otSec}) with respect to the $\OOT^\send$ functionality.
+		$\Pi^{\textsf{ext-R}}$ satisfies security against a malicious sender (\definitionref{def:otSec}) with respect to the $\OOT^\send$ functionality.
 	\end{claim}
 	\begin{proof}
 		%The simulation follows the same strategy as \lemmaref{lem:ext-E} except now $\Adv$ is allowed to sample $k$ and influence the messages being output by the parties. In particular, after \Adv sends $k$ to $\Adv'$, $\Adv'$ defines the circuits $\mathcal{M}_i(x)=\pi_k(y)+y$ where $y:=\tt_i + \bb \odot (\cc_i + \mathcal{C}(map(x)))$ and sends it to $\OOT^\send$ and the input of \send.
@@ -23,7 +23,7 @@
 		\pe
 	\end{proof}
 	\begin{claim}[Malicious Receiver $\OOT^\U$-Security]\label{claim:ext-R-S-MalReceiver}
-		$\Pi^{\textsf{ext-R}}$ satisfies Security Against a Malicious Receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ functionality.
+		$\Pi^{\textsf{ext-R}}$ satisfies security against a malicious receiver (\definitionref{def:otSec}) with respect to the $\OOT^\U$ functionality.
 	\end{claim}
 	\begin{proof}
 		The simulation also follows a similar strategy as \lemmaref{lem:ext-E}. Consider the following hybrids which will define the simulator $\Adv'$. 
