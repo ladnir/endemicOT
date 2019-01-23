@@ -23,23 +23,23 @@ Notice that endemic security gives the weakest security guarantees, no matter wh
 \node (TC) at (3,2) {Coin Tossing};
 \node (M) at (5,2) {};
 \pgfextractangle{\angle}{SC}{RC}
-\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\scalebox{1.0}{\lref{lemma:is_a}}$} (SC);
+\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\scalebox{0.8}{\lref{lemma:is_a}}\quad\quad$} (SC);
 \pgfextractangle{\angle}{U}{RC}
-\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\scalebox{1.0}{\lref{lemma:is_a}}$} (RC);
+\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\quad\quad\scalebox{0.8}{\lref{lemma:is_a}}$} (RC);
 \pgfextractangle{\angle}{SC}{E}
-\draw [-implies,double equal sign distance] (SC) --node [midway,above,rotate=0]{$\scalebox{1.0}{\lref{lemma:is_a}}$} (E);
+\draw [-implies,double equal sign distance] (SC) --node [midway,above,rotate=0]{$\quad\quad\scalebox{0.8}{\lref{lemma:is_a}}$} (E);
 \pgfextractangle{\angle}{E}{RC}
-\draw [-implies,double equal sign distance] (RC) --node [midway,above,rotate=0]{$\scalebox{1.0}{\lref{lemma:is_a}}$} (E);
+\draw [-implies,double equal sign distance] (RC) --node [midway,above,rotate=0]{$\scalebox{0.8}{\lref{lemma:is_a}}\quad\quad$} (E);
 \pgfextractangle{\angle}{TC}{U}
-\draw [->, thick] (U) to [out=240,in=90] node [midway,right,rotate=0]{$\scalebox{1.0}{\lref{lem:OTtoC}}\quad\enspace$}(TC);
+\draw [->, thick] (U) to [out=240,in=90] node [midway,left,rotate=0]{$\scalebox{0.8}{\lref{lem:OTtoC}}$}(TC);
 \draw [-, thick] (E) to [out=60,in=270] (5,2);
 \pgfextractangle{\angle}{U}{M}
-\draw [->, thick] (5,2) to [out=90,in=300] node [pos=-0.05,left,rotate=0]{$\quad\scalebox{1.0}{\lref{lem:EtoU}}$} (U);
+\draw [->, thick] (5,2) to [out=90,in=300] node [pos=-0.05,left,rotate=0]{$\quad\scalebox{0.8}{\lref{lem:EtoU}}$} (U);
 \draw [-, thick] (TC) to [out=0,in=300] (4.655,3);
 \pgfextractangle{\angle}{SC}{E}
-\draw [->, thick] (E) to [out=180,in=270] node [midway,below,rotate=0]{$\scalebox{1.0}{\lref{lem:EtoS}}$} (SC);
+\draw [->, thick] (E) to [out=180,in=270] node [midway,below,rotate=0]{$\scalebox{0.8}{\lref{lem:EtoS}}\quad\enspace$} (SC);
 \pgfextractangle{\angle}{E}{RC}
-\draw [->, thick] (E) to [out=0,in=270] node [midway,below,rotate=0]{$\scalebox{1.0}{\lref{lem:EtoR}}$} (RC);
+\draw [->, thick] (E) to [out=0,in=270] node [midway,below,rotate=0]{$\enspace\quad\scalebox{0.8}{\lref{lem:EtoR}}$} (RC);
 \end{tikzpicture}
 \label{fig:OTrelations}
 \caption{
@@ -61,9 +61,6 @@ for his choice of $b\in\bits$. He samples $r_{1-b}$ and sets $r_b=\pk\ominus\H(r
 This technique also allows to extract $s_0$, $s_1$ from a malicious sender by programming the random oracle such that secret keys for both, $\pk_0$ and $\pk_1$ are known. Further, one can extract $b$ from a malicious receiver by programming the random oracle as well. Intuitively, a malicious receiver needs to query either $r_0$ or $r_1$ first. His choice will determine $r_{1-b}$, since all following random oracle queries $q$ can be programmed such that $\H(q)=\pk'-r_{1-b}$ for a public key $\pk'$. If a malicious adversary can learn $s_{1-b}$, he will decrypt a ciphertext for $\pk_{1-b}=r_{1-b}\oplus\H(q)=\pk'$ and be able to break the PKE scheme.
 
 We optimize the protocol further by using a key agreement instead of a PKE scheme. In many settings, the OT messages don't need to be chosen, it is sufficient if they are pseudorandom. Hence, no ciphertext needs to be generated, only the exchanged keys need to be computed. This save in some settings a communication round, e.g. in case of the Diffie-Hellman key exchange \cite{DifHel76}.
-
-\paragraph{Instantiation.} We instantiate our OT protocol with the Diffie-Hellman key exchange. We show how the security loss can be reduced using the random self-reducibility of the DDH assumption. 
-We also instantiate it based on the Kyber key exchange \cite{EPRINT:BDKLLS17,NISTPQC-R1:CRYSTALS-KYBER17}. This is a proof of concept instantiation that shows that our framework is very agile in terms of assumptions and allows to obtain post-quantum security efficiently. In both cases, our protocols can perform an OT in one millisecond.
 
 \paragraph{Secure OT Extension.} 
 In \sectionref{sec:otext} we explore the rich implications endemic security has on efficient 1-out-of-$N$ OT extension along with presenting three new attacks and fixes of existing OT extension protocols\cite{C:KelOrsSch15,RSA:OrrOrsSch17} with Uniform Message security\footnote{\cite{C:KelOrsSch15,RSA:OrrOrsSch17} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$}. 
@@ -133,5 +130,10 @@ In addition, \sectionref{sec:extIdealCipher} details new OT extension protocols 
 %\textcolor{red}{mention ideal cipher optimization}
 
 
-\paragraph{Implementation.} We implement several variants of out OT and OT extension protocols. Namely, we instantiate the OT framework from DDH and LWE using the Kyber key encapsulation protocol\cite{kyber} along with several of the extension protocols which realize $\OOT^\rec$ and $\OOT^\U$-security. In a LAN network the DDH and LWE OT protocols can perform 128 OTs in  28 and 24 milliseconds, respectively. In a more realistic WAN setting we observe that our one round DDH protocol is the fastest, requiring 110ms. The next fastest was the two round protocol of \cite{LC:ChoOrl15}, requiring 210ms in the WAN setting but only 18ms in the LAN setting. In addition to being faster than \cite{LC:ChoOrl15} in the WAN setting, our protocols achieve full simulation based security without performing addition rounds as \cite{LC:ChoOrl15} does. With regards to OT extension, our two round protocol achieving endemic security can processes 2 million OTs per second which is on par with an optimized version of \cite{C:KelOrsSch15,libOTe} in the LAN setting. In the WAN setting this protocol becomes 2.5 times faster than \cite{C:KelOrsSch15} (which achieves stronger security). Our protocol in the ideal cipher model can process 23 million OTs per second over the course of 5 rounds and achieve full uniform message security.
+\paragraph{Implementation.} We instantiate our OT protocol with the Diffie-Hellman key exchange. We show how the security loss can be reduced using the random self-reducibility of the DDH assumption. 
+We also instantiate it based on the Kyber key exchange \cite{EPRINT:BDKLLS17,NISTPQC-R1:CRYSTALS-KYBER17}. This is a proof of concept instantiation that shows that our framework is very agile in terms of assumptions and allows to obtain post-quantum security efficiently. 
+
+We give implementations and benchmarks for two OT protocols based on DDH and one based on LWE as well as five implementations of OT extension protocols. Both our OT protocols can perform an OT in one millisecond. We compare our results with the OTs of Chou \& Claudio \cite{LC:ChoOrl15} and Naor \& Pinkas \cite{SODA:NaoPin01}. In a WAN network setting we observe that our one round DDH protocol is the fastest, requiring 110ms. The next fastest framework was the two round protocol of \cite{LC:ChoOrl15}, requiring 210ms. In addition to being faster than \cite{LC:ChoOrl15} in the WAN setting, our protocols achieve full simulation based security without performing addition rounds as \cite{LC:ChoOrl15} requires. 
+
+Our communication optimized OT extension protocol achieving endemic security requires two rounds of communication and can processes 2 million OTs per second. This is on par with a throughput optimized version of \cite{C:KelOrsSch15,libOTe} in the LAN setting. In the WAN setting our protocol becomes 2.5 times faster than \cite{C:KelOrsSch15} (which achieves stronger security). Our computation optimized protocol in the ideal cipher model can process 23 million OTs per second over the course of 5 rounds and achieves full uniform message security.
 
