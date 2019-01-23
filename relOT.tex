@@ -207,7 +207,7 @@ Even though endemic security is implied by all the other security notions and co
 \end{proof}
 \else
 \begin{proof}[sketch]
-	Consider a corrupt \send. The simulator calls $\OOT^{\U}$ and receives $s_1,...,s_n$. When \send invokes $\F^{\coin}$, $\Adv_1'$ sends $r_i:=m_1\oplus s_i$ to $\Adv_1$ on behalf of $\F^{\coin}$. Due to $s_i$ is sampled uniformly this change results in the same distribution. 
+	Consider a corrupt \send. The simulator calls $\OOT^{\U}$ and receives $s_1,...,s_n$. When \send invokes $\F^{\coin}$, the simulator sends $r_i:=m_1\oplus s_i$ to \send on behalf of $\F^{\coin}$. Due to $s_i$ is sampled uniformly this change results in the same distribution. 
 	For a corrupt receiver, the simulator effectively does the same. First receive $\set$ and send it to $\OOT^{\U}$ and receive $(s_i)_{i\in\set}$. Then have  $\F^{\coin}$ output $r_i:=m_1\oplus s_i$ for $i\in\set$ and uniform otherwise.
 \pe
 \end{proof}
@@ -263,7 +263,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:OTtoC}
-	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol (\definitionref{def:coin}) with unconditional security  in the $\O^{\U}$ hybrid  (\definitionref{def:ot}).
+	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol (\definitionref{def:coin}) with unconditional security  in the $\OOT^{\U}$ hybrid  (\definitionref{def:ot}).
 \end{lemma}
 \begin{proof}
 	Follows straigthforwardly from the definition of $\OOT^{\U}$ and the ideal coin tossing functionality $\F^{\coin}$, which outputs a random string to both parties.
