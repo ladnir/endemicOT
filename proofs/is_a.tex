@@ -1,0 +1,36 @@
+
+\begin{proof}
+	In the first step, we show that uniform message security implies sender chosen message security and receiver chosen message security implies endemic security. These two implications result from the same simple fact that a malicious sender interacting with the ideal OT is easier to construct when it can choose the OT strings than when it receives the strings from the ideal OT. The following claim formalizes this fact. 
+	\begin{claim}\label{claim:utocs}
+		Let $\Pi$ be an OT secure against a malicious sender with respect to an ideal OT $\OOT^*$ that sends the OT strings $(s_i)_{i\in[n]}$ to the sender, i.e. functionality $\OOT^\U$ and $\OOT^{\rec}$, and the distribution of $(s_i)_{i\in[n]}$ is efficiently sampleable. Then $\Pi$ is also secure against a malicious sender with respect to ideal OT $\OOT$, which receives the OT strings $(s_i)_{i\in[n]}$ from the sender, i.e functionality $\OOT^\send$ and $\OOT^\E$.
+	\end{claim}
+	
+	
+	\begin{proof}
+		We show that if there is an adversary that breaks the security against a malicious security with respect to ideal OT $\OOT$ then there is also an adversary that breaks the security with respect to $\OOT^*$. More precisely, if there is a ppt adversary $\Adv_1$ such that for any ppt adversary $\Adv_1'$ there exists a ppt distinguisher $\D_1$ with 
+		$$
+		|\Pr[\D_1((\Adv_1,\rec)_{\Pi})=1] -\Pr[\D_1( (\Adv'_1, \OOT))=1]|=\epsilon,
+		$$
+		where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
+		Then there is also a ppt adversary $\Adv_2$ such that for any ppt adversary $\Adv_2'$ there exists a ppt distinguisher $\D_2$ with 
+		$$
+		|\Pr[\D_2((\Adv_2,\rec)_{\Pi})=1] -\Pr[\D_1( (\Adv'_2, \OOT^*))=1]|=\epsilon,
+		$$
+		where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
+		
+		We set $\Adv_2:=\Adv_1$ and $\D_2:=\D_1$. Further, for any $\Adv_2'$, there is an $\Adv_1'$  such that the distribution of $(\Adv'_2, \OOT^*)$ is identical with the distribution $(\Adv'_1, \OOT)$. This follows from the fact that  $\Adv_1'$ could choose the OT strings $(s_i)_{i\in[n]}$  from the same distribution as $\OOT^*$ does and otherwise follow the description of $\Adv_2'$. Since $\D_1$ is successful for any $\Adv_1'$ it will be also for any $\Adv_2'$, which can be seen as a subset of the set of all ppt adversaries $\Adv_1'$.
+		\pe
+	\end{proof}
+	
+	The remaining two implications, from uniform security to receiver chosen message security and from sender chosen message security to endemic security follow in a similar fashion. Again it is easier to construct a malicious receiver interacting with the ideal OT when he can choose the OT strings rather than receiving them from the ideal OT.
+	\begin{claim}\label{claim:utocr}
+		Let $\Pi$ be an OT secure against a malicious receiver with respect to an ideal OT $\OOT^*$ that sends the learned OT strings $(s_i)_{i\in\set}$ to the receiver, i.e. functionality $\OOT^\U$ and $\OOT^{\send}$, and the distribution of $(s_i)_{i\in\set}$ is efficiently sampleable. Then $\Pi$ is also secure against a malicious sender with respect to ideal OT $\OOT$, which receives the OT strings $(s_i)_{i\in\set}$ from the receiver, i.e. $\OOT^\rec$ and $\OOT^\E$.
+	\end{claim}
+	
+	\begin{proof}
+		The proof is basically identical to the proof of Claim~\ref{claim:utocs}. Again, the set of all ppt $\Adv_2'$ is a subset of the set of all ppt $\Adv_1'$ and identical with the set of all $\Adv_1'$ that sample  $(s_i)_{i\in\set}$ from the same distribution as when sent by $\OOT^*$.
+		\pe
+	\end{proof}
+	\pe
+\end{proof}
+

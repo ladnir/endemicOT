@@ -107,6 +107,11 @@ This lemma follows for the same reason as \lemmaref{lem:keytomultkey}.
 
 \subsection{Oblivious Transfer}\label{sec:addOT}
 
+\begin{lemma}[Repeat of \lemmaref{lemma:is_a}]\label{lemma:is_a_repeat}
+	Let the distribution of OT strings be efficiently sampleable. 
+	Then $\OOT^\U$-security implies $\OOT^{\send}$ as well as $\OOT^\rec$-security. $\OOT^{\send}$ or $\OOT^\rec$-security imply $\OOT^\E$-security.
+\end{lemma}
+\input{proofs/is_a.tex}
 
 
 \begin{figure}
@@ -143,7 +148,7 @@ This lemma follows for the same reason as \lemmaref{lem:keytomultkey}.
 
 
 \begin{lemma}
-	$\Pi^{\E u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Endemic Message OT $\OOT^{\send u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\send}$ hybrid.
+	$\Pi^{\send u}$ of \figureref{fig:uniformSelect} realizes the  Ideal Uniform Selection Sender Chosen Message OT $\OOT^{\send u}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^{\send}$ hybrid.
 \end{lemma}
 
 \begin{remark}
