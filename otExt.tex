@@ -175,7 +175,7 @@ See \appendixref{proof:Attack_AllOnes} for details.
 
 \subsection{OT Extension with a Random Oracle}\label{sec:extSec}
 
-We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch15,RSA:OrrOrsSch17} protocols with respect to the $\OOT^\E$ ideal functionality. We then given new enhancements (\definitionref{def:ext_Su_R}, \ref{def:ext_Su_U}, \ref{def:ext_R_S}) to this protocol that provider stronger notions of security at a modest overhead, e.g. $\OOT^\U$. Note that in this section we used the generalize definition of the OT functionality, \definitionref{def:got}, where a circuit specifying the inputs are send instead of strings.
+We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch15,RSA:OrrOrsSch17} protocols with respect to the $\OOT^\E$ ideal functionality. We then given new enhancements (\definitionref{def:ext_Su_R}, \ref{def:ext_Su_U}, \ref{def:ext_R_S}) to this protocol that provider stronger notions of security at a modest overhead, e.g. $\OOT^\U$. Note that in this section we used the generalize definition of the OT functionality, \definitionref{def:got}, where a circuit specifying the inputs are send instead of strings. We also give a data flow diagram in \figureref{fig:OTDataflow} showing the various instantiations and their round complexity.
 
 
 \begin{definition}\label{def:ext_E_E}
@@ -361,10 +361,10 @@ One solution is to implement $\H$ directly as a random oracle as opposed to firs
 
 %We begin with the $\Pi^{\textsf{ext-R}}$ protocol defined in \definitionref{def:ext_R_S}.
 \begin{definition}\label{def:ext_R_S}
-	Let $\Pi^{\textsf{ext-R}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+	Let $\Pi^{\textsf{ext-S}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
 \end{definition}
 \begin{lemma}\label{lem:ext_R_S}
-	The $\Pi^{\textsf{ext-R}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security, for $N=\textsf{poly}(\kappa)$. Against a malicious \rec,  $\Pi^{\textsf{ext-R}\pi}$ realizes $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
+	The $\Pi^{\textsf{ext-S}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security, for $N=\textsf{poly}(\kappa)$. Against a malicious \rec,  $\Pi^{\textsf{ext-R}\pi}$ realizes $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
 \end{lemma}
 \iffullversion
 \input{proofs/ext_R_S.tex}
