@@ -1,6 +1,6 @@
 
 %\tikzloadlibrary{calc}
-\begin{figure}
+\begin{figure*}
 \centering
 \framebox{
 \begin{tikzpicture}[scale=.8]
@@ -138,4 +138,4 @@
 }
 
 \caption{Messages flow for our various OT extension protocols. The protocols on the left have the Fiat-Shamir transformation applied, where the challenge value $c$ is replaced with $\H(U)$. $\mes_\A,\mes_\B$ are the first and second messages of the base OTs. $U$ is the OT extension matrix. $ZKP(x)$ is the proof that $U$ is correct given a challenge value of $x\in\{\H(U),c\}$. $u$ is a seed used to randomized the sender or receiver chosen message OTs into uniform message OTs. $u$ must be committed to in the first round. $u$-select similarly transforms the receiver's selection into a uniform selection.  $k$ is the key used to generated the output messages as described in \sectionref{sec:otext}. \label{fig:OTDataflow}}
-\end{figure}
+\end{figure*}

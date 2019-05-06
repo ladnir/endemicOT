@@ -5,7 +5,7 @@
 \newcommand{\lb}{\llbracket}
 \newcommand{\rb}{\rrbracket}
 
-\iffullversion  
+%\iffullversion  
 	\usepackage{amsmath,amsthm}
 	\newtheorem{theorem}{Theorem}[section]
 	\newtheorem{definition}[theorem]{Definition}
@@ -13,11 +13,11 @@
 	\newtheorem{claim}[theorem]{Claim}
 	\newtheorem{remark}[theorem]{Remark}
 	\newtheorem{corollary}[theorem]{Corollary}
-\fi
+%\fi
 
 \newcommand{\send}{\ensuremath{\mathsf{S}}\xspace}
 \newcommand{\rec}{\ensuremath{\mathsf{R}}\xspace}
-\newcommand{\U}{\ensuremath{\mathsf{U}}\xspace}
+\renewcommand{\U}{\ensuremath{\mathsf{U}}\xspace}
 \newcommand{\E}{\ensuremath{\mathsf{E}}\xspace}
 \newcommand{\coin}{\ensuremath{\mathsf{coin}}\xspace}
 \newcommand{\A}{\ensuremath{\mathsf{A}}\xspace}
@@ -25,7 +25,7 @@
 \newcommand{\Adv}{\ensuremath{\mathcal{A}}\xspace}
 \newcommand{\negl}{\ensuremath{\mathsf{negl}}\xspace}
 \newcommand{\mes}{\ensuremath{\mathsf{m}}\xspace}
-\newcommand{\G}{\ensuremath{\mathcal{G}}\xspace}
+\renewcommand{\G}{\ensuremath{\mathcal{G}}\xspace}
 \newcommand{\tape}{\ensuremath{\mathsf{t}}\xspace}
 \newcommand{\EK}{\ensuremath{\mathsf{Key}}\xspace}
 \newcommand{\key}{\ensuremath{\mathsf{k}}\xspace}

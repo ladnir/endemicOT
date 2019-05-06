@@ -7,8 +7,9 @@
 \iffullversion    
 	\documentclass[10pt]{article}
 \else
-	\documentclass[runningheads]{llncs}
-	\pagestyle{plain}
+	%\documentclass[runningheads]{llncs}
+	%\pagestyle{plain}
+	\documentclass[sigconf]{acmart}	
 \fi
 
 %\usepackage[a4paper, total={6in, 9in}]{geometry}
@@ -16,11 +17,11 @@
 \input{header.tex}
  
  %proof symbol
- \iffullversion    
+ %\iffullversion    
 	\newcommand{\pe}{}
-\else
-	\newcommand{\pe}{\qed}
-\fi
+%\else
+%	\newcommand{\pe}{\qed}
+%\fi
 
 \title{Endemic Oblivious Transfer}
 % \author{Daniel Masny \and Peter Rindal}

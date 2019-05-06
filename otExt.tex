@@ -35,7 +35,7 @@ Traditionally, two additional steps are specified to realize the ideal sender ch
 
 
 \begin{figure}[t!]
-	\vspace{-1cm}
+	%\vspace{-1cm}
 	\framebox{\begin{minipage}{0.95\linewidth}\small
 			\textsc{Parameters:} $\kappa$ is the computational security parameter. $m$ denotes the number of OTs. $N$ denotes the number of messages each OT has. $\mathcal{C}$ is an $[\nc,\kc,\dc]$ binary linear code such that $\kc=\log_2 N$ and $\dc\geq \kappa$. A bijective map $map : [N]\rightarrow\mathbb{F}^\kc$.\\
 			\textsc{Requirements:} $\H : [m] \times \mathbb{F}_2^\nc \rightarrow \mathbb{F}_2^\kappa$ is a random oracle.			
@@ -185,7 +185,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 
 
 \begin{lemma}\label{lem:ext-E}
-	The $\Pi^{\textsf{ext-E}}$ protocol (\definitionref{def:ext_E_E}) is a 1-out-of-$N$ oblivious transfer ($\OOT^\E$) satisfying endemic and receiver selection Security.
+	The $\Pi^{\textsf{ext-E}}$ protocol (\definitionref{def:ext_E_E}) is a 1-out-of-$N$ OT ($\OOT^\E$) satisfying endemic and receiver selection Security.
 \end{lemma}
 \begin{proof}
 	Correctness of the protocol was demonstrated by \cite{RSA:OrrOrsSch17}.% The rest of the proof is essentially the same as \cite{RSA:OrrOrsSch17} except that the simulator extracts the messages from the malicious party.
