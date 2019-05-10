@@ -11,7 +11,7 @@ Afterwards, we show how to instantiate the construction in \figureref{fig:KAtoOT
 \begin{definition}[$n$ Multi-Instance DDH Assumption]
 For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
 $$
-|\Pr\lb \D(1^\sec,\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{a}b\rb)=1\rb-\Pr\lb D(1^\sec,\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb)=1\rb|=\negl,
+|\Pr\lb \D(\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{a}b\rb)=1\rb-\Pr\lb D(\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb)=1\rb|=\negl,
 $$
 where $\vec{a}\leftarrow\Z_p^n$, $b\leftarrow\Z_p$ and $\vec{c}\leftarrow\Z_p^n$.
 \end{definition}
@@ -62,14 +62,14 @@ If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol 
 \framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (-0.25,5) {\A:};
-\node [anchor=west] at (7,5) {\B:};
-\node [anchor=west] at (-0.25,4.5){$(\sk,\pk)\leftarrow\kybergen()$};
-\draw [thick, ->] (4.25,4.5)-- node [midway,above]{$\mes_\A:=\pk$}(6.75,4.5);
-\node [anchor=west] at (7,4.5){$\key_{\B}\leftarrow\kB^{32},\tape_\B\leftarrow\kB^{32}$};
-\node [anchor=west] at (7,4){$\mes_\B=\kyberenc(\pk, \key_{\B},\tape_\B)$};
-\draw [thick, <-] (4.25,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
+\node [anchor=west] at (4.7,5) {\B:};
+\node [anchor=west] at (-0.25,4.5){$(\sk,\mes_\A)\leftarrow\kybergen()$};
+\draw [thick, ->] (3.6,4.5)-- node [midway,above]{$\mes_\A$}(4.75,4.5);
+\node [anchor=west] at (4.7,4.5){$\key_{\B}\leftarrow\kB^{32}$};
+\node [anchor=west] at (4.7,4){$\mes_\B=\kyberenc(\pk, \key_{\B})$};
+\draw [thick, <-] (3.6,4)-- node [midway,above]{$\mes_\B$}(4.75,4);
 \node [anchor=west] at (-0.25,3.5) {$\key_\A=\kyberdec(\sk,\mes_\B)$};
-\node [anchor=west] at (7,3.5) {$\key_\B$};
+\node [anchor=west] at (4.7,3.5) {$\key_\B$};
 \end{tikzpicture}
 }
 \label{fig:Kyber}
@@ -88,7 +88,7 @@ $(\kybergen,\kyberenc,\kyberdec)$ have the following syntax.
 Further, Crystals-Kyber specifies the following algorithms.
 \begin{description}
 \item[$\kdec_\ell$:] Takes a an element in $\kB^{32\ell}$ and maps it to $\R_q$. The inverse operation is $\kenc_\ell$.
-\item[$\kcom_q(*,d)$:] Takes a an element in $\R_q$ and maps it to a polynomial with coefficients in $\Z_{2^d}$. The inverse operation is $\kdecom_q(*,d)$.
+\item[$\kcom_q(*,d)$:] Takes a an element in $\R_q$ and maps it to a polynomial with coefficients in $\Z_{2^d}$. The inverse is $\kdecom_q(*,d)$.
 \item[$\kparse$:] Takes a uniform byte stream in $\kB^{*}$ and maps it to a uniform element in $\R_q$.
 \end{description}
 \end{definition}

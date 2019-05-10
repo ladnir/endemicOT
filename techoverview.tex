@@ -17,33 +17,34 @@ Notice that endemic security gives the weakest security guarantees, no matter wh
 \centering
 \begin{tikzpicture}
 \node (U) at (4,4) {Uniform Message Security};
-\node (SC) at (0,2) {$\OOT^\send$-Security};
-\node (RC) at (8,2) {$\OOT^\rec$-Security};
+\node (SC) at (0.75,2) {$\OOT^\send$-Security};
+\node (RC) at (7.25,2) {$\OOT^\rec$-Security};
 \node (E) at (4,0) {Endemic Security};
 \node (TC) at (3,2) {Coin Tossing};
 \node (M) at (5,2) {};
 \pgfextractangle{\angle}{SC}{RC}
-\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\scalebox{0.8}{\lref{lemma:is_a}}\quad\quad$} (SC);
+\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\scalebox{0.7}{\lref{lemma:is_a}}\quad\quad$} (SC);
 \pgfextractangle{\angle}{U}{RC}
-\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\quad\quad\scalebox{0.8}{\lref{lemma:is_a}}$} (RC);
+\draw [-implies,double equal sign distance] (U) --node [midway,above,rotate=0]{$\quad\quad\scalebox{0.7}{\lref{lemma:is_a}}$} (RC);
 \pgfextractangle{\angle}{SC}{E}
-\draw [-implies,double equal sign distance] (SC) --node [midway,above,rotate=0]{$\quad\quad\scalebox{0.8}{\lref{lemma:is_a}}$} (E);
+\draw [-implies,double equal sign distance] (SC) --node [midway,below,rotate=0]{$\scalebox{0.7}{\lref{lemma:is_a}}\quad\quad$} (E);
 \pgfextractangle{\angle}{E}{RC}
-\draw [-implies,double equal sign distance] (RC) --node [midway,above,rotate=0]{$\scalebox{0.8}{\lref{lemma:is_a}}\quad\quad$} (E);
+\draw [-implies,double equal sign distance] (RC) --node [midway,below,rotate=0]{$\quad\quad\scalebox{0.7}{\lref{lemma:is_a}}$} (E);
 \pgfextractangle{\angle}{TC}{U}
-\draw [->, thick] (U) to [out=240,in=90] node [midway,left,rotate=0]{$\scalebox{0.8}{\lref{lem:OTtoC}}$}(TC);
+\draw [->, thick] (U) to [out=240,in=90] node [midway,right,rotate=0]{$\scalebox{0.7}{\lref{lem:OTtoC}}$}(TC);
 \draw [-, thick] (E) to [out=60,in=270] (5,2);
 \pgfextractangle{\angle}{U}{M}
-\draw [->, thick] (5,2) to [out=90,in=300] node [pos=-0.05,left,rotate=0]{$\quad\scalebox{0.8}{\lref{lem:EtoU}}$} (U);
+\draw [->, thick] (5,2) to [out=90,in=300] node [pos=-0.05,left,rotate=0]{$\quad\scalebox{0.7}{\lref{lem:EtoU}}$} (U);
 \draw [-, thick] (TC) to [out=0,in=300] (4.655,3);
 \pgfextractangle{\angle}{SC}{E}
-\draw [->, thick] (E) to [out=180,in=270] node [midway,below,rotate=0]{$\scalebox{0.8}{\lref{lem:EtoS}}\quad\enspace$} (SC);
+\draw [->, thick] (E) to [out=180,in=270] node [midway,below,rotate=0]{$\scalebox{0.7}{\lref{lem:EtoS}}\quad\enspace$} (SC);
 \pgfextractangle{\angle}{E}{RC}
-\draw [->, thick] (E) to [out=0,in=270] node [midway,below,rotate=0]{$\enspace\quad\scalebox{0.8}{\lref{lem:EtoR}}$} (RC);
+\draw [->, thick] (E) to [out=0,in=270] node [midway,below,rotate=0]{$\enspace\quad\scalebox{0.7}{\lref{lem:EtoR}}$} (RC);
 \end{tikzpicture}
 \label{fig:OTrelations}
+\vspace{-0.7cm}
 \caption{
-The figure depicts the different security notions of OT and their relations. $A\Rightarrow B$ denotes that security $A$ implies security $B$. $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed into an OT realizing security $B$.
+The figure depicts the different security notions of OT and their relations. $A\Rightarrow B$ denotes the implication. $A\rightarrow B$ denotes that there is an efficient transformation.
 }
 \end{figure}
 we give an overview over these implications and transformations. 
@@ -84,7 +85,7 @@ We note that many protocols that utilize Uniform Message security can likely tol
 \begin{figure}
 	\centering
 	\begin{tikzpicture}[scale=0.5]\small
-	\node (pi) at (6,4.5) {\normalsize $\Pi^\textsf{ext}$};
+	\node (pi) at (5,4.5) {\normalsize $\Pi^\textsf{ext}$};
 	\node (Base) at (0.4,5) {\underline{\normalsize Base OT Security}};
 	\node (U)  [anchor=east] at (3.3,4) {Uniform Security $\OOT^{\U u}$};
 	\node (SCu)[anchor=east] at (3.3,3) {Sender Chosen $\OOT^{\send u}$};
@@ -93,11 +94,11 @@ We note that many protocols that utilize Uniform Message security can likely tol
 	\node (E)  [anchor=east] at (3.3,0) {Endemic Security  $\OOT^{\E}$};
 	
 	
-	\node (Ext)  at (12,5) {\underline{\normalsize OT Extension Security}};
-	\node (EU)  [anchor=west] at (8.5,4) {Uniform Security $\OOT^{\U}$};
-	\node (ESC) [anchor=west] at (8.5,3) {Sender Chosen $\OOT^{\send}$};
-	\node (ERC) [anchor=west] at (8.5,1) {Receiver Chosen  $\OOT^{\rec}$};
-	\node (EE)  [anchor=west] at (8.5,0) {Endemic Security  $\OOT^{\E}$};
+	\node (Ext)  at (10,5) {\underline{\normalsize OT Extension Security}};
+	\node (EU)  [anchor=west] at (7,4) {Uniform Security $\OOT^{\U}$};
+	\node (ESC) [anchor=west] at (7,3) {Sender Chosen $\OOT^{\send}$};
+	\node (ERC) [anchor=west] at (7,1) {Receiver Chosen  $\OOT^{\rec}$};
+	\node (EE)  [anchor=west] at (7,0) {Endemic Security  $\OOT^{\E}$};
 %	\draw [-implies,double equal sign distance] (U) -- (SC);
 %	\draw [-implies,double equal sign distance] (U) -- (RC);
 %	\draw [-implies,double equal sign distance] (SC) -- (E);
@@ -113,8 +114,9 @@ We note that many protocols that utilize Uniform Message security can likely tol
 %	\draw [->, thick] (E) .. controls (7,0.75) .. (RC);
 	\end{tikzpicture}
 	\label{fig:OTExtrelations}
+	\vspace{-0.3cm}
 	\caption{
-		The figure depicts the implication different base OT security notions (\definitionref{def:otSec}) have on the result OT extension protocol.  $A\rightarrow B$ denotes that any OT realizing security $A$ can be efficiently transformed by $\Pi^\textsf{ext}$ into an OT extension realizing security $B$, where $\Pi^\textsf{ext}$ is the protocol of \figureref{fig:otExt}. The dashed arrows are the same expect $\Pi^{\textsf{ext}}$ must be slightly modified. Note, $\OOT^{*u}$ denotes $\OOT^*$ security where the receiver's selection is uniformly sampled by the functionality \definitionref{def:ot},\ref{def:got}.
+		The figure shows the implications of the base OT security (\definitionref{def:otSec}) when  $\Pi^\textsf{ext}$ from \figureref{fig:otExt} or a slight variation (dashed line) is applied. $\OOT^{*u}$ denotes $\OOT^*$ security where the receiver's selection is uniformly sampled by the functionality \definitionref{def:ot},\ref{def:got}.
 	}
 \end{figure}
 

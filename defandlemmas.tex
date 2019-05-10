@@ -136,18 +136,21 @@ The following transformation allows to transform an OT where the receiver's choi
 \framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (0,5) {Sender:};
-\node [anchor=west] at (7.5,5) {Receiver:};
+\node [anchor=west] at (5.1,5) {Receiver:};
+\begin{scope}[shift={(-2,0)}]
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\send$};
-\node [anchor=west] at (7.5,4.5){$\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$};
-\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set'$}(7.25,4.5);
-\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(s_{\pi(i)})_{i\in \set'}$}(7.25,3.85);
-\node [anchor=west] at (0,4.5) {$\pi\leftarrow\Pi([n])$};
-\draw [thick, ->] (3.25,3)-- node [midway, above]{$\pi$} (7.25,3);
-\draw [thick, ->] (3.25,4.5)-- node [midway,above]{$(s_{\pi(i)})_{i\in [n]}$}(4.75,4.5);
-\node [anchor=west] at (0,2.5) {output $(s_{i})_{i\in[n]}$};
-\node [anchor=west] at (7.5,3) {$\set:=\{j \mid \exists i, j=\pi(i)\}$};
-\node [anchor=west] at (7.5,2.5) {output $\set, (s_i)_{i\in\set}$};
+\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set'$}(7.1,4.5);
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(s_{\pi(i)})_{i\in \set'}$}(7.1,3.85);
+\draw [thick, ->] (3.35,3)-- node [midway, above]{$\pi$} (7.1,3);
+\draw [thick, ->] (3.35,4.5)-- node [midway,above]{$(s_{\pi(i)})_{i\in [n]}$}(4.75,4.5);
+\end{scope}
+
+\node [anchor=west] at (0,4.5) {$\pi\leftarrow\Pi_n$};
+\node [anchor=west] at (5.1,4.5){$\set'\gets \mathbb{P}([n])$ s.t. $|\set'|=k$};
+\node [anchor=west] at (0,2.5) {$(s_{i})_{i\in[n]}$};
+\node [anchor=west] at (5.1,3) {$\set:=\{j \mid \exists i, j=\pi(i)\}$};
+\node [anchor=west] at (5.1,2.5) {$\set, (s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -158,7 +161,7 @@ The following transformation allows to transform an OT where the receiver's choi
 % 				\item \label{step:uniformSelect_step3} \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(\set, (s_i)_{i\in\set})$ where $s_i:=s_{\pi(i)}'$ and $\set:=\{j \mid \exists i, j=\pi(i)\}$.
 % 			\end{enumerate}
 % 	\end{minipage}}
-	\caption{Uniform selection $k$-out-of-$n$ OT protocol $\Pi^{\send u}$ in the $\OOT^{\send}$ hybrid. $\Pi([n])$ is the set of permutations over $[n]$.}
+	\caption{Uniform selection $k$-out-of-$n$ OT protocol $\Pi^{\send u}$ in the $\OOT^{\send}$ hybrid. $\Pi_n$ is the set of permutations over $[n]$.}
 	\label{fig:uniformSelect}
 \end{figure}
 
@@ -187,7 +190,7 @@ It can be proven secure under the decisional Diffie-Hellman (DDH) assumption.
 \begin{definition}[Decisional Diffie-Hellman (DDH) Assumption]
 For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
 $$
-|\Pr\lb \D(1^\sec,\lb 1\rb,\lb a\rb,\lb b\rb,\lb ab\rb)=1\rb-\Pr\lb D(1^\sec,g,\lb a\rb,\lb b\rb,\lb c\rb)=1\rb|=\negl,
+|\Pr\lb \D(\lb 1\rb,\lb a\rb,\lb b\rb,\lb ab\rb)=1\rb-\Pr\lb D(\lb 1\rb,\lb a\rb,\lb b\rb,\lb c\rb)=1\rb|=\negl,
 $$
 where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$.
 \end{definition}

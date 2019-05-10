@@ -20,17 +20,18 @@ An \emph{ideal cipher} over a set of tuples of domains and an image is a collect
 \framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (0,5) {\A:};
-\node [anchor=west] at (7,5) {\B:};
+\node [anchor=west] at (5.5,5) {\B:};
 \node [anchor=west] at (0,4.5){$\mes_\A\leftarrow\A(\tape_\A)$};
-\draw [thick, ->] (3.75,4.5)-- node [midway,above]{$\mes_\A$}(6.75,4.5);
-\node [anchor=west] at (7,4){$\mes_\B\leftarrow\B(\tape_\B,\mes_\A)$};
-\draw [thick, <-] (3.75,4)-- node [midway,above]{$\mes_\B$}(6.75,4);
+\draw [thick, ->] (2.75,4.5)-- node [midway,above]{$\mes_\A$}(5.25,4.5);
+\node [anchor=west] at (5.5,4){$\mes_\B\leftarrow\B(\tape_\B,\mes_\A)$};
+\draw [thick, <-] (2.75,4)-- node [midway,above]{$\mes_\B$}(5.25,4);
 \node [anchor=west] at (0,3.5) {$\key_\A=\EK(\tape_\A,\mes_\B)$};
-\node [anchor=west] at (7,3.5) {$\key_\B=\EK(\tape_\B,\mes_\A)$};
+\node [anchor=west] at (5.5,3.5) {$\key_\B=\EK(\tape_\B,\mes_\A)$};
 \end{tikzpicture}
 }
 \label{fig:UKA}
-\caption{The figure shows a key agreement protocol between parties \A and \B with random tapes $\tape_\A$ and $\tape_\B$. For correctness, we require $\key_\A=\key_\B$.}
+\vspace{-0.3cm}
+\caption{The figure shows a key agreement protocol between parties \A and \B with random tapes $\tape_\A$ and $\tape_\B$. Correctness requires $\key_\A=\key_\B$.}
 \end{figure}
 
 

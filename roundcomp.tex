@@ -94,7 +94,8 @@ $$
 Similar as in the proof of Lemma~\ref{lem:nosendtweak}, we argue that a malicious sender can tweak the output distribution of $(s_0,s_1)$. Due to the similarity, we only exhibit a brief version. Again we hardwire a PRF key $\key$ for a PRF with a single output bit. Given $\mes_{\rec}$, the malicious sender samples two random tapes $\tape_{\send, 1}$ and $\tape_{\send,2}$, computes for all $i\in[2]$ $(s_{0,i},s_{0,i})=f_{\OT,\send}(\tape_{\send,i},\mes_{\rec})$. If $\PRF_{\key}(s_{0,1},s_{1,1})=0$ output $(s_{0,1},s_{1,1})$ and send $\mes_{\send,1}=f_{\send}(\tape_{\send,1},\mes_{\rec})$ to \rec. Otherwise output $(s_{0,2},s_{1,2})$ and send $\mes_{\send,2}=f_{\send}(\tape_{\send,2},\mes_{\rec})$ to \rec. This way, $\Pr_{\key}(s_0,s_1)=0$ holds for the malicious sender's output $(s_0,s_1)$ with probability 
 \begin{eqnarray*}
 \lefteqn{\Pr[\PRF_{\key}(s_0,s_1)=0]}\\
-&=&\Pr[\PRF_{\key}(s_{0,1},s_{1,1})=0]+\Pr[\PRF_{\key}(s_{0,1},s_{1,1})=1\wedge\PRF_{\key}(s_{0,2},s_{1,2})=0]\\
+&=&\Pr[\PRF_{\key}(s_{0,1},s_{1,1})=0]\\
+&&+\Pr[\PRF_{\key}(s_{0,1},s_{1,1})=1\wedge\PRF_{\key}(s_{0,2},s_{1,2})=0]\\
 &\geq&  \left(\frac{1}{2}-\epsilon_{\PRF}\right)+\left(\frac{1}{2}+\epsilon_{\PRF}\right)\cdot\frac{3}{8}\left(\frac{1}{2}-\epsilon_{\PRF}\right)\\
 &=& \frac{1}{2}+\frac{1}{32}-\negl,
 \end{eqnarray*}

@@ -27,20 +27,25 @@ Even though endemic security is implied by all the other security notions and co
 \framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (0,5) {Sender$((s_i)_{i\in[n]})$:};
-\node [anchor=west] at (7.5,5) {Receiver$(\set\subset[n])$:};
-\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(7.25,4.5);
+\node [anchor=west] at (5.5,5) {Receiver$(\set\subset[n])$:};
+
+\begin{scope}[shift={(-1.25,0)}]
+\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(6.75,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(6.75,3.85);
+\draw [thick, <-] (3.5,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+\draw [thick, ->] (3.5,3)-- node [midway,above]{$(r_i)_{i\in[n]}$}(6.75,3);
 \node at (5.25,4.125){$\OOT^\E$};
+\end{scope}
 \node [anchor=west] at (0,4){$\forall i\in[n]:$};
 \node [anchor=west] at (0,3.5){$\quad r_i:=s_i\oplus m_i$};
 
-\draw [thick, ->] (3.25,3)-- node [midway,above]{$(r_i)_{i\in[n]}$}(7.25,3);
-\node [anchor=west] at (7.5,3.5){$\forall i\in\set:$};
-\node [anchor=west] at (7.5,3){$\quad s_i:=r_i\oplus m_i$};
-\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(7.25,3.85);
-\draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+
+\node [anchor=west] at (5.5,3.5){$\forall i\in\set:$};
+\node [anchor=west] at (5.5,3){$\quad s_i:=r_i\oplus m_i$};
+
 \node [anchor=west] at (0,2.5) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (7.5,2.5) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (5.5,2.5) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -50,6 +55,7 @@ Even though endemic security is implied by all the other security notions and co
 % 				\item \label{step:senderChosen_step2}  $\send$ sends the strings $r_1,...,r_n$ to $\rec$ where $r_i:=s_i\oplus m_i$.
 % 				\item \label{step:senderChosen_step3}  $\rec$ outputs $(s_i)_{i\in \set}$ where $s_i:=m_i\oplus r_i$.
 % 	\end{enumerate}\end{minipage}}
+\vspace{-0.5cm}
 	\caption{Sender chosen OT protocol $\Pi^{\send}_{k,n}$ in the $\OOT^\E$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:protoSendOT}
 \end{figure}
@@ -87,22 +93,29 @@ Even though endemic security is implied by all the other security notions and co
 \framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (0,5) {Sender:};
-\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(7.25,4.5);
-\node [anchor=west] at (7.5,5) {Receiver$(\set\subset[n],(s_i)_{i\in\set})$:};
+
+\node [anchor=west] at (5.5,5) {Receiver$(\set,(s_i)_{i\in\set})$:};
+
+\begin{scope}[shift={(-1.25,0)}]
+\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(6.75,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\E$};
+\draw [thick, <-] (3.5,3)-- node [midway,above]{$(r_i)_{i\in[n]}$}(6.75,3);
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(6.75,3.85);
+\draw [thick, <-] (3.5,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+\end{scope}
+
 \node [anchor=west] at (0,3.5){$\forall i\in[n]:$};
 \node [anchor=west] at (0,3){$\quad s_i:=r_i\oplus m_i$};
 
-\draw [thick, <-] (3.25,3)-- node [midway,above]{$(r_i)_{i\in[n]}$}(7.25,3);
-\node [anchor=west] at (7.5,4.5){$\forall i\in[n]\setminus\set:$};
-\node [anchor=west] at (7.5,4){$\quad r_i\leftarrow\bits^\ell$};
-\node [anchor=west] at (7.5,3.5){$\forall i\in\set:$};
-\node [anchor=west] at (7.5,3){$\quad r_i:=s_i\oplus m_i$};
-\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(7.25,3.85);
-\draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+
+\node [anchor=west] at (5.5,4.5){$\forall i\in[n]\setminus\set:$};
+\node [anchor=west] at (5.5,4){$\quad r_i\leftarrow\bits^\ell$};
+\node [anchor=west] at (5.5,3.5){$\forall i\in\set:$};
+\node [anchor=west] at (5.5,3){$\quad r_i:=s_i\oplus m_i$};
+
 \node [anchor=west] at (0,2.5) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (7.5,2.5) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (5.5,2.5) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -112,6 +125,7 @@ Even though endemic security is implied by all the other security notions and co
 % 				\item \label{step:receiverChosen_step2}  $\rec$ sends the strings $r_1,...,r_n$ to $\send$ where $r_i:=s_i\oplus m_i$ for $i\in \set$ and $r_i\gets\{0,1\}^\ell$ for $i\in [n]\setminus\set$.
 % 				\item \label{step:receiverChosen_step3}  $\send$ outputs $(s_i)_{i\in [n]}$ where $s_i:=m_i\oplus r_i$.
 % 	\end{enumerate}\end{minipage}}
+\vspace{-0.5cm}
 	\caption{Receiver chosen OT protocol $\Pi^{\rec}_{k,n}$ in the $\OOT^\E$ hybrid (\definitionref{def:ot}). For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:protoRecvOT}
 \end{figure}
@@ -150,24 +164,26 @@ Even though endemic security is implied by all the other security notions and co
 \framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (0,5) {Sender:};
-\node [anchor=west] at (7.5,5) {Receiver$(\set\subset[n])$:};
-\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(7.25,4.5);
+\node [anchor=west] at (5.5,5) {Receiver$(\set\subset[n])$:};
+\begin{scope}[shift={(-1.25,0)}]
+\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(6.75,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\E$};
-\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(7.25,3.85);
-\draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(6.75,3.85);
+\draw [thick, <-] (3.5,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
 \draw [thick] (4.75,3.15)--(5.75,3.15)--(5.75,2.15)--(4.75,2.15)--cycle;
 \node at (5.25,2.625){$\F^{\coin}$};
-\draw [thick, ->] (5.75,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(7.25,2.35);
-\draw [thick, <-] (3.25,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(4.75,2.35);
+\draw [thick, ->] (5.75,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(6.75,2.35);
+\draw [thick, <-] (3.5,2.35)-- node [midway,above]{$(r_i)_{i\in [n]}$}(4.75,2.35);
+\end{scope}
 
 \node [anchor=west] at (0,2.8){$\forall i\in[n]:$};
 \node [anchor=west] at (0,2.3){$\quad s_i:=r_i\oplus m_i$};
-\node [anchor=west] at (7.5,2.8){$\forall i\in\set:$};
-\node [anchor=west] at (7.5,2.3){$\quad s_i:=r_i\oplus m_i$};
+\node [anchor=west] at (5.5,2.8){$\forall i\in\set:$};
+\node [anchor=west] at (5.5,2.3){$\quad s_i:=r_i\oplus m_i$};
 
 \node [anchor=west] at (0,1.8) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (7.5,1.8) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (5.5,1.8) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -178,6 +194,7 @@ Even though endemic security is implied by all the other security notions and co
 % 				\item \send outputs $(s_i)_{i\in [n]}$ and \rec outputs $(s_i)_{i\in \set}$ where $s_i:=m_i\oplus r_i$.
 % 			\end{enumerate}
 % 	\end{minipage}}
+\vspace{-0.5cm}
 	\caption{ Uniform  OT protocol $\Pi^{\U}_{k,n}$ in the $\OOT^\E,\F^{\coin}$ hybrid (\definitionref{def:ot}).  For all $i\in[n]$, $r_i$, $m_i$ and $s_i$ are in $\bits^\ell$.}
 	\label{fig:uniformOT}
 \end{figure}
@@ -242,14 +259,16 @@ Even though endemic security is implied by all the other security notions and co
 \framebox{
 \begin{tikzpicture}
 \node [anchor=west] at (0,5) {Sender:};
-\node [anchor=west] at (7.5,5) {Receiver:};
+\node [anchor=west] at (5.75,5) {Receiver:};
+\begin{scope}[shift={(-1.25,0)}]
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\U$};
-\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$[k]$}(7.25,4.5);
-\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in [k]}$}(7.25,3.85);
-\draw [thick, <-] (3.25,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+\draw [thick, <-] (5.75,4.5)-- node [midway,above]{$[k]$}(7,4.5);
+\draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in [k]}$}(7,3.85);
+\draw [thick, <-] (3.5,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
+\end{scope}
 \node [anchor=west] at (0,3.5) {output $(m_i)_{i\in[k]}$};
-\node [anchor=west] at (7.5,3.5) {output $(m_i)_{i\in[k]}$};
+\node [anchor=west] at (5.75,3.5) {output $(m_i)_{i\in[k]}$};
 \end{tikzpicture}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
@@ -259,6 +278,7 @@ Even though endemic security is implied by all the other security notions and co
 % 				\item \label{step:coin_step2} Both parties output the bits of $(s_i)_{i\in [k]}$.
 % 			\end{enumerate}
 % 	\end{minipage}}
+\vspace{-0.5cm}
 	\caption{Coin flipping protocol $\Pi^{\coin}$ in the $\OOT^{\U}$ hybrid. For all $i\in[n]$, $m_i$ is in $\bits^\ell$.}
 	\label{fig:coinFlip}
 \end{figure}
