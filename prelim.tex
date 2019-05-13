@@ -1,7 +1,7 @@
 \section{Preliminaries}
 
 \subsection{Notation}
-$\sec$ denotes the security parameter and for $n\in\mathbb N$, $[n]:=\{1,\dots,n\}$. We use $\Pi^{\A,\B}$, $\Pi$ when $\A$ and $\B$ are clear from the context,  to denote a protocol between two parties \A and \B. $\langle \A,\B\rangle$ denotes as the transcript of the protocol, which consists of all the messages sent between them. We use $(\A(a),\B(b))_{\Pi}$ to denote the joint output distribution of $\A$ and \B when interacting in protocol $\Pi$ with inputs $a$ and $b$.
+$\sec$ denotes the security parameter. For $n\in\mathbb N$, $[n]:=\{1,\dots,n\}$ and $(s_j)_{j\neq\i}$ denotes ther ordered set  $(s_j)_{j\in[n]\setminus\{\i\}}$. We use $\Pi^{\A,\B}$, $\Pi$ when $\A$ and $\B$ are clear from the context,  to denote a protocol between two parties \A and \B. $\langle \A,\B\rangle$ denotes as the transcript of the protocol, which consists of all the messages sent between them. We use $(\A(a),\B(b))_{\Pi}$ to denote the joint output distribution of $\A$ and \B when interacting in protocol $\Pi$ with inputs $a$ and $b$.
 
 
 \begin{definition}[Random Oracle]
@@ -29,29 +29,29 @@ An \emph{ideal cipher} over a set of tuples of domains and an image is a collect
 \node [anchor=west] at (5.5,3.5) {$\key_\B=\EK(\tape_\B,\mes_\A)$};
 \end{tikzpicture}
 }
-\label{fig:UKA}
 \vspace{-0.3cm}
 \caption{The figure shows a key agreement protocol between parties \A and \B with random tapes $\tape_\A$ and $\tape_\B$. Correctness requires $\key_\A=\key_\B$.}
+ \label{fig:UKA}
 \end{figure}
 
 
 \begin{definition}[(Two Message) Uniform Key Agreement (\UKA)] 
 Let \G be a group.
-We call a protocol $\Pi$ between two ppt parties \A and \B (two message) uniform key agreement if \A first sends a message $\mes_\A\in\G$ to \B and \B responds with a final message $\mes_\B$ and in the end, both establish a common key $\key$ (see Figure~\ref{fig:UKA}) using a key establishing algorithm \EK. Further, we require three properties:
+We call a protocol $\Pi$ between two ppt parties \A and \B (two message) uniform key agreement if \A first sends a message $\mes_\A\in\G$ to \B and \B responds with a final message $\mes_\B$ and in the end, both establish a common key $\key$ (see \figureref{fig:UKA}) using a key establishing algorithm \EK. Further, we require three properties:
 \begin{description}
 \item[Correctness:]
 $$
 \Pr[\key_\A=\EK(\tape_\A,\mes_\B)=\EK(\tape_\B,\mes_\A)=\key_\B]\geq 1-\negl,
 $$
 where $\tape_\A\leftarrow\bits^*$, $\tape_\B\leftarrow\bits^*$, $\mes_\A\leftarrow\A(\tape_\A)$ and $\mes_\B\leftarrow\B(\tape_\B)$.
-\item [Key Indistinguishability:] For any ppt distinguisher \D,
+\item [Key Indistinguishability:] For any ppt distinguisher \D and any polynomial size auxiliary input $z$,
 $$ 
-|\Pr[\D(1^\sec,\langle \A,\B\rangle, \key)=1]-\Pr[\D(1^\sec,\langle \A,\B\rangle, u)=1]|=\negl,
+|\Pr[\D(z,\langle \A,\B\rangle, \key)=1]-\Pr[\D(z,\langle \A,\B\rangle, u)=1]|=\negl,
 $$
 where $\key$ is the established key between \A and \B and $u$ is a uniform element from the key domain.
-\item [Uniformity:] For any ppt distinguisher \D, 
+\item [Uniformity:] For any ppt distinguisher \D and any polynomial size auxiliary input $z$, 
 $$
-|\Pr[\D(1^\sec,\mes_\A)=1]-\Pr[\D( 1^\sec,u)=1]|=\negl,
+|\Pr[\D(z,\mes_\A)=1]-\Pr[\D(z,u)=1]|=\negl,
 $$
 where $u$ is a uniform element from \G and $\mes_\A\leftarrow\A(\tape_\A)$.
 \end{description}
@@ -83,23 +83,23 @@ All remaining $s_i$ for $i\in [n]$ are uniformly sampled $s_i\gets\{0,1\}^\ell$ 
 As specified by the message sampling method, the functionality constructs messages $(s_i)_{i\in[n]}$. Thereafter, the functionality sends $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in \set}$ to \rec. We denote the ideal functionalities for sender chosen, receiver chosen, uniform message and endemic as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. %
 \end{definition}
 \begin{remark}
-	We generalize this definition for the case where $n$ can be exponential. In addition, we consider the case when the set $\set$ is sampled uniformly by the functionality. We call this \emph{uniform selection} as opposed to \emph{receiver selection}. In this case, we denote the analogous oracles for $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$ as $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively. See \definitionref{def:got}.
+We generalize this definition for the case where $n$ can be exponential. In addition, we consider the case when the set $\set$ is sampled uniformly by the functionality. We call this \emph{uniform selection} as opposed to \emph{receiver selection}. In this case, we denote the analogous oracles for $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$ as $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively. See \definitionref{def:got}.
 \end{remark}
 
 
-
+In our definition of OT, we use the simplified UC security definition that is sufficient for full UC security \cite{C:CanCohLin15}. 
 \begin{definition}[$k$-out-of-$n$ Oblivious Transfer ($\OT_{k,n}$)]\label{def:otSec}
 We call a protocol $\Pi$ between two ppt parties, a sender \send and a receiver \rec, a \emph{$k$-out-of-$n$ oblivious transfer} if %\rec has as input a set $\set\subset[n]$ of size $k$ and 
 at the end, \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs $(s_i)_{i\in\set}$ and a set $\set\subset[n]$ s.t. $|\set|=k$. For security, we require two properties with respect to a functionality \OOT.
 \begin{description}
-\item[Security Against a Malicious Sender:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+\item[Security Against a Malicious Sender:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt environment \D and any polynomial size auxiliary input $z$
 $$
-|\Pr[\D((\Adv,\rec)_{\Pi})=1] -\Pr[\D( (\Adv', \OOT))=1]|=\negl,
+|\Pr[\D(z,(\Adv,\rec)_{\Pi})=1] -\Pr[\D(z,(\Adv', \OOT))=1]|=\negl,
 $$
 where all algorithms receive input $1^\sec$. \rec additionally receives input \set.
-\item[Security Against a Malicious Receiver:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+\item[Security Against a Malicious Receiver:] For any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
 $$
-|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D((\OOT,\Adv'))=1]|=\negl,
+|\Pr[\D(z, (\send, \Adv)_{\Pi})=1] -\Pr[\D(z, (\OOT,\Adv'))=1]|=\negl,
 $$
 where all algorithms receive input $1^\sec$.
 \end{description}
@@ -117,6 +117,11 @@ We distinguish four different security notions.
 \end{definition}
 
 \begin{remark}
+It is important to notice that we distinguish the functionality an OT provides from the ideal functionality for which the OT is secure. Here, 
 $\OOT^\U$-security is the strongest security definition since a malicious party cannot tweak the distribution of the strings  $(s_i)_{i\in[n]}$. Endemic security gives the weakest security guarantees since in both cases, the malicious receiver and malicious sender case, the adversary can potentially choose the strings $(s_i)_{i\in\set}$.
+\end{remark}
+
+\begin{remark}
+In the following, we assume that all messages from a sender or a receiver also contain a session identifier $\mathsf{sid}$ and that for every new session between a sender and a receiver, they receive access to a fresh random oracle that is unique to that session (local random oracle).  
 \end{remark}
 

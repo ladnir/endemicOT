@@ -7,14 +7,14 @@
 	
 	
 	\begin{proof}
-		We show that if there is an adversary that breaks the security against a malicious security with respect to ideal OT $\OOT$ then there is also an adversary that breaks the security with respect to $\OOT^*$. More precisely, if there is a ppt adversary $\Adv_1$ such that for any ppt adversary $\Adv_1'$ there exists a ppt distinguisher $\D_1$ with 
+		We show that if there is an adversary that breaks the security against a malicious security with respect to ideal OT $\OOT$ then there is also an adversary that breaks the security with respect to $\OOT^*$. More precisely, if there is a ppt adversary $\Adv_1$ such that for any ppt adversary $\Adv_1'$ there exists a ppt distinguisher $\D_1$ and a polynomial size auxiliary input $z$ with 
 		$$
-		|\Pr[\D_1((\Adv_1,\rec)_{\Pi})=1] -\Pr[\D_1( (\Adv'_1, \OOT))=1]|=\epsilon,
+		|\Pr[\D_1(z,(\Adv_1,\rec)_{\Pi})=1] -\Pr[\D_1(z, (\Adv'_1, \OOT))=1]|=\epsilon,
 		$$
 		where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
-		Then there is also a ppt adversary $\Adv_2$ such that for any ppt adversary $\Adv_2'$ there exists a ppt distinguisher $\D_2$ with 
+		Then there is also a ppt adversary $\Adv_2$ such that for any ppt adversary $\Adv_2'$ there exists a ppt distinguisher $\D_2$ and a polynomial size auxiliary input $z$ with 
 		$$
-		|\Pr[\D_2((\Adv_2,\rec)_{\Pi})=1] -\Pr[\D_1( (\Adv'_2, \OOT^*))=1]|=\epsilon,
+		|\Pr[\D_2(z,(\Adv_2,\rec)_{\Pi})=1] -\Pr[\D_1(z, (\Adv'_2, \OOT^*))=1]|=\epsilon,
 		$$
 		where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 		

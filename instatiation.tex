@@ -1,7 +1,9 @@
 \section{Instantiations}\label{sec:inst}
-In the following, we first show how to efficiently instantiate the construction in \figureref{fig:oneroundKAtoOT} using the Diffie-Hellman key exchange. In particular, we show how a tighter security reduction can be obtained using the random self-reducibility of the DDH assumption.
+In the following, we first show how to efficiently instantiate the construction in \figureref{fig:KAtoOT} using the Diffie-Hellman key exchange. In particular, we show how a tighter security reduction can be obtained using the random self-reducibility of the DDH assumption. In \figureref{fig:optKAtoOT}, we give an optimized variant based on an interactive DDH assumption.
 
 Afterwards, we show how to instantiate the construction in \figureref{fig:KAtoOT} based on the lattice based Kyber key agreement. 
+
+We emphasize that the instantiations only achieve stand alone security. For UC security, one needs to assume that DDH and Kyber are secure against non-uniform adversaries. 
 
 
 \subsection{Instantiation from DDH}
@@ -47,12 +49,48 @@ Therefore, except with negligible probability, $\D$ has the same advantage in br
 Using Theorem~\ref{thm:KAtoOT}, Lemma~\ref{lem:DHuniform} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
 
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting endemic OT is statistically secure against malicious senders making at most polynomially many random oracle queries and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:KAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting endemic OT is statistically secure against malicious senders making at most polynomially many random oracle queries and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}
 
 \begin{remark}
-If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol in \figureref{fig:DH} and apply the transformation \figureref{fig:oneroundKAtoOT}, we receive a one-round endemically secure OT in the random oracle model based on the computational Diffie-Hellman assumption. Alternatively, one could also use the random oracle instead of a hardcore predicate to obtain longer OT strings. 
+If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol in \figureref{fig:DH} and apply the transformation \figureref{fig:KAtoOT}, we receive a one-round endemically secure OT in the random oracle model based on the computational Diffie-Hellman assumption. Alternatively, one could also use the random oracle instead of a hardcore predicate to obtain longer OT strings. 
 \end{remark}
+
+\subsection{Optimized, Interactive DDH based Instantiation}\label{sec:optOT}
+\begin{figure}
+\centering
+\framebox{
+\begin{tikzpicture}
+\node [anchor=west] at (-0.5,5) {Sender:};
+\node [anchor=west] at (4,5) {Receiver$(\i\in[n])$:};
+\node [anchor=west] at (4,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
+\node [anchor=west] at (4,4){$a\leftarrow\Z_p$};
+\node [anchor=west] at (4,3.5){$r_{\i}=\lb a\rb \ominus \H((r_j)_{j\neq\i})$};
+\draw [thick, <-] (2.75,3.5)-- node [midway,above]{$(r_j)_{j\in[n]}$}(4,3.5);
+%\node [anchor=west] at (-0.35,2.5){$\mes_{\A,j}=r_j\oplus h_j$};
+\node [anchor=west] at (-0.5,4){$b\leftarrow\Z_p$};
+\draw [thick, ->] (2.75,3.35)-- node [midway,below]{$\lb b \rb$}(4,3.35);
+\node [anchor=west] at (4,3) {$s_{\A,\i}=\lb ab\rb$};
+\node [anchor=west] at (-0.5,3.5) {$\forall j\in[n]$};
+\node [anchor=west] at (-0.35,3) {$s_{\B,j}=(r_j\H((r_\ell)_{\ell\neq j}))^b$};
+\end{tikzpicture} 
+}
+\vspace{-0.3cm}
+\caption{The figure shows an optimized variant of the protocol from \figureref{fig:KAtoOT} based on an interactive DDH assumption.}
+\label{fig:optKAtoOT}
+\end{figure}
+In \figureref{fig:optKAtoOT}, we show an optimized variant of our OT. It reduces the communication cost from the sender to the receiver by sending only a single group element. This is possible since it does not depend on any of the $n$ elements sent by the receiver. A drawback of this construction is that we do not know how to prove its security under the standard DDH assumption.
+
+The reason is simple, in our security proof during the simulation, $\Adv'$ needs compute the key $\lb ab \rb$ while at the same time given $\lb 1\rb,\lb a'\rb,\lb b\rb$, $\lb[ab']$ needs to be hard to distinguish from a uniformly random group element. Since $a$ is picked by the adversary $\Adv$ and only transmits $\lb a \rb$, we do not know how to simulate correctly. The next definition formally states the assumption under which the protocol in \figureref{fig:optKAtoOT} can be proven to be secure. 
+
+\begin{definition}[Interactive Decisional Diffie-Hellman (IDDH) Assumption]
+For a group $\G$, the \emph{interactive decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
+\begin{eqnarray*}
+&&|\Pr\lb \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb ab\rb)=1\rb\\
+&&-\Pr\lb \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb c\rb)=1\rb|=\negl,
+\end{eqnarray*}
+where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{st},\lb x\rb)\leftarrow\D_1(\lb 1\rb)$.
+\end{definition}
 
 \subsection{Instantiation based on Crystals-Kyber}
  

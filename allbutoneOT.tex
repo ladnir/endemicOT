@@ -17,7 +17,7 @@ In this section we show how to use the techniques in \namedref{Section}{sec:ende
 \node [anchor=west] at (-0.35,1.5){$\mes_{\B,j}=\B(\tape_{\B,j},r_j\oplus h_j)$};
 \draw [thick, ->] (2.75,1.5)-- node [midway,below]{$(\mes_{\B,j})_{j\in[n]}$}(4,1.5);
 \node [anchor=west] at (-0.5,1) {$\forall j\in[n]$};
-\node [anchor=west] at (-0.35,0.5) {$\key_{\B,j}=\EK(\tape_{\B,j},\mes_{\A,j})$};
+\node [anchor=west] at (-0.35,0.5) {$\key_{\B,j}=\EK(\tape_{\B,j},r_j\oplus h_j)$};
 \node [anchor=west] at (4,4){for $j=1$ to $n-1$};
 \node [anchor=west] at (4,3.5){$\quad\ell_{j}:=(i+j\bmod n) +1$};
 \node [anchor=west] at (4,3){$\quad\tape_{\A,\ell_j}\leftarrow\bits^*$};
@@ -37,13 +37,13 @@ Given a correct and secure \UKA scheme, then the $n-1$ out of $n$ oblivious tran
 \end{lemma}
 
 \begin{proof}
-The proof is very similar to the security proof of the $1$ out of $n$ OT. In fact, the proof is even simpler since the random oracle receives only a single $r$ as input and for a malicious receiver, distinguishing a single string, i.e. $\key_{i}$, needs to be hard. This even removes some of the complications of the previous proof. In the following, we state the claims, which only require small adaptations to the claims of the previous proofs. For this reason, we do not give their proofs here. 
+The proof is very similar to the security proof of the $1$ out of $n$ OT. In fact, the proof is even simpler since the random oracle receives only a single $r$ as input and for a malicious receiver, distinguishing a single string, i.e. $\key_{i}$, needs to be hard. This even removes some of the complexity of the previous proof. In the following, we state the claims, which only require minor adaptations to the claims of the previous proofs. For this reason, we do not give their proofs here. 
 
 Security against a malicious sender follows by the claim below. 
 \begin{claim}\label{claim:malsender}
-Given a $\delta$ correct and $\epsilon$ uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+Given a $\delta$ correct and $\epsilon$ uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
 $$
-|\Pr[\D((\Adv,\rec)_{\Pi})=1] -\Pr[\D( (\Adv', \OOT^\send))=1]|\leq \epsilon+(1-\delta),
+|\Pr[\D(z,(\Adv,\rec)_{\Pi})=1] -\Pr[\D(z, (\Adv', \OOT^\send))=1]|\leq \epsilon+(1-\delta),
 $$
 where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 \end{claim}
@@ -51,9 +51,9 @@ where all algorithms receive input $1^\sec$ and \rec additionally receives input
 
 By a second claim, the protocol is secure against a malicious receiver.
 \begin{claim}\label{claim:malreceiver}
-Given a $\delta$ correct, $\epsilon_u$ $Q$ multi-instance uniform, $\epsilon_k$ $(Q,1)$ multi-instance key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D
+Given a $\delta$ correct, $\epsilon_u$ $Q$ multi-instance uniform, $\epsilon_k$ $(Q,1)$ multi-instance key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
 $$
-|\Pr[\D((\send, \Adv)_{\Pi})=1] -\Pr[\D((\OOT^\rec,\Adv'))=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
+|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\rec,\Adv'))=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
 $$
 where all algorithms receive input $1^\sec$.
 \end{claim}
