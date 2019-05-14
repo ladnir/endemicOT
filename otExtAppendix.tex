@@ -26,11 +26,34 @@
 
 
 \subsection{Proof of \lemmaref{lem:ext_R_S}: $\OOT^\send$ Extension with an Ideal Cipher}
+
+
+
+%We begin with the $\Pi^{\textsf{ext-R}}$ protocol defined in \definitionref{def:ext_R_S}.
+\begin{definition}\label{def:ext_R_S}
+	Let $\Pi^{\textsf{ext-S}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+\end{definition}
+\begin{lemma}\label{lem:ext_R_S}
+	The $\Pi^{\textsf{ext-S}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security, for $N=\textsf{poly}(\kappa)$. Against a malicious \rec,  $\Pi^{\textsf{ext-R}\pi}$ realizes $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
+\end{lemma}
+
 \input{proofs/ext_R_S.tex}
 
+\begin{definition}\label{def:ext_U_U}
+	Let $\Pi^{\textsf{ext-U}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
+	\begin{enumerate}
+		\item In round one, \send samples $k\gets\{0,1\}^{\kappa}$ and sends a commitment of $k$ to \rec.
+		\item After \stepref{step:consistency}, \send decommits $k$ to \rec who aborts if it fails.
+		\item Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
+	\end{enumerate}
+\end{definition}
 
 \subsection{Proof of \lemmaref{def:ext_U_U}:  $\OOT^\U$ Extension with an Ideal Cipher}
+\begin{lemma}\label{lem:ext_U_U}
+	The $\Pi^{\textsf{ext-U}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security, for $N=\textsf{poly}(\kappa)$.
+\end{lemma}
 \input{proofs/ext_U_U.tex}
+
 
 
 

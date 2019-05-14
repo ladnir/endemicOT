@@ -123,7 +123,7 @@ Traditionally, two additional steps are specified to realize the ideal sender ch
 \subsection{OT Extension Attacks}\label{sec:extAttack}
 
 
-The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol descriptions that are intended to satisfy the uniform message security notion, \definitionref{def:otSec}, but we show this to not be the case. These protocols can be summarized as the previous protocol description where the $\Pi^{\send}_{1,N}$ transformation is not applied, i.e. output $\vv_{i,x_i}$.  For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks on uniform message security also apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail three attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
+The authors of \cite{C:KelOrsSch15} and \cite{RSA:OrrOrsSch17} provide protocol descriptions that are intended to (respectively) satisfy the sender and uniform chosen message security notion, \definitionref{def:otSec}, but we show this to not be the case. These protocols can be summarized as the previous protocol description where the $\Pi^{\send}_{1,N}$ transformation is not applied, i.e. output $\vv_{i,x_i}$.  For the rest of this work we will refer to the protocol of \cite{RSA:OrrOrsSch17} as defined in \definitionref{def:OOS} but note that the attacks by a malicious \rec apply to \cite[Figure 6, 7]{C:KelOrsSch15}. In particular, we detail three attacks where the first (\lemmaref{lem:malRec})  allows a malicious \rec to bias the OT messages that they output while the second and third attacks (\lemmaref{lem:malRec}, \ref{lem:malSend}) succeed even when base OTs with stronger security are used. In all cases, the ability to bias the messages violates the ideal functionality which samples them uniformly at random.
 
 
 \begin{definition}\label{def:OOS}
@@ -138,7 +138,7 @@ The authors of \cite{C:KelOrsSch15,RSA:OrrOrsSch17} provide protocol description
 \fi
 
 
-\lemmaref{lem:malRec} details an attack which allows \R to bias the output $\vv_{i,x_i}$ to be $\H(i,x)$ for any $x\in\mathbb{F}^{\nc}_2$. The core idea behind this attack is that \rec has complete control over the matrix $T_0$ since they input it to the base OTs. As such, \rec can choose their output messages to be $\vv_{i,x_i}=\H(i,\tt_i)$ for any $\tt_i$. For example, let $\tt_1=\tt_{i}$ for all $i\in[m]$. Then the distinguisher can compare the output of \send and  outputs 1 if $\vv_{1,x_1}=\vv_{i,x_{igit push}}$. 
+\lemmaref{lem:malRec} details an attack which allows \rec to bias the output $\vv_{i,x_i}$ to be $\H(i,x)$ for any $x\in\mathbb{F}^{\nc}_2$. The core idea behind this attack is that \rec has complete control over the matrix $T_0$ since they input it to the base OTs. As such, \rec can choose their output messages to be $\vv_{i,x_i}=\H(i,\tt_i)$ for any $\tt_i$. For example, let $\tt_1=\tt_{i}$ for all $i\in[m]$. Then the distinguisher can compare the output of \send and  outputs 1 if $\vv_{1,x_1}=\vv_{i,x_{i}}$. 
 \iffullversion
 \input{proofs/attack_BadT0.tex}
 \else
@@ -359,40 +359,5 @@ Interestingly, existing implementations\cite{libOTe,encrypto,KOS,EMP} have eithe
 
 One solution is to implement $\H$ directly as a random oracle as opposed to first adding the input together. However, in the case of 1-out-of-2 OT this would prevent the efficient use of AES based hashing. We take a different approach by removing the requirement for inputting $i$ into the hash function, i.e. \rec outputs $\H(\tt_i)$ as opposed to $\H(i,\tt_i)$. We prove this approach secure given that $T_0$ is sampled uniformly. Intuitively, this condition is sufficient due to collisions on the input to $\H$ being negligible, i.e. the set $\{\tt_i + \bb\oplus\mathcal{C}(x) \mid \forall i,x\}$ does not collide\footnote{Assuming $\bb$ is uniformly sampled.}.
 
-%We begin with the $\Pi^{\textsf{ext-R}}$ protocol defined in \definitionref{def:ext_R_S}.
-\begin{definition}\label{def:ext_R_S}
-	Let $\Pi^{\textsf{ext-S}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\rec$ and the random oracle $\H(i,x)$ required by $\Pi^{\textsf{ext-E}}$ is replaced as follows: after \stepref{step:consistency}, \send samples $k\gets\{0,1\}^{\kappa}$ and sends it to \rec. Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
-\end{definition}
-\begin{lemma}\label{lem:ext_R_S}
-	The $\Pi^{\textsf{ext-S}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\send$-security, for $N=\textsf{poly}(\kappa)$. Against a malicious \rec,  $\Pi^{\textsf{ext-R}\pi}$ realizes $\OOT^\U$-security. That is, the input messages of an honest \send are sampled uniformly from $\{0,1\}^\kappa$ by the protocol.
-\end{lemma}
-\iffullversion
-\input{proofs/ext_R_S.tex}
-\else
-\begin{proof}
-	See \appendixref{proof:ext_R_S}.
-	\pe
-\end{proof}
-\fi
 
-\begin{definition}\label{def:ext_U_U}
-	Let $\Pi^{\textsf{ext-U}\pi}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^{\U u}$ and the random oracle $\H(i,x)$ required by \figureref{fig:otExt} is replaced as follows:
-	\begin{enumerate}
-		\item In round one, \send samples $k\gets\{0,1\}^{\kappa}$ and sends a commitment of $k$ to \rec.
-		\item After \stepref{step:consistency}, \send decommits $k$ to \rec who aborts if it fails.
-		\item Both parties define $\H(x)=\pi_k(x)+x$ where $\pi:\{0,1\}^{\kappa} \times \mathbb{F}^\nc_2 \rightarrow\{0,1\}^\kappa$ is an ideal cipher. Note: the $i$ parameter of $\H$ is removed.
-	\end{enumerate}
-\end{definition}
-
-\begin{lemma}\label{lem:ext_U_U}
-	The $\Pi^{\textsf{ext-U}\pi}$ protocol realizes 1-out-of-$N$ $\OOT^\U$-security, for $N=\textsf{poly}(\kappa)$.
-\end{lemma}
-\iffullversion
-\input{proofs/ext_U_U.tex}
-\else
-\begin{proof}
-See \appendixref{proof:ext_U_U}.
-\pe
-\end{proof}
-\fi
-
+See \appendixref{proof:ext_R_S} for details and proofs.
