@@ -41,7 +41,7 @@ Notice that endemic security gives the weakest security guarantees, no matter wh
 \pgfextractangle{\angle}{E}{RC}
 \draw [->, thick] (E) to [out=0,in=270] node [midway,below,rotate=0]{$\enspace\quad\scalebox{0.7}{\lref{lem:EtoR}}$} (RC);
 \end{tikzpicture}
-\vspace{-0.7cm}
+\myvspace{-0.7cm}
 \caption{
 The figure depicts the different security notions of OT and their relations. $A\Rightarrow B$ denotes the implication. $A\rightarrow B$ denotes that there is an efficient transformation.
 } \label{fig:OTrelations} 
@@ -113,7 +113,7 @@ We note that many protocols that utilize Uniform Message security can likely tol
 %	\draw [->, thick] (E) .. controls (1,0.75) .. (SC);
 %	\draw [->, thick] (E) .. controls (7,0.75) .. (RC);
 	\end{tikzpicture}
-	\vspace{-0.3cm}
+	\myvspace{-0.3cm}
 	\caption{
 		The figure shows the implications of the base OT security (\definitionref{def:otSec}) when  $\Pi^\textsf{ext}$ from \figureref{fig:otExt} or a slight variation (dashed line) is applied. $\OOT^{*u}$ denotes $\OOT^*$ security where the receiver's selection is uniformly sampled by the functionality \definitionref{def:ot},\ref{def:got}.
 	} 

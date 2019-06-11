@@ -5,7 +5,7 @@ In this section we show how to use the techniques in \namedref{Section}{sec:ende
 \begin{figure}
 \centering
 \framebox{
-\begin{tikzpicture}
+\begin{tikzpicture}[xscale=1.5]
 \node [anchor=west] at (-0.5,5) {Sender:};
 \node [anchor=west] at (4,5) {Receiver$(\i\in[n])$:};
 \node [anchor=west] at (4,4.5){$r_{i}\leftarrow\G$};
@@ -27,7 +27,7 @@ In this section we show how to use the techniques in \namedref{Section}{sec:ende
 \node [anchor=west] at (4,0.5) {$\key_{\A,j}:=\EK(\tape_\A,\mes_{\B,j})$};
 \end{tikzpicture} 
 }
-\vspace{-0.3cm}
+\myvspace{-0.3cm}
 \caption{The figure shows a $n-1$ out of $n$ OT using a $\UKA=(\A,\B,\EK)$ and a random oracle $\H:\G\rightarrow\G$, where \G is a group with operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds. The scheme can be transformed in the same way in a one-round scheme given a one-round \UKA as in the $1$ out of $n$ OT case in \namedref{Section}{sec:endemicOT}.}
 \label{fig:allbutone}
 \end{figure}

@@ -10,6 +10,8 @@ We perform experiments on a multi-core Intel Xeon processor at 2.7GHz and 256GB 
 \newcommand{\mr}[2]{\multirow{#1}{*}{#2}}
 
 \begin{figure*}[t!]\centering
+	\iffullversion
+	\scriptsize\fi
 	\begin{tabular}{|c||c|c|c || r | r|  r | r |r |r|r |r|}
 		\hline
 		     \mr{3}{Protocol}       &                  \mr{3}{Security$^\dag$}                   & \mr{3}{Rounds} & \mr{3}{ASM} &                           \multicolumn{8}{c|}{$m$}                            \\
@@ -37,6 +39,9 @@ Regardless, in the WAN setting with 128 OT our protocols achieve the best perfor
 
 
 \begin{figure*}[t!]\centering
+	\iffullversion
+	\scriptsize
+	\fi
 	\begin{tabular}{|l||c|c|c || r | r|  r |r |r|r |r|r|}
 		\hline
 		\mr{3}{Protocol}  &         \mr{3}{Security}          & \mr{3}{Total} & \mr{3}{$n$} &                                     \multicolumn{8}{c|}{$m$}                                     \\

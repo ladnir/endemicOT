@@ -1,11 +1,12 @@
 
 \newif\iffullversion
 
-\fullversionfalse
+\fullversiontrue
 
 
 \iffullversion    
-	\documentclass[10pt]{article}
+	\documentclass[11pt]{article}
+	\usepackage[margin=1in]{geometry}
 \else
 	%\documentclass[runningheads]{llncs}
 	%\pagestyle{plain}
@@ -24,11 +25,14 @@
 %\fi
 
 \title{Endemic Oblivious Transfer}
-% \author{Daniel Masny \and Peter Rindal}
-% \institute{VISA Research}
+ \author{Daniel Masny \and Peter Rindal}
+ %\institute{VISA Research}
 
 \begin{document}
 
+\iffullversion 
+\maketitle
+\fi
 \begin{abstract}
 Oblivious Transfer has played a crucial role in the design of secure multi party computation. Nevertheless, there are not many practical solutions that achieve simulation based security and at the same time instantiable based on different assumptions.
 
@@ -38,7 +42,10 @@ Further, our new security notion also allows us to revisit, correct and improve 
 
 \end{abstract}
 
+\iffullversion 
+\else
 \maketitle
+\fi
 \input{intro.tex}
 \input{prelim.tex}
 \input{relOT.tex}

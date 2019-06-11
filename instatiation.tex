@@ -60,7 +60,7 @@ If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol 
 \begin{figure}
 \centering
 \framebox{
-\begin{tikzpicture}
+\begin{tikzpicture}[xscale=1.3]
 \node [anchor=west] at (-0.5,5) {Sender:};
 \node [anchor=west] at (4,5) {Receiver$(\i\in[n])$:};
 \node [anchor=west] at (4,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
@@ -75,7 +75,7 @@ If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol 
 \node [anchor=west] at (-0.35,3) {$s_{\B,j}=(r_j\H((r_\ell)_{\ell\neq j}))^b$};
 \end{tikzpicture} 
 }
-\vspace{-0.3cm}
+\myvspace{-0.3cm}
 \caption{The figure shows an optimized variant of the protocol from \figureref{fig:KAtoOT} based on an interactive DDH assumption.}
 \label{fig:optKAtoOT}
 \end{figure}
@@ -98,7 +98,7 @@ where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{s
 \begin{figure}[h!]
 \centering
 \framebox{
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=1.3]
 \node [anchor=west] at (-0.25,5) {\A:};
 \node [anchor=west] at (4.7,5) {\B:};
 \node [anchor=west] at (-0.25,4.5){$(\sk,\mes_\A)\leftarrow\kybergen()$};
@@ -140,7 +140,7 @@ We define the group operation $\pk_1\oplus\pk_2$, by mapping $\pk_1=(\cdt_1,\rho
 By using \theoremref{thm:KAtoOT}, \lemmaref{lem:multuniform} and \lemmaref{lem:keytomultkey}, we get the following corollary.
  
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:oneroundKAtoOT} with Crystals-Kyber, then in the programmable random oracle model the resulting endemic OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\MLWE}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:Kyber} with Crystals-Kyber, then in the programmable random oracle model the resulting endemic OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\MLWE}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}
 
 In this work, we will instantiate Kyber with $k=3$ which is claimed to have a qbit security level of $161$ bit. This security level does not immediately carry over to our Kyber based OT, there is an additional security loss of $Q^2$. Though we are unaware of an attack that is significantly more efficient on our Kyber based OT than the attacks on Kyber.

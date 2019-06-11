@@ -5,19 +5,29 @@
 \newcommand{\lb}{\llbracket}
 \newcommand{\rb}{\rrbracket}
 
-%\iffullversion  
-	\usepackage{amsmath,amsthm}
-	\newtheorem{theorem}{Theorem}[section]
-	\newtheorem{definition}[theorem]{Definition}
-	\newtheorem{lemma}[theorem]{Lemma}
-	\newtheorem{claim}[theorem]{Claim}
-	\newtheorem{remark}[theorem]{Remark}
-	\newtheorem{corollary}[theorem]{Corollary}
-%\fi
+\iffullversion  
+	\newcommand{\myvspace}[1]{}
+	\newcommand{\U}{\ensuremath{\mathsf{U}}\xspace}
+	\newcommand{\G}{\ensuremath{\mathcal{G}}\xspace}
+\else
+	\newcommand{\myvspace}[1]{\vspace{#1}}
+	\renewcommand{\U}{\ensuremath{\mathsf{U}}\xspace}
+	\renewcommand{\G}{\ensuremath{\mathcal{G}}\xspace}
+\fi
+
+\usepackage{amsmath,amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+
 
 \newcommand{\send}{\ensuremath{\mathsf{S}}\xspace}
 \newcommand{\rec}{\ensuremath{\mathsf{R}}\xspace}
 \renewcommand{\U}{\ensuremath{\mathsf{U}}\xspace}
+\renewcommand{\G}{\ensuremath{\mathcal{G}}\xspace}
 \newcommand{\E}{\ensuremath{\mathsf{E}}\xspace}
 \newcommand{\coin}{\ensuremath{\mathsf{coin}}\xspace}
 \newcommand{\A}{\ensuremath{\mathsf{A}}\xspace}
@@ -25,7 +35,6 @@
 \newcommand{\Adv}{\ensuremath{\mathcal{A}}\xspace}
 \newcommand{\negl}{\ensuremath{\mathsf{negl}}\xspace}
 \newcommand{\mes}{\ensuremath{\mathsf{m}}\xspace}
-\renewcommand{\G}{\ensuremath{\mathcal{G}}\xspace}
 \newcommand{\tape}{\ensuremath{\mathsf{t}}\xspace}
 \newcommand{\EK}{\ensuremath{\mathsf{Key}}\xspace}
 \newcommand{\key}{\ensuremath{\mathsf{k}}\xspace}

@@ -264,24 +264,24 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 	\pe
 \end{proof}
 
-%\iffullversion
-%
-%\begin{definition}\label{def:ext_S_U}
-%	Let $\Pi^{\textsf{ext-S}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\send$.
-%\end{definition}
-%\begin{lemma}
-%	The $\Pi^\textsf{ext-S}$ protocol realizes 1-out-of-$N$ $\OOT^\E$ security.
-%\end{lemma}
-%\begin{proof}
-%	Follows directly from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}.
-%\end{proof}
-%\begin{lemma}
-%		The $\Pi^\textsf{ext-S}$ protocol does not realizes 1-out-of-$N$ $\OOT^\send$ or $\OOT^\rec$ security.
-%\end{lemma}
-%\begin{proof}
-%	Follows directly from \lemmaref{lemma:is_a} with \lemmaref{lem:malRec2} for $\OOT^\send$ and \ref{lem:malSend} for $\OOT^\rec$.
-%\end{proof}
-%\fi
+\iffullversion
+
+\begin{definition}\label{def:ext_S_U}
+	Let $\Pi^{\textsf{ext-S}}$ be the protocol of \figureref{fig:otExt} where $\OOT:=\OOT^\send$.
+\end{definition}
+\begin{lemma}
+	The $\Pi^\textsf{ext-S}$ protocol realizes 1-out-of-$N$ $\OOT^\E$ security.
+\end{lemma}
+\begin{proof}
+	Follows directly from \lemmaref{lemma:is_a} and \lemmaref{lem:ext-E}.
+\end{proof}
+\begin{lemma}
+		The $\Pi^\textsf{ext-S}$ protocol does not realizes 1-out-of-$N$ $\OOT^\send$ or $\OOT^\rec$ security.
+\end{lemma}
+\begin{proof}
+	Follows directly from \lemmaref{lemma:is_a} with \lemmaref{lem:malRec2} for $\OOT^\send$ and \ref{lem:malSend} for $\OOT^\rec$.
+\end{proof}
+\fi
 
 
 
@@ -358,6 +358,5 @@ Interestingly, existing implementations\cite{libOTe,encrypto,KOS,EMP} have eithe
 %The motivation for deviating from protocol specification of $\H(i,x)$ is for the case of 1-out-of-2 OT where $x\in\{0,1\}^{\kappa}$ where $\kappa=128$. In this case it can be temping to use AES with a fixed key to implement $\H$ since hardware based AES is roughly 45 times faster than optimized hashing implementations\cite{blake2} in our experiments. 
 
 One solution is to implement $\H$ directly as a random oracle as opposed to first adding the input together. However, in the case of 1-out-of-2 OT this would prevent the efficient use of AES based hashing. We take a different approach by removing the requirement for inputting $i$ into the hash function, i.e. \rec outputs $\H(\tt_i)$ as opposed to $\H(i,\tt_i)$. We prove this approach secure given that $T_0$ is sampled uniformly. Intuitively, this condition is sufficient due to collisions on the input to $\H$ being negligible, i.e. the set $\{\tt_i + \bb\oplus\mathcal{C}(x) \mid \forall i,x\}$ does not collide\footnote{Assuming $\bb$ is uniformly sampled.}.
-
 
 See \appendixref{proof:ext_R_S} for details and proofs.

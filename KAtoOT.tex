@@ -7,7 +7,7 @@ In \figureref{fig:KAtoOT}, we present the generic construction from any two roun
 \begin{figure}
 \centering
 \framebox{
-\begin{tikzpicture}
+\begin{tikzpicture}[xscale=1.4]
 \node [anchor=west] at (-0.5,5) {Sender:};
 \node [anchor=west] at (4,5) {Receiver$(\i\in[n])$:};
 \node [anchor=west] at (4,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
@@ -26,7 +26,7 @@ In \figureref{fig:KAtoOT}, we present the generic construction from any two roun
 \node [anchor=west] at (-0.35,1.5) {$s_{\B,j}=\EK(\tape_{\B,j},\mes_{\A,j})$};
 \end{tikzpicture} 
 }
-\vspace{-0.3cm}
+\myvspace{-0.3cm}
 \caption{The figure depicts a $1$ out of $n$ OT using a $\UKA=(\A,\B,\EK)$ and a random oracle $\H:\G^{n-1}\rightarrow\G$, where \G is a group with operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds. In case of a one round \UKA the messages can be sent simultaneously.}
 \label{fig:KAtoOT}
 \end{figure}
