@@ -7,6 +7,7 @@
 \iffullversion    
 	\documentclass[11pt]{article}
 	\usepackage[margin=1in]{geometry}
+	\usepackage{authblk}
 \else
 	%\documentclass[runningheads]{llncs}
 	%\pagestyle{plain}
@@ -25,9 +26,17 @@
 %\fi
 
 \title{Endemic Oblivious Transfer}
+ 
+ %
+ \iffullversion   
+ \date{}
+ \author{Daniel Masny}
+ \author{Peter Rindal}
+ \affil{VISA Research}
+ \else
  \author{Daniel Masny \and Peter Rindal}
- %\institute{VISA Research}
-
+ \institute{VISA Research}
+ \fi
 \begin{document}
 
 \iffullversion 
