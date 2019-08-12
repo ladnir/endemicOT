@@ -44,7 +44,7 @@ $$
 \Pr[\key_\A=\EK(\tape_\A,\mes_\B)=\EK(\tape_\B,\mes_\A)=\key_\B]\geq 1-\negl,
 $$
 where $\tape_\A\leftarrow\bits^*$, $\tape_\B\leftarrow\bits^*$, $\mes_\A\leftarrow\A(\tape_\A)$ and $\mes_\B\leftarrow\B(\tape_\B)$.
-\item [Key Indistinguishability:] For any ppt distinguisher \D and any polynomial size auxiliary input $z$,
+\item [Key-Indistinguishability:] For any ppt distinguisher \D and any polynomial size auxiliary input $z$,
 $$ 
 |\Pr[\D(z,\langle \A,\B\rangle, \key)=1]-\Pr[\D(z,\langle \A,\B\rangle, u)=1]|=\negl,
 $$
@@ -55,7 +55,7 @@ $$
 $$
 where $u$ is a uniform element from \G and $\mes_\A\leftarrow\A(\tape_\A)$.
 \end{description}
-When \A and \B can send their messages concurrently, we call it a $1$-round \UKA otherwise a $2$-round \UKA.
+When \A and \B can send their messages concurrently, we call it a one-round \UKA.
 \end{definition}
 
 In \appendixref{sec:addKA}, we define different security notions when executing multiple instances of a key agreement. All the considered notions follow from the standard notions from above, but potentially with a polynomial security loss. 

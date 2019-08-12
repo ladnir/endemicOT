@@ -10,29 +10,29 @@ We emphasize that the instantiations only achieve stand alone security. For UC s
 
 
 
-\begin{definition}[$n$ Multi-Instance DDH Assumption]
+\begin{definition}[$n$-Multi-Instance DDH Assumption]
 For a group $\G$, the \emph{decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher \D,
 $$
-|\Pr\lb \D(\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{a}b\rb)=1\rb-\Pr\lb D(\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb)=1\rb|=\negl,
+|\Pr[ \D(\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{a}b\rb)=1]-\Pr[ D(\lb 1\rb,\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb)=1]|=\negl,
 $$
 where $\vec{a}\leftarrow\Z_p^n$, $b\leftarrow\Z_p$ and $\vec{c}\leftarrow\Z_p^n$.
 \end{definition}
 
-In Appendix~\ref{sec:DDH}, we show that $n$ multi-instance DDH is secure under the DDH assumption with a security loss of $n$. In the following we show that the Diffie-Hellman key exchange is tightly multi-instance secure under multi-instance DDH. 
+In Appendix~\ref{sec:DDH}, we show that $n$-multi-instance DDH is secure under the DDH assumption with a security loss of $n$. In the following we show that the Diffie-Hellman key exchange is tightly multi-instance secure under multi-instance DDH. 
 
 \begin{lemma}\label{lem:DDH}
 Let $Q$ and $n$ be polynomial in $\sec$.
-The Diffie-Hellman key exchange over \G is unconditionally $Q$ multi-instance uniform. Further, let the $n$ multi-instance DDH assumption hold over group \G except with advantage $\epsilon$, then the Diffie-Hellman key exchange is $(Q,n)$ one-round multi-instance key indistinguishable except advantage $\epsilon-\negl$. 
+The Diffie-Hellman key exchange over \G is unconditionally $Q$-multi-instance uniform. Further, let the $n$-multi-instance DDH assumption hold over group \G except with advantage $\epsilon$, then the Diffie-Hellman key exchange is one-round $(Q,n)$-multi-instance key-indistinguishable except advantage $\epsilon-\negl$. 
 \end{lemma}
 
 \begin{proof}
 The distribution of $\lb a\rb$ over \G is uniform, therefore 
 $$
-|\Pr\lb \D^{\O_{\A}}(1^{\sec})\rb=1\rb-Pr\lb \D^{\O_{u}}(1^{\sec})=1\rb|=0,
+|\Pr[ \D^{\O_{\A}}(1^{\sec})\rb=1]-Pr[ \D^{\O_{u}}(1^{\sec})=1]|=0,
 $$
-even against an unbounded $\D$. Hence, the Diffie-Hellman key exchange is unconditional $Q$ multi-instance uniform.
+even against an unbounded $\D$. Hence, the Diffie-Hellman key exchange is unconditional $Q$-multi-instance uniform.
 
-For proving the second part of the lemma, we construct a ppt distinguisher \D that breaks $n$ multi-instance DDH assumption given a ppt distinguisher $\D_\key$ that breaks the $(Q,n)$ multi-instance key indistinguishability of the Diffie-Hellman key exchange. $\D$ receives a challenge $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, sets $\mes_{\B}:=\lb b\rb$ and invokes $\D_{\key}$ on input $\mes_{\B}$. On the $j$-th query of $\D_{\key}$ to $\O_{\A}$, \D samples $\vec{r}_j\leftarrow\Z_p^{n+1}$ and responds with $\mes_{\A,j}:=\lb \langle (\vec{a},1),\vec{r}_j\rangle\rb=\lb a_1\rb^{r_{j,1}}\cdot\lb a_2\rb^{r_{j,2}}\ldots\lb a_n\rb^{r_{j,n}}\cdot\lb r_{j,n+1}\rb$. When $\D_{\key}$ queries $\O_{\key}$ for key $\key_j$, \D responds with $\key_j:=\lb \langle\vec{c},\vec{r}_j\rangle\rb=\lb c_1\rb^{r_{j,1}}\cdot\lb c_2\rb^{r_{j,2}}\ldots\lb c_n\rb^{r_{j,n}}\cdot\lb b\rb^{r_{j,n+1}}$. In the end, $\D$ outputs the output of $\D_{\key}$.
+For proving the second part of the lemma, we construct a ppt distinguisher \D that breaks $n$-multi-instance DDH assumption given a ppt distinguisher $\D_\key$ that breaks the $(Q,n)$-multi-instance key-indistinguishability of the Diffie-Hellman key exchange. $\D$ receives a challenge $\lb \vec{a}\rb,\lb b\rb,\lb \vec{c}\rb$, sets $\mes_{\B}:=\lb b\rb$ and invokes $\D_{\key}$ on input $\mes_{\B}$. On the $j$-th query of $\D_{\key}$ to $\O_{\A}$, \D samples $\vec{r}_j\leftarrow\Z_p^{n+1}$ and responds with $\mes_{\A,j}:=\lb \langle (\vec{a},1),\vec{r}_j\rangle\rb=\lb a_1\rb^{r_{j,1}}\cdot\lb a_2\rb^{r_{j,2}}\ldots\lb a_n\rb^{r_{j,n}}\cdot\lb r_{j,n+1}\rb$. When $\D_{\key}$ queries $\O_{\key}$ for key $\key_j$, \D responds with $\key_j:=\lb \langle\vec{c},\vec{r}_j\rangle\rb=\lb c_1\rb^{r_{j,1}}\cdot\lb c_2\rb^{r_{j,2}}\ldots\lb c_n\rb^{r_{j,n}}\cdot\lb b\rb^{r_{j,n+1}}$. In the end, $\D$ outputs the output of $\D_{\key}$.
 
 It is easy to see that $\O_{\A}$ has the correct output distribution. $r_{j,n+1}$ is uniform over $\Z_p$ and hence $\mes_{\A,j}$ is. Further, conditioned on $\mes_{\A,j}$, $r_{j,1},\ldots,r_{j,n}$ are uniform. Given that $\vec{c}=\vec{a}b$, the output
 $$
@@ -40,16 +40,16 @@ $$
 $$
 of $\O_{\key}$ is also distributed correctly. In case that $\vec{c}$ is uniform, we need to show that all the $n$ outputs of $\O_{\key}$, $\vec{\key}=\key_1,\ldots,\key_n$ are uniform. Let $\mes_i$ be the message $\mes_{\A,j}$ and $\vec{t}_i$ the randomness $\vec{r}_j$ that corresponds to $\key_i$. Since $\vec{c}$ is uniform and $\vec{\key}=\lb \vec{c}\cdot T\rb$, where $T$ is the matrix with $i$-th column $\vec{t}_i$, $\vec{\key}$ is uniform if $T$ is invertible. Since $r_{j,1},\ldots,r_{j,n}$ are uniform given $\mes_{\A,j}$ so is $T$. For a uniform $T$ over $\Z_p^{n\times n}$, the probability that $T$ is invertible is that all the rows are linear independent, i.e. 
 $$
-\Pr\lb T\text{ invertible}\rb= \frac{1}{p^{n^2}}\prod_{i=0}^{n-1}(p^n-p^i)\geq\left(1-\frac{1}{p}\right)^n\geq 1-\negl.
+\Pr[ T\text{ invertible}]= \frac{1}{p^{n^2}}\prod_{i=0}^{n-1}(p^n-p^i)\geq\left(1-\frac{1}{p}\right)^n\geq 1-\negl.
 $$ 
-Therefore, except with negligible probability, $\D$ has the same advantage in breaking $n$ multi-instance DDH as $\D_{\key}$ has in breaking $(Q,n)$ one-round multi-instance key indistinguishability.
+Therefore, except with negligible probability, $\D$ has the same advantage in breaking $n$-multi-instance DDH as $\D_{\key}$ has in breaking one-round $(Q,n)$-multi-instance key-indistinguishability.
 \pe
 \end{proof}
 
 Using Theorem~\ref{thm:KAtoOT}, Lemma~\ref{lem:DHuniform} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
 
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:KAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting endemic OT is statistically secure against malicious senders making at most polynomially many random oracle queries and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:KAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting endemic OT is statistically secure against malicious senders and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}
 
 \begin{remark}
@@ -81,13 +81,13 @@ If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol 
 \end{figure}
 In \figureref{fig:optKAtoOT}, we show an optimized variant of our OT. It reduces the communication cost from the sender to the receiver by sending only a single group element. This is possible since it does not depend on any of the $n$ elements sent by the receiver. A drawback of this construction is that we do not know how to prove its security under the standard DDH assumption.
 
-The reason is simple, in our security proof during the simulation, $\Adv'$ needs compute the key $\lb ab \rb$ while at the same time given $\lb 1\rb,\lb a'\rb,\lb b\rb$, $\lb[ab']$ needs to be hard to distinguish from a uniformly random group element. Since $a$ is picked by the adversary $\Adv$ and only transmits $\lb a \rb$, we do not know how to simulate correctly. The next definition formally states the assumption under which the protocol in \figureref{fig:optKAtoOT} can be proven to be secure. 
+The reason is simple, in our security proof during the simulation, $\Adv'$ needs compute the key $\lb ab \rb$ while at the same time given $\lb 1\rb,\lb a'\rb,\lb b\rb$, $\lb ab'\rb$ needs to be hard to distinguish from a uniformly random group element. Since $a$ is picked by the adversary $\Adv$ and only transmits $\lb a \rb$, we do not know how to simulate correctly. The next definition formally states the assumption under which the protocol in \figureref{fig:optKAtoOT} can be proven to be secure. 
 
 \begin{definition}[Interactive Decisional Diffie-Hellman (IDDH) Assumption]
 For a group $\G$, the \emph{interactive decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
 \begin{eqnarray*}
-&&|\Pr\lb \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb ab\rb)=1\rb\\
-&&-\Pr\lb \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb c\rb)=1\rb|=\negl,
+&&|\Pr[ \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb ab\rb)=1]\\
+&&-\Pr[ \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb c\rb)=1]|=\negl,
 \end{eqnarray*}
 where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{st},\lb x\rb)\leftarrow\D_1(\lb 1\rb)$.
 \end{definition}
@@ -115,7 +115,7 @@ where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{s
 \end{figure}
 
 \begin{definition}[Crystals-Kyber CPAPKE]
-\emph{ Crystals-Kyber CPAPKE} is a correct and CPA secure public key encryption based on the Module LWE (\MLWE) assumption. We follow the specifications of Kyber, in which $\kB$ denotes the  set $\{0,1,\ldots,255\}$. Kyber is parameterized by parameters $d_t=11$, $\nLWE=256$, $\kLWE\in\{2,3,4\}$, $q=7681$ and ring $\R_q=\Z_q\lb X\rb/(X^{\nLWE}+1)$. 
+\emph{ Crystals-Kyber CPAPKE} is a correct and CPA secure public key encryption based on the Module LWE (\MLWE) assumption. We follow the specifications of Kyber, in which $\kB$ denotes the  set $\{0,1,\ldots,255\}$. Kyber is parameterized by parameters $d_t=11$, $\nLWE=256$, $\kLWE\in\{2,3,4\}$, $q=7681$ and ring $\R_q=\Z_q[ X]/(X^{\nLWE}+1)$. 
 
 $(\kybergen,\kyberenc,\kyberdec)$ have the following syntax. 
 \begin{description}
