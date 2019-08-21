@@ -175,7 +175,7 @@ See \appendixref{proof:Attack_AllOnes} for details.
 
 \subsection{OT Extension with a Random Oracle}\label{sec:extSec}
 
-We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch15,RSA:OrrOrsSch17} protocols with respect to the $\OOT^\E$ ideal functionality. We then give new enhancements (\definitionref{def:ext_Su_R}, \ref{def:ext_Su_U}, \ref{def:ext_R_S}) to this protocol that provider stronger notions of security at a modest overhead, e.g. $\OOT^\U$. Note that in this section we used the generalize definition of the OT functionality, \definitionref{def:got}, where a circuit specifying the inputs are send instead of strings. We also give a data flow diagram in \figureref{fig:OTDataflow} showing the various instantiations and their round complexity.
+We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch15,RSA:OrrOrsSch17} protocols with respect to the $\OOT^\E$ ideal functionality. We then give new enhancements (\definitionref{def:ext_Su_R}, \ref{def:ext_Su_U}, \ref{def:ext_R_S}) to this protocol that provider stronger notions of security at a modest overhead, e.g. $\OOT^\U$. Note that in this section we used the generalize definition of the OT functionality, \iffullversion\definitionref{def:got},\fi where a circuit specifying the inputs are send instead of strings. We also give a data flow diagram in \figureref{fig:OTDataflow} showing the various instantiations and their round complexity.
 
 
 \begin{definition}\label{def:ext_E_E}
@@ -327,7 +327,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 	Let $\Pi^{\textsf{ext-U}}$ be the protocol of \definitionref{def:ext_Su_R} where the random oracle $\H$ is redefined as follows. 
 	\begin{enumerate}
 		\item Let $\H':\{0,1\}^{[m]\times \mathbb{F}^\nc_2}\rightarrow\{0,1\}^\kappa$ be a random oracle.
-		\item In \stepref{step:extInit}, \send samples $k\gets\mathbb{F}^\nc_2$ sends an extractable commitment (\definitionref{def:com}) of $k$ to \rec. 
+		\item In \stepref{step:extInit}, \send samples $k\gets\mathbb{F}^\nc_2$ sends an extractable commitment \iffullversion(\definitionref{def:com})\fi of $k$ to \rec. 
 		\item After receiving $U$ in \stepref{step:extSendU}, \send decommits to $k$ to \rec who aborts is the decommitment fails.
 		\item Both parties define $\H(i,x)=\H'(i,x+k)$.
 	\end{enumerate}

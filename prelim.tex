@@ -58,7 +58,12 @@ where $u$ is a uniform element from \G and $\mes_\A\leftarrow\A(\tape_\A)$.
 When \A and \B can send their messages concurrently, we call it a one-round \UKA.
 \end{definition}
 
-In \appendixref{sec:addKA}, we define different security notions when executing multiple instances of a key agreement. All the considered notions follow from the standard notions from above, but potentially with a polynomial security loss. 
+\iffullversion
+In \appendixref{sec:addKA},
+\else
+In the full version,
+\fi
+ we define multi-instance security notions when executing multiple instances of a key agreement. All the considered notions follow from the standard notions from above, but potentially with a polynomial security loss.
 
 
 \subsection{Oblivious Transfer}
@@ -83,7 +88,10 @@ All remaining $s_i$ for $i\in [n]$ are uniformly sampled $s_i\gets\{0,1\}^\ell$ 
 As specified by the message sampling method, the functionality constructs messages $(s_i)_{i\in[n]}$. Thereafter, the functionality sends $(s_i)_{i\in[n]}$ to \send and $(s_i)_{i\in \set}$ to \rec. We denote the ideal functionalities for sender chosen, receiver chosen, uniform message and endemic as $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$, respectively. %
 \end{definition}
 \begin{remark}
-We generalize this definition for the case where $n$ can be exponential. In addition, we consider the case when the set $\set$ is sampled uniformly by the functionality. We call this \emph{uniform selection} as opposed to \emph{receiver selection}. In this case, we denote the analogous oracles for $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$ as $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively. See \definitionref{def:got}.
+We generalize this definition for the case where $n$ can be exponential. In addition, we consider the case when the set $\set$ is sampled uniformly by the functionality. We call this \emph{uniform selection} as opposed to \emph{receiver selection}. In this case, we denote the analogous oracles for $\OOT^\send, \OOT^\rec,\OOT^\U,\OOT^\E$ as $\OOT^{\send u},$ $\OOT^{\rec u}, \OOT^{\U u}, \OOT^{\E u}$, respectively. See \iffullversion \definitionref{def:got}.
+\else
+the full version for a precise definition.
+\fi
 \end{remark}
 
 

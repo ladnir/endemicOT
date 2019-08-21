@@ -14,7 +14,7 @@ Then $\OOT^\U$-security implies $\OOT^{\send}$ as well as $\OOT^\rec$-security. 
 	
 	Similarly, sender or receiver chosen message security is also a restriction of what an adversary $\Adv'$ can do compared to the endemic security setting. 
 % 	It is important to distinguish that while security will not be violated, replacing a sender or receiver chosen message OT protocol with a uniform message OT protocol may result in the larger protocol aborting due to the distribution of the messages being uniform as opposed to chosen. 
-	See  \appendixref{sec:addOT} for a formal proof of \lemmaref{lemma:is_a}.\pe
+	See \iffullversion \appendixref{sec:addOT} \else the full version \fi for a formal proof of \lemmaref{lemma:is_a}.\pe
 \end{proof}
 \fi
 
@@ -24,12 +24,13 @@ Even though endemic security is implied by all the other security notions and co
 
 \begin{figure}
 \centering
+\scalebox{0.9}{
 \framebox{
 \begin{tikzpicture}[xscale=1.3]
 \node [anchor=west] at (0,5) {Sender$((s_i)_{i\in[n]})$:};
-\node [anchor=west] at (5.5,5) {Receiver$(\set\subset[n])$:};
+\node [anchor=west] at (5,5) {Receiver$(\set\subset[n])$:};
 
-\begin{scope}[shift={(-1.25,0)}]
+\begin{scope}[shift={(-1.75,0)}]
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(6.75,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \draw [thick, ->] (5.75,3.85)-- node [midway,above]{$(m_i)_{i\in \set}$}(6.75,3.85);
@@ -41,12 +42,13 @@ Even though endemic security is implied by all the other security notions and co
 \node [anchor=west] at (0,3.5){$\quad r_i:=s_i\oplus m_i$};
 
 
-\node [anchor=west] at (5.5,3.5){$\forall i\in\set:$};
-\node [anchor=west] at (5.5,3){$\quad s_i:=r_i\oplus m_i$};
+\node [anchor=west] at (5,3.5){$\forall i\in\set:$};
+\node [anchor=west] at (5,3){$\quad s_i:=r_i\oplus m_i$};
 
 \node [anchor=west] at (0,2.5) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (5.5,2.5) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (5,2.5) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
+}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
 % 			Input: The sender $\send$ has input $s_1,...,s_n\in \{0,1\}^\ell$ while the receiver $\rec$ has input $\set\subseteq [n]$ of size $k$.
@@ -90,13 +92,14 @@ Even though endemic security is implied by all the other security notions and co
 
 \begin{figure}
 \centering
+\scalebox{0.9}{
 \framebox{
 \begin{tikzpicture}[xscale=1.3]
 \node [anchor=west] at (0,5) {Sender:};
 
-\node [anchor=west] at (5.5,5) {Receiver$(\set,(s_i)_{i\in\set})$:};
+\node [anchor=west] at (5,5) {Receiver$(\set,(s_i)_{i\in\set})$:};
 
-\begin{scope}[shift={(-1.25,0)}]
+\begin{scope}[shift={(-1.75,0)}]
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(6.75,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\E$};
@@ -109,14 +112,15 @@ Even though endemic security is implied by all the other security notions and co
 \node [anchor=west] at (0,3){$\quad s_i:=r_i\oplus m_i$};
 
 
-\node [anchor=west] at (5.5,4.5){$\forall i\in[n]\setminus\set:$};
-\node [anchor=west] at (5.5,4){$\quad r_i\leftarrow\bits^\ell$};
-\node [anchor=west] at (5.5,3.5){$\forall i\in\set:$};
-\node [anchor=west] at (5.5,3){$\quad r_i:=s_i\oplus m_i$};
+\node [anchor=west] at (5,4.5){$\forall i\in[n]\setminus\set:$};
+\node [anchor=west] at (5,4){$\quad r_i\leftarrow\bits^\ell$};
+\node [anchor=west] at (5,3.5){$\forall i\in\set:$};
+\node [anchor=west] at (5,3){$\quad r_i:=s_i\oplus m_i$};
 
 \node [anchor=west] at (0,2.5) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (5.5,2.5) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (5,2.5) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
+}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
 % 			Input: The sender $\send$ has no input while the receiver $\rec$ has input $\set\subseteq [n]$ of size $k$ and $(s_i)_{i\in \set}$ where $s_i\in \{0,1\}^\ell$.
@@ -161,11 +165,12 @@ Even though endemic security is implied by all the other security notions and co
 
 \begin{figure}
 \centering
+\scalebox{0.9}{
 \framebox{
 \begin{tikzpicture}[xscale=1.3]
 \node [anchor=west] at (0,5) {Sender:};
-\node [anchor=west] at (5.5,5) {Receiver$(\set\subset[n])$:};
-\begin{scope}[shift={(-1.25,0)}]
+\node [anchor=west] at (5,5) {Receiver$(\set\subset[n])$:};
+\begin{scope}[shift={(-1.75,0)}]
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$\set$}(6.75,4.5);
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\E$};
@@ -179,12 +184,13 @@ Even though endemic security is implied by all the other security notions and co
 
 \node [anchor=west] at (0,2.8){$\forall i\in[n]:$};
 \node [anchor=west] at (0,2.3){$\quad s_i:=r_i\oplus m_i$};
-\node [anchor=west] at (5.5,2.8){$\forall i\in\set:$};
-\node [anchor=west] at (5.5,2.3){$\quad s_i:=r_i\oplus m_i$};
+\node [anchor=west] at (5,2.8){$\forall i\in\set:$};
+\node [anchor=west] at (5,2.3){$\quad s_i:=r_i\oplus m_i$};
 
 \node [anchor=west] at (0,1.8) {output $(s_i)_{i\in[n]}$};
-\node [anchor=west] at (5.5,1.8) {output $(s_i)_{i\in\set}$};
+\node [anchor=west] at (5,1.8) {output $(s_i)_{i\in\set}$};
 \end{tikzpicture}
+}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
 % 			Input: The sender \send has no input and the  receiver \rec has input $\set\subseteq [n]$ of size $k$.
@@ -201,7 +207,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:EtoU}
-	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the uniform message ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ (\definitionref{def:coin}) hybrid.
+	$\Pi^{\U}$ of \figureref{fig:uniformOT} realizes the uniform message ideal OT $\OOT^{\U}$ (\definitionref{def:ot}) with unconditional security in the $\OOT^\E,\F^{\coin}$ \iffullversion(\definitionref{def:coin})\fi hybrid.
 \end{lemma}
 \iffullversion
 \begin{proof}
@@ -256,11 +262,12 @@ Even though endemic security is implied by all the other security notions and co
 
 \begin{figure}
 \centering
+\scalebox{0.9}{
 \framebox{
 \begin{tikzpicture}[xscale=1.2]
 \node [anchor=west] at (0,5) {Sender:};
-\node [anchor=west] at (5.75,5) {Receiver:};
-\begin{scope}[shift={(-1.25,0)}]
+\node [anchor=west] at (5.5,5) {Receiver:};
+\begin{scope}[shift={(-1.5,0)}]
 \draw [thick] (4.75,4.65)--(5.75,4.65)--(5.75,3.65)--(4.75,3.65)--cycle;
 \node at (5.25,4.125){$\OOT^\U$};
 \draw [thick, <-] (5.75,4.5)-- node [midway,above]{$[k]$}(7,4.5);
@@ -268,8 +275,9 @@ Even though endemic security is implied by all the other security notions and co
 \draw [thick, <-] (3.5,3.85)-- node [midway,above]{$(m_i)_{i\in [n]}$}(4.75,3.85);
 \end{scope}
 \node [anchor=west] at (0,3.5) {output $(m_i)_{i\in[k]}$};
-\node [anchor=west] at (5.75,3.5) {output $(m_i)_{i\in[k]}$};
+\node [anchor=west] at (5.5,3.5) {output $(m_i)_{i\in[k]}$};
 \end{tikzpicture}
+}
 }
 % 	\framebox{\begin{minipage}{0.95\linewidth}
 % 			Input: The sender \send and receiver \rec have no input.
@@ -285,7 +293,7 @@ Even though endemic security is implied by all the other security notions and co
 
 
 \begin{lemma}\label{lem:OTtoC}
-	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol (\definitionref{def:coin}) with unconditional security  in the $\OOT^{\U}$ hybrid  (\definitionref{def:ot}).
+	$\Pi^{\textsf{coin}}$ of \figureref{fig:coinFlip} realizes an ideal coin flipping protocol \iffullversion(\definitionref{def:coin})\fi with unconditional security  in the $\OOT^{\U}$ hybrid  (\definitionref{def:ot}).
 \end{lemma}
 \begin{proof}
 	Follows straigthforwardly from the definition of $\OOT^{\U}$ and the ideal coin tossing functionality $\F^{\coin}$, which outputs a random string to both parties.

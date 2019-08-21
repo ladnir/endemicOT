@@ -1,30 +1,35 @@
 \section{From Key Agreement to Oblivious Transfer}\label{sec:endemicOT}
 
-In \figureref{fig:KAtoOT}, we present the generic construction from any two round key agreement to a two round OT. In \theoremref{thm:KAtoOT}, we show that both constructions yield an endemically secure OT. We emphasize that the protocol can be easily adapted to yield an all but one OT (see \appendixref{sec:allbutone}).
+In \figureref{fig:KAtoOT}, we present the generic construction from any two round key agreement to a two round OT. In \theoremref{thm:KAtoOT}, we show that both constructions yield an endemically secure OT. We emphasize that the protocol can be easily adapted to yield an all but one OT (see \iffullversion\appendixref{sec:allbutone}\else full version\fi).
 
 
 
 \begin{figure}
 \centering
+\scalebox{0.9}
+{
 \framebox{
 \begin{tikzpicture}[xscale=1.4]
 \node [anchor=west] at (-0.5,5) {Sender:};
+\node [anchor=west] at (-0.5,4){$\forall j\in[n]:$};
+\node [anchor=west] at (-0.35,3){$\mes_{\A,j}=r_j\oplus\H((r_\ell)_{\ell\neq j})$};
+%\node [anchor=west] at (-0.35,2.5){$\mes_{\A,j}=r_j\oplus h_j$};
+\node [anchor=west] at (-0.35,3.5){$\tape_{\B,j}\leftarrow\bits^*$};
+\node [anchor=west] at (-0.35,2.5){$\mes_{\B,j}=\B(\tape_{\B,j}, \mes_{\A,j})$};
+\node [anchor=west] at (-0.5,2) {$\forall j\in[n]$};
+\node [anchor=west] at (-0.35,1.5) {$s_{\B,j}=\EK(\tape_{\B,j},\mes_{\A,j})$};
+\begin{scope}[shift={(-0.5,0)}]
 \node [anchor=west] at (4,5) {Receiver$(\i\in[n])$:};
 \node [anchor=west] at (4,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
 \node [anchor=west] at (4,4){$\tape_\A\leftarrow\bits^*$};
 \node [anchor=west] at (4,3.5){$\mes_\A\leftarrow \A(\tape_\A)$};
 \node [anchor=west] at (4,3){$r_{\i}=\mes_\A\ominus \H((r_j)_{j\neq\i})$};
 \draw [thick, <-] (2.75,3)-- node [midway,above]{$(r_j)_{j\in[n]}$}(4,3);
-\node [anchor=west] at (-0.5,4){$\forall j\in[n]:$};
-\node [anchor=west] at (-0.35,3){$\mes_{\A,j}=r_j\oplus\H((r_\ell)_{\ell\neq j})$};
-%\node [anchor=west] at (-0.35,2.5){$\mes_{\A,j}=r_j\oplus h_j$};
-\node [anchor=west] at (-0.35,3.5){$\tape_{\B,j}\leftarrow\bits^*$};
-\node [anchor=west] at (-0.35,2.5){$\mes_{\B,j}=\B(\tape_{\B,j}, \mes_{\A,j})$};
-\draw [thick, ->] (2.75,2.5)-- node [midway,below]{$(\mes_{\B,j})_{j\in[n]}$}(4,2.5);
 \node [anchor=west] at (4,1.5) {$s_{\A,\i}=\EK(\tape_\A,\mes_{\B,\i})$};
-\node [anchor=west] at (-0.5,2) {$\forall j\in[n]$};
-\node [anchor=west] at (-0.35,1.5) {$s_{\B,j}=\EK(\tape_{\B,j},\mes_{\A,j})$};
+\draw [thick, ->] (2.75,2.5)-- node [midway,below]{$(\mes_{\B,j})_{j\in[n]}$}(4,2.5);
+\end{scope}
 \end{tikzpicture} 
+}
 }
 \myvspace{-0.3cm}
 \caption{The figure depicts a $1$ out of $n$ OT using a $\UKA=(\A,\B,\EK)$ and a random oracle $\H:\G^{n-1}\rightarrow\G$, where \G is a group with operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds. In case of a one-round \UKA the messages can be sent simultaneously.}

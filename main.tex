@@ -33,8 +33,10 @@
  \author{Peter Rindal}
  \affil{VISA Research}
  \else
- \author{Daniel Masny \and Peter Rindal}
- %\institute{VISA Research}
+ \author{Daniel Masny and Peter Rindal}
+ \affiliation{VISA Research}
+%   \author{Peter Rindal}
+%  \affiliation{VISA Research}
  \fi
 \begin{document}
 
@@ -69,6 +71,7 @@ Further, we revisit, correct and improve existing oblivious transfer extension t
 \bibliographystyle{alpha}
 \bibliography{bib,cryptobib/abbrev3,cryptobib/crypto}
 
+\iffullversion 
 \appendix
 \input{defandlemmas.tex}
 \input{roundcomp.tex}
@@ -76,7 +79,11 @@ Further, we revisit, correct and improve existing oblivious transfer extension t
 \input{instatiation.tex}
 %\input{instantiationsAppendix.tex}
 \input{otExtAppendix.tex}
-
+\else
+\appendix
+\input{otExtAppendix.tex}
+%\input{instatiation.tex}
+\fi
 
 %\input{otExtAppendix.txt}
 \end{document}
