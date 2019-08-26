@@ -228,7 +228,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 			
 			%$\Adv'$ performs the proof of \stepref{step:consistency} as \send would. If the proof fails, $\Adv'$ aborts as \send would. Otherwise, by the correctness of the proof, $\cc_i$ decodes to $\ww_i$  and computes $x_i$ s.t. $\ww_i=map(x_i)$.
 			
-			$\Adv'$ defines the circuit $\mathcal{S}_i[1]\rightarrow\{0,1\}$ with support $\{x_i\}$ and $\mathcal{M}_i:[1]\rightarrow\mathbb{F}^\kappa_2$ s.t. $\mathcal{M}_i(1)=\H(i, \tt_i)$. $\Adv'$ sends $\mathcal{S}_i$ and $\mathcal{M}_i$ to $\OOT^\E$ as the receiver's input to the $i$-th OT instance. The view of \Adv is unmodified and the ideal and real output agree on output $\vv_{i,x_i}$.
+			$\Adv'$ defines the circuit $\mathcal{S}_i[1]\rightarrow\{0,1\}$ with support $\{x_i\}$ and $\mathcal{M}_i:[1]\rightarrow\mathbb{F}^\kappa_2$ s.t. $\mathcal{M}_i(1)=\H(i, \tt_i)$. $\Adv'$ sends $\mathcal{S}_i$ and $\mathcal{M}_i$ to $\OOT^\E$ as the receiver's input to the $i$-th OT instance. The view of \Adv is unmodified and the ideal-real output agree on $\vv_{i,x_i}$.
 			
 			
 			\item[Hybrid 3.]\label{hybrid:simOutput} Assuming $\Adv'$ did not abort in \stepref{step:consistency}, let $E=\{j \mid \exists i\in[m], (\cc_i\oplus \mathcal{C}(\ww_i))_j = 1\}$ index the columns of $C$ where $\Adv$ added an error to any codeword $\cc_i$ (w.r.t $\ww_i$). By the correctness of \stepref{step:consistency}, it holds that $E\subseteq B_0$, otherwise the consistency proof would have failed.
@@ -259,8 +259,14 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 			
 			\item[Hybrid 5.] $\Adv'$ does not take the input of \send and does not program $\H$ in \hybridref{hybrid:simOutput}. \send only interacts with $\OOT^\E$. This change is identically distributed.
 		\end{enumerate}
+		\iffullversion \else
+		\vspace{-0.4cm}
+		\fi
 		\pe
 	\end{proof}
+\iffullversion \else
+\vspace{-0.4cm}
+\fi
 	\pe
 \end{proof}
 
@@ -317,6 +323,9 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 		\fi
 		\pe
 	\end{proof}
+\iffullversion \else
+\vspace{-0.4cm}
+\fi
 \pe
 \end{proof}
 
@@ -349,7 +358,7 @@ We now give a new security proof (\lemmaref{lem:ext-E}) of the \cite{C:KelOrsSch
 We now discuss how to efficiently implement OT extension by restricting the input domain of the random oracle $\H$ to be $\{0,1\}^\nc$. In particular, we are interested in the 1-out-of-2 OT case where $\nc=\kappa=128$. The core motivation for OT extension in this setting is the pervasive support for hardware based implementations of AES, which we will then use as an ideal cipher to hash the output messages. In this model we design new protocols that satisfy $\OOT^\rec, \OOT^\send$ and $\OOT^\U$-security and achieve better concrete performance than the protocols analyzed in  \sectionref{sec:extSec}. These previous protocols have required a random oracle with input domain $[m]\times \mathbb{F}^\nc_2$ which we reduce to $\mathbb{F}^\nc_2$ while maintaining security. 
 
 
-Interestingly, existing implementations\cite{libOTe,encrypto,KOS,EMP} have either instantiated $\H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The authors of \cite{EMP,GKWY19} independently identified the same implementation issue concurrently to us. \cite{EMP} securely implement $\H(i,x)$ but requires twice the number of ideal cipher calls. See \cite{GKWY19}. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_3,c_2\in\mathbb{Z}_2$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security.
+Existing implementations\cite{libOTe,encrypto,KOS,EMP} have either instantiated $\H$ as a strong hash function such as SHA-256 or using AES. However, in most cases\footnote{\label{empNote}The authors of \cite{EMP,GKWY19} independently identified the same implementation issue concurrently to us. \cite{EMP} securely implement $\H(i,x)$ but requires twice the number of ideal cipher calls. See \cite{GKWY19}. } that we observed\cite{libOTe,encrypto,KOS}, these instantiation incorrectly reduce the input domain to $\mathbb{F}^\nc_2$ before applying $\H$ which can lead to full loss of security. In most cases\footref{empNote} the instantiation of $\H$ effectively follows the form $\H(i,x)=\H'(c_1 x + c_2 i) + c_1 x + c_2 i$ for constants $c_1\in\mathbb{Z}^*_3,c_2\in\mathbb{Z}_2$ where $\H'$ is either a strong cryptographic hash function or AES with a fixed and public key. Regardless of $c_1,c_2,\H'$, it is trivial to find collisions in such an instantiation. For example, let $x\in\mathbb{F}^\nc_2$ and then it holds that $\forall i,i'\in[m], \H(i,x+i)=\H(i', x+i')$. In the context of the OT extension protocols in the previous section, this attack translates into a malicious receiver being able to fully break the security.
 \iffullversion
  For example, let $c_1=c_2=1$, then \rec can choose $T_0$ such that $\tt_i+i=\tt_{i'}+i'$. It then holds that all the output messages of the receiver will be the same value.  That is, for all $i,i'\in[m],x\in[N]$, it holds that $\vv_{i,x}=\vv_{i',x}$. 
 \fi
