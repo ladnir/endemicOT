@@ -1,0 +1,41 @@
+\pagebreak
+\section{temp}
+
+I think I have an augment why it's secure. Maybe I should be telling Daniel first but oh well.
+
+Let Adv (receiver) make queries $q_1,...,q_n$. This then defines an n-by-n matrix $A$ of "interesting" public keys. We define $A_{i,j}=H(q_i)\oplus q_j$ . Its possible that the true "not selected" public key is not in here but that case is easy.
+
+Columns are indexed by $j$  and rows by $i$. What we would like to do is program the bottom left of this matrix so that each entry is a DDH challenge. However, the columns have a chosen difference by Adv, i.e. the diff between columns $1,j$ is $d_j:=q_{j}\ominus q_{1}$, and therefore $A_{i,j}=H(q_i)\oplus q_1\oplus d_j$. Since each row $i$ has a common $H(q_i)$ we can program one $A_{i,j}$ per. Let $d_j=g^{\delta_j}$ where the Adv may or may not know $\delta_j$.
+
+Let us have DDH challenges $(g^{a_i}, g^{b}, C_i)_i$ where $C_i\in \{g^{a_ib}, u_i\}$ and $u_i\gets \$$. For each $i$ the simulator will program $A_{i,1}=g^{a_i}$ and therefore  $A_{i,j}=g^{a_i}g^{\delta_i}=g^{a_i+\delta_i}$. If  $(i,j)=(i^*,j^*)$ then the sender would output $A_{i,j}^b=g^{a_ib+\delta_ib}=C(g^b)^{\delta_i}$. Since $(g^{a_i}, g^{b}, g^{a_ib}) \approx (g^{a_i}, g^{b}, u_i)$, then $(g^{a_i}, g^{b}, g^{a_ib}\Delta) \approx (g^{a_i}, g^{b}, u_i\Delta)$ for all independent $\Delta\in \{1,d_1^b,...,d_{n-1}^b\}$.
+
+
+In the standalone model this variant of DDH can be proven equivalent to DDH with loss $n$. I.e. guess $i^*$ and set $g^{a_{i^*}}=g^a$ and otherwise sample $a_i\gets \$$ and set $C_i=(g^b)^{a_i}$. All $a_i$ are uniform and therefore the $i^*$  guess is correct with probability $1/n$. However, in the UC model this does not follow since we have to guess $i^*$. Therefore we don't get one-round OT in the standard UC model. 
+%
+%Let hybrid $H_0$ be the original game. Let $A_{i^*,j^*}$ be the public key that we will need to program.  The simulator has received the DDH triple $(g^a,g^b, C)$ where $C\in \{g^{ab}, u\}$.
+%Consider $\sim n^2$ hybrids, two for each $i>j$. The first will program $A_{i,j}$ while the second reverts back to $H_0$. 
+%\begin{enumerate}
+%	\item Hybrid $H_{i,j}$: We program $A_{i,j}$ to be the DDH challenge. More exactly, we program $H(q_i)=g^a-q_j$ and therefore $A_{i,j}=g^a$, the DDH challenge. Since $g^a$ is uniform and all $q_j\in \{q_1, ...,q_{i}\}$ are fixed, the distribution of $A$ is identical. 
+%	
+%	$A_{i,j}= A_{i,1} - q_1+q_{j}$
+%	
+%	$\qquad = g^a - g^{w_j}+g^{w_{j-1}}$
+%	
+%	$\qquad = g^{a- w_j+w_{j-1}}$
+%	
+%	$\qquad = g^{a- d_j}$
+%	
+%	In the case that $(i,j)\neq (i^*,j^*)$, then this hybrid is identically distributed. Otherwise, in the real protocol the sender output $g^{ab}$ while in this hybrid the sender outputs $C$. Since this is the only change by the DDH assumption this hybrid is indistinguishable.
+%	
+%	Adv picks $d_1,...,d_n$.
+%	
+%	Challenger outputs $\{g^{a+d_i}\}_i, g^b$
+%	
+%	Adv picks $i\in [n]$
+%	
+%	Challenger outputs $g^{ab+d_ib}$ or they output $u_i$
+%	
+%	
+%	\item Hybrid $H_{i,j}^*$: We revert back to $H_0$. This is similarly indistinguishable.
+%\end{enumerate} 
+%Since in one of the hybrids the protocol was perfectly simulated, 
