@@ -19,13 +19,13 @@ An \emph{ideal cipher} over a set of tuples of domains and an image is a collect
 \centering
 \framebox{
 \begin{tikzpicture}
-\node [anchor=west] at (0,5) {\A:};
+\node [anchor=west] at (\picsh,5) {\A:};
 \node [anchor=west] at (5.5,5) {\B:};
-\node [anchor=west] at (0,4.5){$\mes_\A\leftarrow\A(\tape_\A)$};
+\node [anchor=west] at (\picsh,4.5){$\mes_\A\leftarrow\A(\tape_\A)$};
 \draw [thick, ->] (2.75,4.5)-- node [midway,above]{$\mes_\A$}(5.25,4.5);
 \node [anchor=west] at (5.5,4){$\mes_\B\leftarrow\B(\tape_\B,\mes_\A)$};
 \draw [thick, <-] (2.75,4)-- node [midway,above]{$\mes_\B$}(5.25,4);
-\node [anchor=west] at (0,3.5) {$\key_\A=\EK(\tape_\A,\mes_\B)$};
+\node [anchor=west] at (\picsh,3.5) {$\key_\A=\EK(\tape_\A,\mes_\B)$};
 \node [anchor=west] at (5.5,3.5) {$\key_\B=\EK(\tape_\B,\mes_\A)$};
 \end{tikzpicture}
 }

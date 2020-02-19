@@ -1,7 +1,8 @@
 
 \newif\iffullversion
 
-\fullversionfalse
+\fullversiontrue
+
 
 \iffullversion    
 	\documentclass[11pt]{article}
@@ -76,6 +77,9 @@ Further, we revisit, correct and improve existing oblivious transfer extension t
 
 %\input{imp.tex} 
 \input{implementation.tex}
+
+\section*{Acknowledgements}
+We thank Jonathan Katz and Mike Rosulek for pointing out a flaw with the UC security in the original paper. In this version the flaw is fixed, though it is an open question to obtain UC secure one-round endemic OT from uniform key agreement.  
 
 
 \bibliographystyle{alpha}
