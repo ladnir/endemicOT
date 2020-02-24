@@ -2,7 +2,7 @@
 
 In \figureref{fig:KAtoOT}, we present the generic construction from any two round key agreement to a two round OT. In \theoremref{thm:KAtoOT}, we show that both constructions yield an endemically secure OT. We emphasize that the protocol can be easily adapted to yield an all but one OT (see \iffullversion\appendixref{sec:allbutone}\else full version\fi).
 
-In our security analysis, the simulator uses aborts. In this case, he will restart the adversary, i.e. rewind the adversary. Hence we only obtain stand-alone security. In Appendix , we show UC security for our two-round construction and in Appendix , we show UC security based on a variant of \DDH of the one-round OT based on the Diffie-Hellman key agreement.
+In our security analysis for a malicious receiver, the simulator will rewind the malicious receiver. Hence we only obtain stand-alone security against a malicious receiver. In Appendix , we show UC security against malicious receivers for our two-round construction and in Appendix , we show UC security based on a variant of \DDH of the one-round OT based on the Diffie-Hellman key agreement.
 
 
 \begin{figure}
@@ -14,7 +14,7 @@ In our security analysis, the simulator uses aborts. In this case, he will resta
 \begin{scope}[shift={(\picsh,0)}]
 \node [anchor=west] at (-0.5,5) {Sender:};
 \node [anchor=west] at (-0.5,4){$\forall j\in[n]:$};
-\node [anchor=west] at (-0.35,3){$\mes_{\A,j}=r_j\oplus\H((r_\ell)_{\ell\neq j})$};
+\node [anchor=west] at (-0.35,3){$\mes_{\A,j}=r_j\oplus\H_j((r_\ell)_{\ell\neq j})$};
 %\node [anchor=west] at (-0.35,2.5){$\mes_{\A,j}=r_j\oplus h_j$};
 \node [anchor=west] at (-0.35,3.5){$\tape_{\B,j}\leftarrow\bits^*$};
 \node [anchor=west] at (-0.35,2.5){$\mes_{\B,j}=\B(\tape_{\B,j}, \mes_{\A,j})$};
@@ -26,7 +26,7 @@ In our security analysis, the simulator uses aborts. In this case, he will resta
 \node [anchor=west] at (4,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
 \node [anchor=west] at (4,4){$\tape_\A\leftarrow\bits^*$};
 \node [anchor=west] at (4,3.5){$\mes_\A\leftarrow \A(\tape_\A)$};
-\node [anchor=west] at (4,3){$r_{\i}=\mes_\A\ominus \H((r_j)_{j\neq\i})$};
+\node [anchor=west] at (4,3){$r_{\i}=\mes_\A\ominus \H_i((r_j)_{j\neq\i})$};
 \draw [thick, <-] (2.75,3)-- node [midway,above]{$(r_j)_{j\in[n]}$}(4,3);
 \node [anchor=west] at (4,1.5) {$s_{\A,\i}=\EK(\tape_\A,\mes_{\B,\i})$};
 \draw [thick, ->] (2.75,2.5)-- node [midway,below]{$(\mes_{\B,j})_{j\in[n]}$}(4,2.5);
@@ -35,7 +35,7 @@ In our security analysis, the simulator uses aborts. In this case, he will resta
 }
 }
 \myvspace{-0.3cm}
-\caption{The figure depicts a $1$ out of $n$ OT using a $\UKA=(\A,\B,\EK)$ and a random oracle $\H:\G^{n-1}\rightarrow\G$, where \G is a group with operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds. In case of a one-round \UKA the messages can be sent simultaneously.}
+\caption{The figure depicts a $1$ out of $n$ OT using a $\UKA=(\A,\B,\EK)$ and $n$ random oracles, where for all $j\in[n]$, $\H_j:\G^{n-1}\rightarrow\G$ and \G is a group with operations $\oplus$, $\ominus$. By the correctness of the \UKA scheme, $\key_{\A,\i}=\key_{\B,\i}$ holds. In case of a one-round \UKA the messages can be sent simultaneously.}
 \label{fig:KAtoOT}
 \end{figure}
 
@@ -60,15 +60,15 @@ where all algorithms receive input $1^\sec$ and \rec additionally receives input
 
 \begin{proof}
 We define $\Adv'$ as follows. 
-It generates $(r_j)_{j\in[n]}$ by sampling $r_1,\dots, r_n\leftarrow \G$. Then, it samples for all $j\in[n]$, $\tape_{\A,j}\leftarrow\bits^*$ and $\mes_{\A,j}\leftarrow\A(\tape_{\A,j})$. Finally it programs the random oracle for all of the $j\in[n]$ points $(r_i)_{i\neq j}$ such that $r_i\oplus\H((r_i)_{i\neq j})=\mes_{\A,i}$. Now $\Adv'$ invokes \Adv, answers his random oracle queries straightforwardly, sends $(r_j)_{j\in[n]}$ and receives $(\mes_{\B,j})_{j\in[n]}$ from \Adv. It computes $s_{\A,j}\leftarrow\EK(\tape_{\A,j},\mes_{\B,j})$ for all $j\in[n]$ and submits $(s_{\A,j})_{j\in [n]}$ to $\OOT^{\E}$. $\Adv'$ outputs the output of \Adv.
+It generates $(r_j)_{j\in[n]}$ by sampling $r_1,\dots, r_n\leftarrow \G$. Then, it samples for all $j\in[n]$, $\tape_{\A,j}\leftarrow\bits^*$ and $\mes_{\A,j}\leftarrow\A(\tape_{\A,j})$. Finally it programs the random oracle for all of the $j\in[n]$ points $(r_i)_{i\neq j}$ such that $r_i\oplus\H_i((r_i)_{i\neq j})=\mes_{\A,i}$. Now $\Adv'$ invokes \Adv, answers his random oracle queries straightforwardly, sends $(r_j)_{j\in[n]}$ and receives $(\mes_{\B,j})_{j\in[n]}$ from \Adv. It computes $s_{\A,j}\leftarrow\EK(\tape_{\A,j},\mes_{\B,j})$ for all $j\in[n]$ and submits $(s_{\A,j})_{j\in [n]}$ to $\OOT^{\E}$. $\Adv'$ outputs the output of \Adv.
 
 We show, that if there is a distinguisher \D that distinguishes the distribution $(\Adv,\rec)_{\Pi}$ from $(\Adv',\OOT^{\E})$, then there is an distinguisher $\D_{\UKA}$ against the $n$-multi-instance uniformity of the \UKA scheme. 
 
-$\D_{\UKA}$ has access to an oracle $\O$ that either outputs uniform strings or messages of the \UKA protocol. For all $j\in[n]\setminus\{i\}$, $\D_{\UKA}$ follows the description of $\Adv'$ with the difference that instead of sampling  $\mes_{\A,j}\leftarrow\A(\tape_{\A,j})$, it samples $\mes_{\A,j}$ from $\O$. Given $(r_j)_{j\neq i}$, it samples $\mes_{\A,i}\leftarrow\A(\tape_{\A,i})$ and sets $r_i$ such that $r_i\oplus\H((r_j)_{j\neq i})=\mes_{\A,i}$. As $\Adv'$, it computes $s_{\A,i}\leftarrow\EK(\tape_{\A,i},\mes_{\B,i})$ which is \rec's output. It now invokes distinguisher \D on \rec's output $s_{\A,i}$ and the output of $\Adv$. In the end, it outputs the output of \D.
+$\D_{\UKA}$ has access to an oracle $\O$ that either outputs uniform strings or messages of the \UKA protocol. For all $j\in[n]\setminus\{i\}$, $\D_{\UKA}$ follows the description of $\Adv'$ with the difference that instead of sampling  $\mes_{\A,j}\leftarrow\A(\tape_{\A,j})$, it samples $\mes_{\A,j}$ from $\O$. Given $(r_j)_{j\neq i}$, it samples $\mes_{\A,i}\leftarrow\A(\tape_{\A,i})$ and sets $r_i$ such that $r_i\oplus\H_i((r_j)_{j\neq i})=\mes_{\A,i}$. As $\Adv'$, it computes $s_{\A,i}\leftarrow\EK(\tape_{\A,i},\mes_{\B,i})$ which is \rec's output. It now invokes distinguisher \D on \rec's output $s_{\A,i}$ and the output of $\Adv$. In the end, it outputs the output of \D.
 
 
 We now analyze the distributions. 
-First, notice that the distribution of $(r_i,\mes_{A,i})$ when sampling $r_i\leftarrow\G$ and then programming the random oracle $r_i\oplus\H((r_i)_{i\neq j})=\mes_{\A,i}$ is identical to the distribution when sampling $\H((r_i)_{i\neq j})$ and choosing $r_i$  such that $r_i\oplus\H((r_i)_{i\neq j})=\mes_{\A,i}$, both are the uniform distribution over $\G\times\G$ conditioned to their sum being $\mes_{\A,i}$. Therefore it follows straightforwardly from the definition of \O, \rec and $\Adv'$ that when \O outputs uniform messages, the output of \Adv is distributed as when interacting with $\rec$ while when \O outputs \UKA messages, it is distributed as the output of $\Adv'$. Hence, if there is a distinguisher $\D$ for any $z$ that distinguishes the output distribution of \Adv given $s_{\A,i}$, i.e.
+First, notice that the distribution of $(r_i,\mes_{A,i})$ when sampling $r_i\leftarrow\G$ and then programming the random oracle $r_i\oplus\H_i((r_i)_{i\neq j})=\mes_{\A,i}$ is identical to the distribution when sampling $\H_i((r_i)_{i\neq j})$ and choosing $r_i$  such that $r_i\oplus\H_i((r_i)_{i\neq j})=\mes_{\A,i}$, both are the uniform distribution over $\G\times\G$ conditioned to their sum being $\mes_{\A,i}$. Therefore it follows straightforwardly from the definition of \O, \rec and $\Adv'$ that when \O outputs uniform messages, the output of \Adv is distributed as when interacting with $\rec$ while when \O outputs \UKA messages, it is distributed as the output of $\Adv'$. Hence, if there is a distinguisher $\D$ for any $z$ that distinguishes the output distribution of \Adv given $s_{\A,i}$, i.e.
 $$
 \epsilon_{\D}\leq |\Pr[\D(z,(\Adv,s_{\A,i})_{\D_{\UKA}^{\O_\A}})=1]-\Pr[\D(z,(\Adv,s_{\A,i})_{\D_{\UKA}^{\O_u}})=1]|
 $$
@@ -114,40 +114,36 @@ We finish the proof of the theorem by showing that the \OT protocol is secure ag
 \begin{claim}\label{claim:malreceiver}
 Given a $\delta$ correct,  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,n-1)$-multi-instance $\epsilon_k$-key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
 $$
-|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
+|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq \epsilon_{u}+\epsilon_{k}+(1-\delta),
 $$
-where all algorithms receive input $1^\sec$.
+where all algorithms receive input $1^\sec$ and \Adv' is expected to rewind \Adv $Q$ times.
 \end{claim}
 
 
 \begin{proof}
 Intuitively, we need to argue that all the $\mes_{\A,j}$ for which $\rec$ does not learn $s_{\A,j}$,  $s_{\A,j}$ is indistinguishable from uniform. To do this, we first exploit the uniformity of \UKA to argue that $\mes_{\A,j}$ looks like an actual message of \UKA. Afterwards, we can exploit the key-indistinguishability of \UKA. To achieve this, we need to carefully program the random oracle.
 
-We start by giving a description of \Adv'. \Adv' guesses a query index $\inda\in[Q]$, where $Q$ is an upper bound on the amount of oracle queries of \Adv. Then \Adv'  invokes \Adv.
-When \Adv makes an oracle query $q$ to \H and the query number is less or equal to $\inda$, \Adv' responds with a random group element $\H(q)\leftarrow\G$. 
-If the query number equals $\inda$, \Adv' stores $(g^*_i)_{i\in[n-1]}:=q_{\inda}$. 
-For all following random oracle queries, i.e. the query number $j$ is higher than $\inda$, \Adv ' responds with a random group element $\H(q)\leftarrow\G$ if $q_j$ does not contain $n-2$ elements of $(g^*_i)_{i\in[n-1]}$  and the order is of the form $g^*_1,\dots, g^*_{\ell-1},g,g^*_{\ell},\dots, g^*_{n-1}$, where $g$ is not contained in $(g^*_i)_{i\in[n-1]}$ and $\ell\in[n-1]$. Otherwise \Adv' picks the element $g^*_{\indb_j}\in(g^*_i)_{i\in[n-1]}$ that is missing in $q_j$,  samples random tape $\tape_j\leftarrow\bits^*$ and computes $\mes_{j}\leftarrow\A(\tape_j)$. 
-It responds with $\H(q_j):=\mes_j\ominus g^*_{\beta_j}$. When \Adv sends $(r_i)_{i\in[n]}$, \Adv' aborts if $q_{\inda}$ is not the first query with $q_{\inda}=(r_i)_{i\neq j}$ for a $j\in[n]$. \Adv' sends $i^*$ to $\OOT^\E$. \Adv' computes for all $i\in[n]$ $\mes_{\A,i}:=r_i\oplus\H((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. It also computes $s_{\B,i^*}:=\EK(\tape_{\B,i^*},\mes_{\A,i^*})$.
-\Adv' sends $s_{\B,i^*}$ to $\OOT^\E$, $(\mes_{\B,i})_{i\in[n]}$ to \Adv and outputs the output of \Adv.
+We start by giving a description of \Adv'. \Adv' guesses a query index $\inda\in[Q]$, where $Q$ is an upper bound on the amount of oracle queries of \Adv. Then \Adv'  invokes \Adv. If later this guess turns out to be incorrect, \Adv' aborts the current run with \Adv, rewinds \Adv and makes a new guess.
+
+When \Adv makes an oracle query $q$ to $\H_i$ for an $i\in[n]$ and the query number is less or equal to $\inda$, \Adv' responds with a random group element $\H_i(q)\leftarrow\G$. 
+If the query number equals $\inda$, \Adv' stores $i^*:=i$ and $(g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_{\inda}$. 
+For all following random oracle queries, i.e. the query number $j$ is higher than $\inda$, \Adv ' responds with a random group element $\H_i(q)\leftarrow\G$ if $i=i^*$ or for all $g\in\G$ $q_j\neq (g^*_1,\dots, g^*_{i^*-1},g,g^*_{i^*+1},\dots, g^*_{n})\setminus g^*_i$. Otherwise \Adv'   samples random tape $\tape_j\leftarrow\bits^*$ and computes $\mes_{j}\leftarrow\A(\tape_j)$. 
+It responds with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. When \Adv sends $(r_i)_{i\in[n]}$, \Adv' aborts if $q_{\inda}\neq (r_1,\dots, r_{i^*-1},r_{i^*+1},\dots, r_{n})$. \Adv' sends $i^*$ to $\OOT^\E$. \Adv' computes for all $i\in[n]$ $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. It also computes $s_{\B,i^*}:=\EK(\tape_{\B,i^*},\mes_{\A,i^*})$.
+\Adv' sends $s_{\B,i^*}$ to $\OOT^\E$, $(\mes_{\B,i})_{i\in[n]}$ to \Adv and outputs the output of \Adv. In case of one-round OT, \Adv' generates and sends $(\mes_{\B,i})_{i\in[n]}$ to \Adv in the very beginnning. This concludes the description of \Adv'. In total, \Adv' is expected to rewind \Adv $Q$ times.
 
 Let there be a distinguisher $\D$ with
 $$
 \epsilon_{\D}:=|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv'))=1]|,
 $$
-where $(s_{\B,i})_{i\in[n]}$ are the outputs of $\EK(\tape_{\B,i},\mes_{\A,i})$. Then there is a distinguisher $\D_u$ breaking the $Q$-multi-instance uniformity of the \UKA protocol. $\D_u$ gets access to an oracle $\O$ which either outputs uniform messages, i.e. $\O_u$ or messages of  the form $\mes_\A\leftarrow\A(\tape_\A)$ for $\tape_\A\leftarrow\bits^*$. $\D_u$ invokes \D and creates its input as follows. It invokes $\Adv$ and interacts with him as \Adv' does with the difference that $\mes_j$ are requested from $\O$ rather than computing them.  After receiving the output, $\D_u$ uses it as input for $\D$ together with $(s_{\B,i})_{i\in[n]}$, where $s_{\B,i}\leftarrow\EK(\tape_{\B,i},\mes_{\A,i})$. $\D_u$ outputs the output of \D. If $\Adv'$ aborts, we let $\D_u$ output $0$.
+where $(s_{\B,i})_{i\in[n]}$ are the outputs of $\EK(\tape_{\B,i},\mes_{\A,i})$. Then there is a distinguisher $\D_u$ breaking the $Q$-multi-instance uniformity of the \UKA protocol. $\D_u$ gets access to an oracle $\O$ which either outputs uniform messages, i.e. $\O_u$ or messages of  the form $\mes_\A\leftarrow\A(\tape_\A)$ for $\tape_\A\leftarrow\bits^*$. $\D_u$ invokes \D and creates its input as follows. It invokes $\Adv$ and interacts with him as \Adv' does with the difference that $\mes_j$ are requested from $\O$ rather than computing them.  After receiving the output, $\D_u$ uses it as input for $\D$ together with $(s_{\B,i})_{i\in[n]}$, where $s_{\B,i}\leftarrow\EK(\tape_{\B,i},\mes_{\A,i})$. $\D_u$ outputs the output of \D. 
 
-W.l.o.g. we assume that \Adv queries for all $i\in[i]$ $(r_j)_{j\neq i}$ to $\H$. The probability that $D_u$, i.e. \Adv', does not abort is the probability that the guess $\inda$ is correct, i.e.
-$$
-\Pr[\D_u\text{ does not abort}]=\frac{1}{Q}.
-$$
-
-Assuming that $\D_u$, i.e. $\Adv'$ does not abort. If $\O$ is oracle $\O_{u}$, all $\mes_j$ are uniform and hence all random oracle queries $q$ are answered with a uniformly random $\H(q)\in\G$.  Otherwise, \Adv' is identical with \send as well as $(s_{\B,i})_{i\in[n]}$ are identical with the output of \send.  
+If $\O$ is oracle $\O_{u}$, all $\mes_j$ are uniform and hence all random oracle queries $q$ are answered with a uniformly random $\H_i(q)\in\G$.  Otherwise, \Adv' is identical with \send as well as $(s_{\B,i})_{i\in[n]}$ are identical with the output of \send.  
 Hence 
 \begin{eqnarray*}
 \epsilon_{u}&=&|\Pr[\D_u^{\O_{\A}}(z)]=1]-Pr[\D_u^{\O_{u}}(z)=1]|\\
-&= &\frac{1}{Q}|\Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv)_{\D_u^{\O_{\A}}})=1]\\
-&&-Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv)_{\D_u^{\O_{u}}})=1]|\\
-&\geq&\frac{1}{Q}\epsilon_{\D}.
+&= &|\Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv)_{\D_u^{\O_{\A}}})=1]\\
+&&-\Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv)_{\D_u^{\O_{u}}})=1]|\\
+&\geq&\epsilon_{\D}.
 \end{eqnarray*}
 
 
@@ -156,25 +152,25 @@ Next, we assume that there is a distinguisher $\D$ with
 $$
 \epsilon_{\D}:=|\Pr[\D(z,(s_{\B,i})_{i\in[n]},\Adv)=1] -\Pr[\D(z,\set_{\B,i^*}, \Adv)=1]|,
 $$
-where for all $i\in[n]$, $s_i$ is sampled uniformly from the key space of \UKA and $\set_{\B,i^*}:=(s_{1},\dots, s_{i^*-1},s_{\B,i^*},s_{i^*+1},\dots, s_{n})$. Then there is a distinguisher $\D_k$ that breaks the $(Q,n-1)$-multi-instance key-indistinguishability of the \UKA protocol. $\D_k$ has access to oracles $\O_{\langle \A,\B\rangle}$ and \O which is either $\O_u$ or $\O_k$. $\D_k$ invokes $\D$ and creates its input as follows. $\D_k$ invokes \Adv and interacts with it as $\Adv'$ does with the difference, that $\D_k$ generates $\mes_j$ by querying a transcript $\langle \A, \B\rangle=(\mes_{\A,j}',\mes_{\B,j}')$ from $\O_{\langle \A,\B\rangle}$ and setting $\mes_j=\mes_{\A,j}'$. If \Adv' does not abort, it computes for all $i\in[n]\setminus\{i^*\}$
+where for all $i\in[n]$, $s_i$ is sampled uniformly from the key space of \UKA and $\set_{\B,i^*}:=(s_{1},\dots, s_{i^*-1},s_{\B,i^*},s_{i^*+1},\dots, s_{n})$. Then there is a distinguisher $\D_k$ that breaks the $(Q,n-1)$-multi-instance key-indistinguishability of the \UKA protocol. $\D_k$ has access to oracles $\O_{\langle \A,\B\rangle}$ and \O which is either $\O_u$ or $\O_k$. $\D_k$ invokes $\D$ and creates its input as follows. $\D_k$ invokes \Adv and interacts with it as $\Adv'$ does with the difference, that $\D_k$ generates $\mes_j$ by querying a transcript $\langle \A, \B\rangle=(\mes_{\A,j}',\mes_{\B,j}')$ from $\O_{\langle \A,\B\rangle}$ and setting $\mes_j=\mes_{\A,j}'$. \Adv' computes for all $i\in[n]\setminus\{i^*\}$
 $$
-\mes_{\A,i}=r_i\oplus\H((r_{\ell})_{\ell\neq i})=\mes_{\A,j}'
+\mes_{\A,i}':=r_i\oplus\H_i((r_{\ell})_{\ell\neq i})=\mes_{\A,j}'
 $$
-where there is a $j\in[Q]$ such that the last equality holds. It also uses oracle $\O$ to query for all $i\in[n]\setminus\{i^*\}$ the $n-1$ corresponding keys $\key_i$ that match with the transcripts containing $\mes_{\A,i}$. $\D_k$ sets $\mes_{\B,i}:=\mes_{\B,j}'$ and $s_{\B,i}:=\key_i$. It creates $\mes_{\B,i^*}$ and $s_{\B,i^*}$ as \Adv' does. It sends $(\mes_{\B,i})_{i\in[n]}$ to \Adv to receive its output which it uses together with $(s_{\B,i})_{i\in[n]}$ as input for \D. $\D_k$ outputs \D's output.  
+where there exists a $j\in[Q]$ such that the last equality holds. It also uses oracle $\O$ to query for all $i\in[n]\setminus\{i^*\}$ the $n-1$ corresponding keys $\key_i$ that match with the transcripts containing $\mes_{\A,i}$. $\D_k$ sets $\mes_{\B,i}:=\mes_{\B,j}'$ and $s_{\B,i}:=\key_i$. It creates $\mes_{\B,i^*}$ and $s_{\B,i^*}$ as \Adv' does. It sends $(\mes_{\B,i})_{i\in[n]}$ to \Adv to receive its output which it uses together with $(s_{\B,i})_{i\in[n]}$ as input for \D. $\D_k$ outputs \D's output.  
 \begin{eqnarray*}
 \epsilon_{k}&=&|\Pr[\D_k^{\O_{k}}(z)]=1]-Pr[\D_k^{\O_{u}}(z)=1]|\\
-&= &\frac{1}{Q}|\Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv)_{\D_k^{\O_{k}}})=1]\\
+&= &|\Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv)_{\D_k^{\O_{k}}})=1]\\
 &&-Pr[\D(z,(\set_{\B,i^*},\Adv)_{\D_k^{\O_{u}}})=1]|\\
-&\geq&\frac{1}{Q}\epsilon_{\D}.
+&\geq&\epsilon_{\D}.
 \end{eqnarray*}
 
 For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the same argument as in Claim~\ref{claim:malsender} using the correctness of the scheme. Hence we obtain
 
 \begin{eqnarray*}
 \epsilon_{\OT} &=&|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv))=1]|\\
-&\leq & Q\epsilon_{u}+|\Pr[\D((s_{\B,i})_{i\in[n]},\Adv)=1]-\Pr[\D(\set_{\B,i^*}, \Adv)=1]|\\
+&\leq & \epsilon_{u}+|\Pr[\D((s_{\B,i})_{i\in[n]},\Adv)=1]-\Pr[\D(\set_{\B,i^*}, \Adv)=1]|\\
 %&\leq & Q(\epsilon_{u}+\epsilon_{k})+|\Pr[\D(\set_{\B,i^*},\Adv)=1]-\Pr[\D(\set_{\A,i^*}, \Adv)=1]|\\
-&\leq &Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
+&\leq &\epsilon_{u}+\epsilon_{k}+(1-\delta),
 \end{eqnarray*}
 where $\set_{\A,i^*}:=(s_{1},\dots, s_{i^*-1},s_{\A,i^*},s_{i^*+1},\dots, s_{n})$.
 \pe
