@@ -2,7 +2,7 @@
 
 In \figureref{fig:KAtoOT}, we present the generic construction from any two round key agreement to a two round OT. In \theoremref{thm:KAtoOT}, we show that both constructions yield an endemically secure OT. We emphasize that the protocol can be easily adapted to yield an all but one OT (see \iffullversion\appendixref{sec:allbutone}\else full version\fi).
 
-In our security analysis for a malicious receiver, the simulator will rewind the malicious receiver. Hence we only obtain stand-alone security against a malicious receiver. In Appendix , we show UC security against malicious receivers for our two-round construction and in Appendix , we show UC security based on a variant of \DDH of the one-round OT based on the Diffie-Hellman key agreement.
+In our security analysis for a malicious receiver, the simulator will rewind the malicious receiver. Hence we only obtain stand-alone security against a malicious receiver. In \appendixref{sec:UCOT}, we show UC security against malicious receivers for our two-round construction and the one-round OT based on the Diffie-Hellman key agreement under a stronger variant of the \DDH assumption.
 
 
 \begin{figure}
@@ -178,6 +178,3 @@ where $\set_{\A,i^*}:=(s_{1},\dots, s_{i^*-1},s_{\A,i^*},s_{i^*+1},\dots, s_{n})
 \pe
 \end{proof}
 
-\begin{remark}
-For stand alone security, security of \UKA against uniform adversaries is sufficient, i.e. auxiliary input $z$ is the empty string. Further, for UC security in the global random oracle model, it is sufficient for the sender to send a salt at the start of each session that is used as an additional input to the random oracle within the session. 
-\end{remark}

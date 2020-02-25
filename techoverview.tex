@@ -63,6 +63,8 @@ This technique also allows to extract $s_0$, $s_1$ from a malicious sender by pr
 
 We optimize the protocol further by using a key agreement instead of a PKE scheme. In many settings, the OT messages don't need to be chosen, it is sufficient if they are pseudorandom. Hence, no ciphertext needs to be generated, only the exchanged keys need to be computed. This save in some settings a communication round, e.g. in case of the Diffie-Hellman key exchange \cite{DifHel76}.
 
+In the main body of this paper, we only consider stand-alone security. We show UC security for some settings of our protocol in \appendixref{sec:UCOT}.
+
 \paragraph{Secure OT Extension.} 
 In \sectionref{sec:otext} we explore the rich implications endemic security has on efficient 1-out-of-$N$ OT extension along with presenting three new attacks and fixes of existing OT extension protocols\cite{C:KelOrsSch15,RSA:OrrOrsSch17} with Uniform Message security\footnote{\cite{C:KelOrsSch15,RSA:OrrOrsSch17} refer to uniform OT as random OT $\mathcal{F}^{m,\kappa}_{\textsf{ROT}}$}. 
 \iffullversion
