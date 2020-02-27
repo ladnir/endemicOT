@@ -83,7 +83,7 @@ In \figureref{fig:optKAtoOT}, we show an optimized variant of our OT. It reduces
 
 The reason is simple, in our security proof during the simulation, $\Adv'$ needs compute the key $\lb ab \rb$ while at the same time given $\lb 1\rb,\lb a'\rb,\lb b\rb$, $\lb ab'\rb$ needs to be hard to distinguish from a uniformly random group element. Since $a$ is picked by the adversary $\Adv$ and only transmits $\lb a \rb$, we do not know how to simulate correctly. The next definition formally states the assumption under which the protocol in \figureref{fig:optKAtoOT} can be proven to be secure. 
 
-\begin{definition}[Interactive Decisional Diffie-Hellman (IDDH) Assumption]
+\begin{definition}[Interactive Decisional Diffie-Hellman (IDDH) Assumption]\label{def:IDDH}
 For a group $\G$, the \emph{interactive decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
 \begin{eqnarray*}
 &&|\Pr[ \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb ab\rb)=1]\\

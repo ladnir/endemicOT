@@ -1,9 +1,0 @@
-\pagebreak
-\section{temp}
-
-Let Adv (receiver) make queries $q_1,...,q_n$. This then defines an n-by-n matrix $A$ of "interesting" public keys. We define $A_{i,j}=H(q_i)\oplus q_j$ . Its possible that the true "not selected" public key is not in here but that case is easy.
-
-Columns are indexed by $j$  and rows by $i$. What we would like to do is program the bottom left ($j<i$) of this matrix so that each entry is a DDH challenge. However, the columns have a chosen difference by Adv, i.e. the diff between columns $1,j$ is $d_j:=q_{j}\ominus q_{1}$, and therefore $A_{i,j}=H(q_i)\oplus q_1\oplus d_j$. Since each row $i$ has a common $H(q_i)$ we can program one $A_{i,j}$ per. Let $d_j=g^{\delta_j}$ where the Adv may or may not know $\delta_j$.
-
-Let us have DDH challenge $(g^a,g^b,C)$ where $C_i\in \{g^{ab}, u\}$ and $u\gets \$$. For all $H(q_i)$ queries the simulator samples $\delta_i\gets \$$ and implicitly defines $a_i=a\delta_i$ and $H(q_i)=g^{a_i}=(g^a)^{\delta_i}$. As such $A_{i,j}=g^{a_i}q_j =g^{a_i} g^{\gamma_j}$ and the final key agreement would be $A^b_{i,j}=g^{a_ib} g^{\gamma_jb}=Cg^{(\delta_i+\gamma_j)b}$. Since $\gamma_j$ is fixed before $\delta_i$ we have that $\delta_i+\gamma_j$ is uniform. Therefore $C$ times any independent elements, i.e. $g^{(\delta_i+\gamma_j)b}$, is also uniform with overwhelming probability. As such, by replacing this with a uniform key is indistinguishable or else we have a DDH distinguished.
-

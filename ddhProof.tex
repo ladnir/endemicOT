@@ -1,0 +1,49 @@
+
+
+
+\section{DDH based One-round Endemic OT with UC Security }\label{sec:ddhProof}
+
+\begin{definition}[Strong Interactive Decisional Diffie-Hellman (SIDDH) Assumption]\label{def:SIDDH}
+	For a group $\G$, the \emph{strong interactive decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
+	\begin{eqnarray*}
+		&&|\Pr[ \D_2(\mathsf{st},\lb a\rb,\lb xb\rb,\lb ab\rb)=1]\\
+		&&-\Pr[ \D_2(\mathsf{st},\lb a\rb,\lb xb\rb,\lb c\rb)=1]|=\negl,
+	\end{eqnarray*}
+	where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{st},\lb x\rb)\leftarrow\D_1(\lb 1\rb,\lb b\rb)$.
+\end{definition}
+
+\begin{lemma}\label{lem:optKAtoOT}
+	Let the Strong Interactive DDH assumption (\definitionref{def:SIDDH}) hold over group $\G$. Then the optimized Diffie-Hellman based protocol of \figureref{fig:optKAtoOT} satisfies malicious receiver security (\definitionref{def:otSec}) in the UC model with respect to the 1-out-of-2 $\OOT^\E$ functionality.
+\end{lemma}
+\begin{proof}
+	
+	Let the malicious receiver $\Adv$ make queries $q_1,...,q_Q$ to the random oracle $\H$ in this order. This then defines an $Q$-by-$Q$ matrix $A$ of ``interesting'' public keys where $A_{i,j}=\H(q_i)\oplus q_j$. Its possible that $\Adv$ did not query both $r_i$ values in which case the simulator will query $\H(r_1),\H(r_2)$ on their behalf and count these as $q_i$ queries.
+	
+	After receiving the $r_i$ values the simulator extracts the receiver's selection as $\ell$ s.t. $ q_j=r_{{\overline \ell}}, q_i=r_{\ell}$ and $j<i$ and $\overline \ell =3-\ell$. The simulator will then have two goals. 1) extract the receiver's choice message $s_{\B, \ell}=A_{j,i}^b$ and 2) use the random oracle to program $A_{i,j}^b$ to contain the SIDDH challenge $\lb c\rb$.
+	
+	
+	Let us have the first phase of the SIDDH challenge $(\lb 1\rb, \lb b\rb)$. For all $\H(q_i)$ queries the simulator samples $a_i\gets \Z_p$ and implicitly defines $a_i=a+\delta_i$ and program $\H(q_i)=\lb a_i\rb =\lb a\rb \oplus \lb{\delta_i}\rb$. As such $A_{i,j}=\lb{a_i}\rb \oplus q_j =\lb a_i+\gamma_j\rb$ where $q_j =\lb\gamma_j\rb$. The distribution of $\H$ is unchanged by this modification.
+	
+	To extract the receiver's chosen message $s_{\B, \ell}$ the simulators provides the current state $\textsf{st}$ and $\lb x\rb=A_{j,i}$ as the output of $\D_1$. As input to $\D_2$ the simulator receives $(\lb a\rb, \lb xb\rb,\lb c^*\rb)$ where $c^*\in\{ab,c\}$. The receiver's chosen message is defined as $s_{\B, \ell}=\lb xb\rb$. 
+	
+	In the real interaction the final key agreement would be $s_{\B,{\overline \ell}}=A^b_{i,j}=b\lb a+\delta_i+\gamma_j\rb= \lb ab\rb \oplus \lb{(\delta_i+\gamma_j)b}\rb$. In the ideal interaction we substitute $\lb ab\rb$ with $\lb c\rb$ to obtain $s_{\B,{\overline \ell}}= \lb c\rb \oplus \lb{(\delta_i+\gamma_j)b}\rb$. Note that the simulator can not compute $s_{\B,{\overline \ell}}$ due to not knowing $\delta_i$ and $\gamma_j$. Moreover, $\delta_i$ is uniformly distributed in the view of $\Adv$ which implies that $(\delta_i+\gamma_j)b$ is independent of $c$ and therefore directly sampling  $s_{\B,{\overline \ell}}\gets \G$ yields the same distribution. Since sampling $s_{\B,{\overline \ell}}$ directly is the only change,  $\Adv$ distinguishing the sender's ideal/ideal output immediately gives a distinguisher for SIDDH.		
+\end{proof}
+
+
+\begin{definition}[Cut-and-Open Decisional Diffie-Hellman (CODDH) Assumption]\label{def:CODDH}
+	For a group $\G$, the \emph{cut-and-open decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
+	\begin{eqnarray*}
+		&&|\Pr[ \D_2(\mathsf{st},a_i,b_i,\lb a_{\overline{i}}b_{\overline{i}}\rb)=1]\\
+		&&-\Pr[ \D_2(\mathsf{st},a_i,b_i,\lb c_{\overline{i}}\rb)=1]|=\negl,
+	\end{eqnarray*}
+	where $a_1,a_2,b_1,b_2,c_1,c_2\leftarrow\Z_p$ and $(\mathsf{st}, i)\leftarrow\D_1(\lb 1\rb,\lb a_1\rb,\lb a_2\rb,\lb b_1\rb,\lb b_2\rb)$ and $\overline i = 3-i$.
+\end{definition}
+
+\begin{lemma}
+	Let the Cut-and-Open DDH assumption (\definitionref{def:CODDH}) hold over group $\G$. Then the One-round Diffie-Hellman based protocol  of \figureref{fig:KAtoOT} satisfies malicious receiver security (\definitionref{def:otSec}) in the UC model with respect to the 1-out-of-2 $\OOT^\E$ functionality.
+\end{lemma}
+\begin{proof}
+	This proof follows the same structure as that of \lemmaref{lem:optKAtoOT} except as to how the receiver's chosen OT message $s_{\B, \ell}$ is defined. To compute $s_{\B, \ell}$ the simulator provides $\ell$ as the output of $\D_1$ and as such learns $b_\ell$ in the clear. The simulator can then locally compute $s_{\B, \ell}=b_\ell\lb x\rb$ where $\lb x\rb=\H(r_{\overline \ell})\oplus r_\ell$. 
+	
+	The other message $s_{\B,\overline \ell}$ is defined in the same way as in the proof of \lemmaref{lem:optKAtoOT}. In the real interaction the message has the form $s_{\B,{\overline \ell}}=\lb a_{\overline{\ell}}b_{\overline{\ell}}\rb \oplus \lb{(\delta_i+\gamma_j)b_{\overline{\ell}}}\rb$ and as such we can similarly show that it is uniformly distributed in the view of $\Adv$ by replacing $\lb a_{\overline{\ell}}b_{\overline{\ell}}\rb$ with $\lb c_{\overline{\ell}}\rb$.
+\end{proof}
