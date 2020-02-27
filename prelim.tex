@@ -95,7 +95,7 @@ the full version for a precise definition.
 \end{remark}
 
 
-In our definition of OT, we use the simplified UC security definition that is sufficient for full UC security \cite{C:CanCohLin15}. 
+In our definition of OT, we use the simplified UC security definition that is sufficient for full UC security \cite{C:CanCohLin15}. We also use this definition for our stand-alone security analysis in the main body of this paper, but in that case, we allow adversary \Adv' to rewind adversary \Adv. 
 \begin{definition}[$k$-out-of-$n$ Oblivious Transfer ($\OT_{k,n}$)]\label{def:otSec}
 We call a protocol $\Pi$ between two ppt parties, a sender \send and a receiver \rec, a \emph{$k$-out-of-$n$ oblivious transfer} if %\rec has as input a set $\set\subset[n]$ of size $k$ and 
 at the end, \send outputs $n$ strings $(s_i)_{i\in[n]}$ and \rec outputs $(s_i)_{i\in\set}$ and a set $\set\subset[n]$ s.t. $|\set|=k$. For security, we require two properties with respect to a functionality \OOT.
