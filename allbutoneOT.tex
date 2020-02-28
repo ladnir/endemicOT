@@ -11,7 +11,7 @@ In this section we show how to use the techniques in \namedref{Section}{sec:ende
 \node [anchor=west] at (4,4.5){$r_{i}\leftarrow\G$};
 \draw [thick, <-] (2.75,2)-- node [midway,above]{$(r_j)_{j\in[n]}$}(4,2);
 \node [anchor=west] at (-0.5,3){$\forall j\in[n]:$};
-\node [anchor=west] at (-0.35,2){$h_j=\H(r_{(j-2\bmod n)+1})$};
+\node [anchor=west] at (-0.35,2){$h_j=\H_j(r_{(j-2\bmod n)+1})$};
 %\node [anchor=west] at (-0.35,2.5){$\mes_{\A,j}=r_j\oplus h_j$};
 \node [anchor=west] at (-0.35,2.5){$\tape_{\B,j}\leftarrow\bits^*$};
 \node [anchor=west] at (-0.35,1.5){$\mes_{\B,j}=\B(\tape_{\B,j},r_j\oplus h_j)$};
@@ -22,7 +22,7 @@ In this section we show how to use the techniques in \namedref{Section}{sec:ende
 \node [anchor=west] at (4,3.5){$\quad\ell_{j}:=(i+j\bmod n) +1$};
 \node [anchor=west] at (4,3){$\quad\tape_{\A,\ell_j}\leftarrow\bits^*$};
 \node [anchor=west] at (4,2.5){$\quad\mes_{\A,\ell_j}\leftarrow \A(\tape_{\A,\ell_j})$};
-\node [anchor=west] at (4,2){$\quad r_{\ell_j}:=\mes_{\A,\ell_j}\ominus\H(r_{\ell_{j-1}})$};
+\node [anchor=west] at (4,2){$\quad r_{\ell_j}:=\mes_{\A,\ell_j}\ominus\H_{\ell_j}(r_{\ell_{j-1}})$};
 \node [anchor=west] at (4,1) {$\forall j\in[n]\setminus\{\i\}$}; 
 \node [anchor=west] at (4,0.5) {$\key_{\A,j}:=\EK(\tape_\A,\mes_{\B,j})$};
 \end{tikzpicture} 
@@ -53,10 +53,9 @@ By a second claim, the protocol is secure against a malicious receiver.
 \begin{claim}\label{claim:malreceiver}
 Given a $\delta$ correct,  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,1)$-multi-instance $\epsilon_k$-key-indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
 $$
-|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\rec,\Adv'))=1]|\leq Q(\epsilon_{u}+\epsilon_{k})+(1-\delta),
+|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\rec,\Adv'))=1]|\leq \epsilon_{u}+\epsilon_{k}+(1-\delta),
 $$
-where all algorithms receive input $1^\sec$.
+where all algorithms receive input $1^\sec$ and adversary \Adv' rewinds \Adv $Q$ times.
 \end{claim}
 \pe
 \end{proof}
-

@@ -18,7 +18,9 @@ $$
 where $\vec{a}\leftarrow\Z_p^n$, $b\leftarrow\Z_p$ and $\vec{c}\leftarrow\Z_p^n$.
 \end{definition}
 
-In Appendix~\ref{sec:DDH}, we show that $n$-multi-instance DDH is secure under the DDH assumption with a security loss of $n$. In the following we show that the Diffie-Hellman key exchange is tightly multi-instance secure under multi-instance DDH. 
+%In Appendix~\ref{sec:DDH}, we show 
+
+By a standard hybrid argument, $n$-multi-instance DDH is secure under the DDH assumption with a security loss of $n$. In the following we show that the Diffie-Hellman key exchange is tightly multi-instance secure under multi-instance DDH. 
 
 \begin{lemma}\label{lem:DDH}
 Let $Q$ and $n$ be polynomial in $\sec$.
@@ -46,14 +48,15 @@ Therefore, except with negligible probability, $\D$ has the same advantage in br
 \pe
 \end{proof}
 
-Using Theorem~\ref{thm:KAtoOT}, Lemma~\ref{lem:DHuniform} and Lemma~\ref{lem:DDH}, we obtain the following corollary.
+Using Theorem~\ref{thm:KAtoOT} %, Lemma~\ref{lem:DHuniform}
+ and Lemma~\ref{lem:DDH}, we obtain the following corollary.
 
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:KAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting endemic OT is statistically secure against malicious senders and secure against malicious receivers except advantage $(n-1)Q\epsilon_{\DDH}+\negl$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:KAtoOT} with Diffie-Hellman key exchange over group \G, then in the programmable random oracle model the resulting endemic OT is statistically secure against malicious senders and secure against malicious receivers except advantage $(n-1)\epsilon_{\DDH}+\negl$ and a runing time loss $Q$, where the DDH assumption over group $\G$ holds except advantage $\epsilon_{\DDH}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}
 
 \begin{remark}
-If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol in \figureref{fig:DH} and apply the transformation \figureref{fig:KAtoOT}, we receive a one-round endemically secure OT in the random oracle model based on the computational Diffie-Hellman assumption. Alternatively, one could also use the random oracle instead of a hardcore predicate to obtain longer OT strings. 
+If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the Diffie-Hellman key agreement and apply the transformation \figureref{fig:KAtoOT}, we receive a one-round endemically secure OT in the random oracle model based on the computational Diffie-Hellman assumption. Alternatively, one could also use the random oracle instead of a hardcore predicate to obtain longer OT strings. 
 \end{remark}
 
 \subsection{Optimized, Interactive DDH based Instantiation}\label{sec:optOT}
@@ -65,14 +68,14 @@ If we apply a hardcore predicate to $\key_{\A}$ and $\key_{\B}$ in the protocol 
 \node [anchor=west] at (4,5) {Receiver$(\i\in[n])$:};
 \node [anchor=west] at (4,4.5){$\forall j\in[n]\setminus\{\i\}: r_{j}\leftarrow\G$};
 \node [anchor=west] at (4,4){$a\leftarrow\Z_p$};
-\node [anchor=west] at (4,3.5){$r_{\i}=\lb a\rb \ominus \H((r_j)_{j\neq\i})$};
+\node [anchor=west] at (4,3.5){$r_{\i}=\lb a\rb \ominus \H_i((r_j)_{j\neq\i})$};
 \draw [thick, <-] (2.75,3.5)-- node [midway,above]{$(r_j)_{j\in[n]}$}(4,3.5);
 %\node [anchor=west] at (-0.35,2.5){$\mes_{\A,j}=r_j\oplus h_j$};
 \node [anchor=west] at (-0.5,4){$b\leftarrow\Z_p$};
 \draw [thick, ->] (2.75,3.35)-- node [midway,below]{$\lb b \rb$}(4,3.35);
 \node [anchor=west] at (4,3) {$s_{\A,\i}=\lb ab\rb$};
 \node [anchor=west] at (-0.5,3.5) {$\forall j\in[n]$};
-\node [anchor=west] at (-0.35,3) {$s_{\B,j}=(r_j\H((r_\ell)_{\ell\neq j}))^b$};
+\node [anchor=west] at (-0.35,3) {$s_{\B,j}=(r_j\oplus\H_j((r_\ell)_{\ell\neq j}))^b$};
 \end{tikzpicture} 
 }
 \myvspace{-0.3cm}
@@ -91,6 +94,14 @@ For a group $\G$, the \emph{interactive decisional Diffie-Hellman} assumption is
 \end{eqnarray*}
 where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{st},\lb x\rb)\leftarrow\D_1(\lb 1\rb)$.
 \end{definition}
+
+
+
+
+
+
+
+
 
 \subsection{Instantiation based on Crystals-Kyber}
  
@@ -140,7 +151,7 @@ We define the group operation $\pk_1\oplus\pk_2$, by mapping $\pk_1=(\cdt_1,\rho
 By using \theoremref{thm:KAtoOT}, \lemmaref{lem:multuniform} and \lemmaref{lem:keytomultkey}, we get the following corollary.
  
 \begin{corollary}
-When instantiating an $1$ out of $n$ OT in \figureref{fig:Kyber} with Crystals-Kyber, then in the programmable random oracle model the resulting endemic OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q^2\epsilon_{\MLWE}+\negl$, where the \MLWE assumption holds except advantage $\epsilon_{\MLWE}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
+When instantiating an $1$ out of $n$ OT in \figureref{fig:Kyber} with Crystals-Kyber, then in the programmable random oracle model the resulting endemic OT is secure against a malicious sender except advantage $(n-1)\epsilon_{\MLWE}+\negl$  and secure against malicious receivers except advantage $Q\epsilon_{\MLWE}+\negl$ and a runing time loss $Q$, where the \MLWE assumption holds except advantage $\epsilon_{\MLWE}$ and $Q$ is a bound on the amount of adversarial random oracle queries.
 \end{corollary}
 
 In this work, we will instantiate Kyber with $k=3$ which is claimed to have a qbit security level of $161$ bit. This security level does not immediately carry over to our Kyber based OT, there is an additional security loss of $Q^2$. Though we are unaware of an attack that is significantly more efficient on our Kyber based OT than the attacks on Kyber.

@@ -9,7 +9,7 @@ In \theoremref{thm:KAtoOT} in \sectionref{sec:endemicOT}, we only show stand-alo
 \begin{claim}\label{claim:UCmalreceiver}
 Given a $\delta$ correct,  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,n-1)$-multi-instance $\epsilon_k$-key indistinguishable two-round \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary. Then the proposed two-round OT is UC-secure against malicious receivers, i.e. in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
 $$
-|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq \epsilon_{u}+\epsilon_{k}+(1-\delta),
+|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq 2Q\epsilon_{u}+Q\epsilon_{k}+(1-\delta),
 $$
 where all algorithms receive input $1^\sec$.
 \end{claim}
@@ -27,22 +27,22 @@ We start by giving a description of \Adv'. For each random oracle query $q$ to $
  When \Adv sends $(r_i)_{i\in[n]}$, \Adv' looks up the first oracle query of the form $q= (r_1,\dots, r_{i^*-1},r_{i^*+1},\dots, r_{n})$ for an $i^*\in[n]$. \Adv' sends $i^*$ to $\OOT^\E$. \Adv' computes for all $i\in[n]$ $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. It also computes $s_{\B,i^*}:=\EK(\tape_{\B,i^*},\mes_{\A,i^*})$.
 \Adv' sends $s_{\B,i^*}$ to $\OOT^\E$, $(\mes_{\B,i})_{i\in[n]}$ to \Adv and outputs the output of \Adv. This concludes the description of \Adv'. We emphasize that here, the other OT strings $(s_{\B,i})_{i\neq i^*}$ will not be the output of $\EK(\tape_{\B,i},\mes_{\A,i})$ but sampled uniformly by $\OOT^\E$.
 
-We now define a sequence of hybrids. The first hybrid is $\hyb_0$ and corresponds the interaction of \Adv with the sender of the protocol description. The last hybrid, $\hyb_{3(Q+1)}$, corresponds to $\Adv'$.
-For $k\in\{0\}\cup[Q]$, we define:
+We now define a sequence of hybrids. The first hybrid is $\hyb_1$ and corresponds the interaction of \Adv with the sender of the protocol description. The last hybrid, $\hyb_{3(Q+1)}$, corresponds to $\Adv'$.
+For $k\in[Q+1]$, we define:
 \begin{description}
 \item[$\hyb_{3k}$:]  When \Adv makes an oracle query $q$ respond with a random group element $\H_i(q)\leftarrow\G$. 
 
 When \Adv sends $(r_i)_{i\in[n]}$, look up the first oracle query of the form $q= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j$ be the query number. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. If $j<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B,d}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
  Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B,d}$ together with the output of \Adv. 
 \item[$\hyb_{3k+1}$:]  \textcolor{red}{When \Adv makes an oracle query $q$ to $\H_i$ for an $i\in[n]$ and the query number is less or equal to $k$, respond with a random group element $\H_i(q)\leftarrow\G$. 
-If the query number equals $k$, store $i^*:=i$ and $(g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_{\inda}$. 
+If the query number equals $k$, store $i^*:=i$ and $(g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q$. 
 For all following random oracle queries, i.e. the query number $j$ is higher than $k$, respond with a random group element $\H_i(q)\leftarrow\G$ if $i=i^*$ or for all $g\in\G$ $q_j\neq (g^*_1,\dots, g^*_{i^*-1},g,g^*_{i^*+1},\dots, g^*_{n})\setminus g^*_i$. Otherwise sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
 Respond with $\H_i(q_j):=\mes_j\ominus g^*_{i}$.}
 
 When \Adv sends $(r_i)_{i\in[n]}$, look up the first oracle query of the form $q= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j$ be the query number. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. If $j<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B,d}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
  Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B,d}$ together with the output of \Adv. 
  \item[$\hyb_{3k+2}$:]  When \Adv makes an oracle query $q$ to $\H_i$ for an $i\in[n]$ and the query number is less or equal to $k$, Respond with a random group element $\H_i(q)\leftarrow\G$. 
-If the query number equals $k$, store $i^*:=i$ and $(g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_{\inda}$. 
+If the query number equals $k$, store $i^*:=i$ and $(g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q$. 
 For all following random oracle queries, i.e. the query number $j$ is higher than $k$, respond with a random group element $\H_i(q)\leftarrow\G$ if $i=i^*$ or for all $g\in\G$ $q_j\neq (g^*_1,\dots, g^*_{i^*-1},g,g^*_{i^*+1},\dots, g^*_{n})\setminus g^*_i$. Otherwise sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
 Respond with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. 
 
@@ -51,7 +51,7 @@ When \Adv sends $(r_i)_{i\in[n]}$, look up the first oracle query of the form $q
 \end{description}
 
 \begin{claim}\label{claim:first}
-For any $k\in\{0\}\cup[Q]$, let there be a distinguisher $\D$ with
+For any $k\in[Q+1]$, let there be a distinguisher $\D$ with
 $$
 \epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k})=1] -\Pr[\D(z,\hyb_{3k+1})=1]|.
 $$
@@ -74,7 +74,7 @@ Hence
 
 
 \begin{claim}
-For any $k\in\{0\}\cup[Q]$, let there be a distinguisher $\D$ with
+For any $k\in[Q+1]$, let there be a distinguisher $\D$ with
 $$
 \epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k+1})=1] -\Pr[\D(z,\hyb_{3k+2})=1]|.
 $$
@@ -127,3 +127,62 @@ For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the
 \begin{remark}
 For stand alone security, security of \UKA against uniform adversaries is sufficient, i.e. auxiliary input $z$ is the empty string. Further, for UC security in the global random oracle model, it is sufficient for the sender to send a salt at the start of each session that is used as an additional input to the random oracle within the session. 
 \end{remark}
+
+
+
+
+
+
+
+\subsection{Diffie-Hellman based One-Round Endemic OT with UC Security }\label{sec:ddhProof}
+
+
+
+\begin{definition}[Choose-and-Open Decisional Diffie-Hellman (CODDH) Assumption]\label{def:CODDH}
+	For a group $\G$, the \emph{cut-and-open decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
+	\begin{eqnarray*}
+		&&|\Pr[ \D_2(\mathsf{st},a_i,b_i,\lb a_{\overline{i}}b_{\overline{i}}\rb)=1]\\
+		&&-\Pr[ \D_2(\mathsf{st},a_i,b_i,\lb c_{\overline{i}}\rb)=1]|=\negl,
+	\end{eqnarray*}
+	where $a_1,a_2,b_1,b_2,c_1,c_2\leftarrow\Z_p$ and $(\mathsf{st}, i)\leftarrow\D_1(\lb 1\rb,\lb a_1\rb,\lb a_2\rb,\lb b_1\rb,\lb b_2\rb)$ and $\overline i = 3-i$.
+\end{definition}
+
+\begin{lemma}
+	Let the Choose-and-Open DDH assumption (\definitionref{def:CODDH}) hold over group $\G$. Then the One-round Diffie-Hellman based protocol  of \figureref{fig:KAtoOT} satisfies malicious receiver security (\definitionref{def:otSec}) in the UC model with respect to the 1-out-of-$n$ $\OOT^\E$ functionality.
+\end{lemma}
+\begin{proof}
+	This proof follows the same structure as that of \lemmaref{lem:optKAtoOT} except as to how the receiver's chosen OT message $s_{\B, \ell}$ is defined. To compute $s_{\B, \ell}$ the simulator provides $\ell$ as the output of $\D_1$ and as such learns $b_\ell$ in the clear. The simulator can then locally compute $s_{\B, \ell}=b_\ell\lb x\rb$ where $\lb x\rb=\H(r_{\overline \ell})\oplus r_\ell$. 
+	
+	The other message $s_{\B,\overline \ell}$ is defined in the same way as in the proof of \lemmaref{lem:optKAtoOT}. In the real interaction the message has the form $s_{\B,{\overline \ell}}=\lb a_{\overline{\ell}}b_{\overline{\ell}}\rb \oplus \lb{(\delta_i+\gamma_j)b_{\overline{\ell}}}\rb$ and as such we can similarly show that it is uniformly distributed in the view of $\Adv$ by replacing $\lb a_{\overline{\ell}}b_{\overline{\ell}}\rb$ with $\lb c_{\overline{\ell}}\rb$.
+\end{proof}
+
+
+\subsection{Optimized Diffie-Hellman based One-Round Endemic OT with UC Security }\label{sec:ddhProof}
+
+
+
+\begin{definition}[Strong Interactive Decisional Diffie-Hellman (SIDDH) Assumption]\label{def:SIDDH}
+	For a group $\G$, the \emph{strong interactive decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
+	\begin{eqnarray*}
+		&&|\Pr[ \D_2(\mathsf{st},\lb a\rb,\lb xb\rb,\lb ab\rb)=1]\\
+		&&-\Pr[ \D_2(\mathsf{st},\lb a\rb,\lb xb\rb,\lb c\rb)=1]|=\negl,
+	\end{eqnarray*}
+	where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{st},\lb x\rb)\leftarrow\D_1(\lb 1\rb,\lb b\rb)$.
+\end{definition}
+
+\begin{lemma}\label{lem:optKAtoOT}
+	Let the Strong Interactive DDH assumption (\definitionref{def:SIDDH}) hold over group $\G$. Then the optimized Diffie-Hellman based protocol of \figureref{fig:optKAtoOT} satisfies malicious receiver security (\definitionref{def:otSec}) in the UC model with respect to the 1-out-of-2 $\OOT^\E$ functionality.
+\end{lemma}
+\begin{proof}
+	
+	Let the malicious receiver $\Adv$ make queries $q_1,...,q_Q$ to the random oracle $\H$ in this order. This then defines an $Q$-by-$Q$ matrix $A$ of ``interesting'' public keys where $A_{i,j}=\H(q_i)\oplus q_j$. Its possible that $\Adv$ did not query both $r_i$ values in which case the simulator will query $\H(r_1),\H(r_2)$ on their behalf and count these as $q_i$ queries.
+	
+	After receiving the $r_i$ values the simulator extracts the receiver's selection as $\ell$ s.t. $ q_j=r_{{\overline \ell}}, q_i=r_{\ell}$ and $j<i$ and $\overline \ell =3-\ell$. The simulator will then have two goals. 1) extract the receiver's choice message $s_{\B, \ell}=A_{j,i}^b$ and 2) use the random oracle to program $A_{i,j}^b$ to contain the SIDDH challenge $\lb c\rb$.
+	
+	
+	Let us have the first phase of the SIDDH challenge $(\lb 1\rb, \lb b\rb)$. For all $\H(q_i)$ queries the simulator samples $a_i\gets \Z_p$ and implicitly defines $a_i=a+\delta_i$ and program $\H(q_i)=\lb a_i\rb =\lb a\rb \oplus \lb{\delta_i}\rb$. As such $A_{i,j}=\lb{a_i}\rb \oplus q_j =\lb a_i+\gamma_j\rb$ where $q_j =\lb\gamma_j\rb$. The distribution of $\H$ is unchanged by this modification.
+	
+	To extract the receiver's chosen message $s_{\B, \ell}$ the simulators provides the current state $\textsf{st}$ and $\lb x\rb=A_{j,i}$ as the output of $\D_1$. As input to $\D_2$ the simulator receives $(\lb a\rb, \lb xb\rb,\lb c^*\rb)$ where $c^*\in\{ab,c\}$. The receiver's chosen message is defined as $s_{\B, \ell}=\lb xb\rb$. 
+	
+	In the real interaction the final key agreement would be $s_{\B,{\overline \ell}}=A^b_{i,j}=b\lb a+\delta_i+\gamma_j\rb= \lb ab\rb \oplus \lb{(\delta_i+\gamma_j)b}\rb$. In the ideal interaction we substitute $\lb ab\rb$ with $\lb c\rb$ to obtain $s_{\B,{\overline \ell}}= \lb c\rb \oplus \lb{(\delta_i+\gamma_j)b}\rb$. Note that the simulator can not compute $s_{\B,{\overline \ell}}$ due to not knowing $\delta_i$ and $\gamma_j$. Moreover, $\delta_i$ is uniformly distributed in the view of $\Adv$ which implies that $(\delta_i+\gamma_j)b$ is independent of $c$ and therefore directly sampling  $s_{\B,{\overline \ell}}\gets \G$ yields the same distribution. Since sampling $s_{\B,{\overline \ell}}$ directly is the only change,  $\Adv$ distinguishing the sender's ideal/ideal output immediately gives a distinguisher for SIDDH.		
+\end{proof}
