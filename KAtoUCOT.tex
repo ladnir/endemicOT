@@ -27,27 +27,39 @@ We start by giving a description of \Adv'. For each random oracle query $q$ to $
  When \Adv sends $(r_i)_{i\in[n]}$, \Adv' looks up the first oracle query of the form $q= (r_1,\dots, r_{i^*-1},r_{i^*+1},\dots, r_{n})$ for an $i^*\in[n]$. \Adv' sends $i^*$ to $\OOT^\E$. \Adv' computes for all $i\in[n]$ $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. It also computes $s_{\B,i^*}:=\EK(\tape_{\B,i^*},\mes_{\A,i^*})$.
 \Adv' sends $s_{\B,i^*}$ to $\OOT^\E$, $(\mes_{\B,i})_{i\in[n]}$ to \Adv and outputs the output of \Adv. This concludes the description of \Adv'. We emphasize that here, the other OT strings $(s_{\B,i})_{i\neq i^*}$ will not be the output of $\EK(\tape_{\B,i},\mes_{\A,i})$ but sampled uniformly by $\OOT^\E$.
 
-We now define a sequence of hybrids. The first hybrid is $\hyb_1$ and corresponds the interaction of \Adv with the sender of the protocol description. The last hybrid, $\hyb_{3(Q+1)}$, corresponds to $\Adv'$.
-For $k\in[Q+1]$, we define:
+We now define a sequence of hybrids. The first hybrid is $\hyb_0$ and corresponds the interaction of \Adv with the sender of the protocol description. The last hybrid, $\hyb_{3(Q+1)}$, corresponds to $\Adv'$. Let us define the \emph{critical query} with index $j^*\in[Q]$ as the first query of the form $H_d(r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ where $\Adv$ sends $(r_i)_{i\in[n]}$. 
+For $k\in[0,Q]$, we define:
 \begin{description}
-\item[$\hyb_{3k}$:]  When \Adv makes an oracle query $q$ respond with a random group element $\H_i(q)\leftarrow\G$. 
+\item[$\hyb_{3k}$:] In this hybrid the simulator $\Adv'$ does not program the random oracle and outputs uniform OT messages as the functionality would if $j^*<k$. In more detail,  $\Adv'$ does the following:
 
-When \Adv sends $(r_i)_{i\in[n]}$, look up the first oracle query of the form $q= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j$ be the query number. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. If $j<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B,d}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
- Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B,d}$ together with the output of \Adv. 
-\item[$\hyb_{3k+1}$:]  \textcolor{red}{When \Adv makes an oracle query $q$ to $\H_i$ for an $i\in[n]$ and the query number is less or equal to $k$, respond with a random group element $\H_i(q)\leftarrow\G$. 
-If the query number equals $k$, store $i^*:=i$ and $(g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q$. 
-For all following random oracle queries, i.e. the query number $j$ is higher than $k$, respond with a random group element $\H_i(q)\leftarrow\G$ if $i=i^*$ or for all $g\in\G$ $q_j\neq (g^*_1,\dots, g^*_{i^*-1},g,g^*_{i^*+1},\dots, g^*_{n})\setminus g^*_i$. Otherwise sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
-Respond with $\H_i(q_j):=\mes_j\ominus g^*_{i}$.}
+ When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$. When \Adv sends $(r_i)_{i\in[n]}$, look up the the critical query of the form $q_{j^*}= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j^*$ be the query index. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. 
 
-When \Adv sends $(r_i)_{i\in[n]}$, look up the first oracle query of the form $q= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j$ be the query number. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. If $j<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B,d}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
- Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B,d}$ together with the output of \Adv. 
- \item[$\hyb_{3k+2}$:]  When \Adv makes an oracle query $q$ to $\H_i$ for an $i\in[n]$ and the query number is less or equal to $k$, Respond with a random group element $\H_i(q)\leftarrow\G$. 
-If the query number equals $k$, store $i^*:=i$ and $(g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q$. 
-For all following random oracle queries, i.e. the query number $j$ is higher than $k$, respond with a random group element $\H_i(q)\leftarrow\G$ if $i=i^*$ or for all $g\in\G$ $q_j\neq (g^*_1,\dots, g^*_{i^*-1},g,g^*_{i^*+1},\dots, g^*_{n})\setminus g^*_i$. Otherwise sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
-Respond with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. 
+If $j^*<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
+ Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B}$ together with the output of \Adv. 
+ 
+\item[$\hyb_{3k+1}$:] In this hybrid $\Adv'$ will work with the hypothesis that the index of the critical query is $j^*=k$ and program the oracle to effectively output the true key exchange keys. In particular, the hybrid is:
 
-When \Adv sends $(r_i)_{i\in[n]}$, look up the first oracle query of the form $q= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j$ be the query number. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. \textcolor{red}{If $j\leq k$,} sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B,d}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
- Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B,d}$ together with the output of \Adv. 
+ When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$ \textcolor{red}{except for as follows. Let us define $i^*, (g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_k$ s.t. the $k$'th oracle query \Adv makes is $\H_{i^*}(q_{k})$. 
+For all following random oracle queries $H_i(q_j)$ and $i\neq i^*$ s.t. $q_j\in \{ (g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i \mid g\in G \}$, sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
+Respond abnormally with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. Here we define $(g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i$ as the ordered sequence with the element $g^*_i$ removed. }
+
+When \Adv sends $(r_i)_{i\in[n]}$, look up the the critical query of the form $q_{j^*}= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j^*$ be the query index. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. 
+
+If $j^*<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
+Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B}$ together with the output of \Adv. 
+ 
+ \item[$\hyb_{3k+2}$:]  In this hybrid $\Adv'$ replaces the true key exchange keys for query $k$ with the uniform challenges. This change in only observable if $j^*=k$. In  particular, the hybrid is:
+ 
+ 
+ When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$except for as follows. Let us define $i^*, (g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_k$ s.t. the $k$'th oracle query \Adv makes is $\H_{i^*}(q_{k})$. 
+For all following random oracle queries $H_i(q_j)$ and $i\neq i^*$ s.t. $q_j\in \{ (g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i \mid g\in G \}$, sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
+Respond abnormally with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. Here we define $(g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i$ as the ordered sequence with the element $g^*_i$ removed. 
+ 
+ When \Adv sends $(r_i)_{i\in[n]}$, look up the the critical query of the form $q_{j^*}= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j^*$ be the query index. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. 
+ 
+ \textcolor{red}{If $j^*\leq k$}, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
+ Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B}$ together with the output of \Adv. 
+ 
 \end{description}
 
 \begin{claim}\label{claim:first}
