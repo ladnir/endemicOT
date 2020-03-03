@@ -27,19 +27,19 @@ We start by giving a description of \Adv'. For each random oracle query $q$ to $
  When \Adv sends $(r_i)_{i\in[n]}$, \Adv' looks up the first oracle query of the form $q= (r_1,\dots, r_{i^*-1},r_{i^*+1},\dots, r_{n})$ for an $i^*\in[n]$. \Adv' sends $i^*$ to $\OOT^\E$. \Adv' computes for all $i\in[n]$ $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. It also computes $s_{\B,i^*}:=\EK(\tape_{\B,i^*},\mes_{\A,i^*})$.
 \Adv' sends $s_{\B,i^*}$ to $\OOT^\E$, $(\mes_{\B,i})_{i\in[n]}$ to \Adv and outputs the output of \Adv. This concludes the description of \Adv'. We emphasize that here, the other OT strings $(s_{\B,i})_{i\neq i^*}$ will not be the output of $\EK(\tape_{\B,i},\mes_{\A,i})$ but sampled uniformly by $\OOT^\E$.
 
-We now define a sequence of hybrids. The first hybrid is $\hyb_0$ and corresponds the interaction of \Adv with the sender of the protocol description. The last hybrid, $\hyb_{3(Q+1)}$, corresponds to $\Adv'$. Let us define the \emph{critical query} with index $j^*\in[Q]$ as the first query of the form $H_d(r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ where $\Adv$ sends $(r_i)_{i\in[n]}$. 
-For $k\in[0,Q]$, we define:
+We now define a sequence of hybrids. The first hybrid is $\hyb_1$ and corresponds the interaction of \Adv with the sender of the protocol description. The last hybrid, $\hyb_{3Q+1}$, corresponds to simulator $\Adv'$. Let us define the \emph{critical query} with index $j^*\in[Q]$ as the first query of the form $H_d(r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ where $\Adv$ sends $(r_i)_{i\in[n]}$. 
+For $k\in[Q+1]$, we define:
 \begin{description}
-\item[$\hyb_{3k}$:] In this hybrid the simulator $\Adv'$ does not program the random oracle and outputs uniform OT messages as the functionality would if $j^*<k$. In more detail,  $\Adv'$ does the following:
+\item[$\hyb_{3k-2}$:] In this hybrid the simulator $\Adv'$ does not program the random oracle and outputs uniform OT messages as the ideal functionality would if $j^*<k$. In more detail,  $\Adv'$ does the following:
 
  When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$. When \Adv sends $(r_i)_{i\in[n]}$, look up the the critical query of the form $q_{j^*}= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j^*$ be the query index. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. 
 
 If $j^*<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
  Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B}$ together with the output of \Adv. 
  
-\item[$\hyb_{3k+1}$:] In this hybrid $\Adv'$ will work with the hypothesis that the index of the critical query is $j^*=k$ and program the oracle to effectively output the true key exchange keys. In particular, the hybrid is:
+\item[$\hyb_{3k-1}$:] In this hybrid $\Adv'$ programs the oracle to prepare a switch to uniform keys when $j^*=k$. In particular, the hybrid is:
 
- When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$ \textcolor{red}{except for as follows. Let us define $i^*, (g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_k$ s.t. the $k$'th oracle query \Adv makes is $\H_{i^*}(q_{k})$. 
+ When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$ \textcolor{red}{except for the following queries. Let us define $i^*, (g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_k$ s.t. the $k$'th oracle query \Adv makes is $\H_{i^*}(q_{k})$. 
 For all following random oracle queries $H_i(q_j)$ and $i\neq i^*$ s.t. $q_j\in \{ (g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i \mid g\in G \}$, sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
 Respond abnormally with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. Here we define $(g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i$ as the ordered sequence with the element $g^*_i$ removed. }
 
@@ -48,10 +48,10 @@ When \Adv sends $(r_i)_{i\in[n]}$, look up the the critical query of the form $q
 If $j^*<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
 Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B}$ together with the output of \Adv. 
  
- \item[$\hyb_{3k+2}$:]  In this hybrid $\Adv'$ replaces the true key exchange keys for query $k$ with the uniform challenges. This change in only observable if $j^*=k$. In  particular, the hybrid is:
+ \item[$\hyb_{3k}$:]  In this hybrid $\Adv'$ replaces the true key exchange keys for query $k$ with the uniform challenges. This change is only observable if $j^*=k$. In  particular, the hybrid is:
  
  
- When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$except for as follows. Let us define $i^*, (g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_k$ s.t. the $k$'th oracle query \Adv makes is $\H_{i^*}(q_{k})$. 
+ When \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$ except for the following queries. Let us define $i^*, (g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_k$ s.t. the $k$'th oracle query \Adv makes is $\H_{i^*}(q_{k})$. 
 For all following random oracle queries $H_i(q_j)$ and $i\neq i^*$ s.t. $q_j\in \{ (g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i \mid g\in G \}$, sample random tape $\tape_j\leftarrow\bits^*$ and compute $\mes_{j}\leftarrow\A(\tape_j)$. 
 Respond abnormally with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. Here we define $(g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i$ as the ordered sequence with the element $g^*_i$ removed. 
  
@@ -65,13 +65,13 @@ Respond abnormally with $\H_i(q_j):=\mes_j\ominus g^*_{i}$. Here we define $(g^*
 \begin{claim}\label{claim:first}
 For any $k\in[Q+1]$, let there be a distinguisher $\D$ with
 $$
-\epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k})=1] -\Pr[\D(z,\hyb_{3k+1})=1]|.
+\epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k-2})=1] -\Pr[\D(z,\hyb_{3k-1})=1]|.
 $$
 Then, there is a distinguisher $\D_u$ breaking the $Q$-multi-instance uniformity of the \UKA protocol.
 \end{claim}
 
 \begin{proof}
- $\D_u$ gets access to an oracle $\O$ which either outputs uniform messages, i.e. $\O_u$ or messages of  the form $\mes_\A\leftarrow\A(\tape_\A)$ for $\tape_\A\leftarrow\bits^*$. $\D_u$ invokes \D and creates its input as follows. It invokes $\Adv$ and interacts with him as $\hyb_{3k+1}$ does with the difference that $\mes_j$ are requested from $\O$ rather than computing them.  After receiving the output, $\D_u$ uses it as input for $\D$ together with $(s_{\B,i})_{i\in[n]}$, where $s_{\B,i}\leftarrow\EK(\tape_{\B,i},\mes_{\A,i})$. $\D_u$ outputs the output of \D. 
+ $\D_u$ gets access to an oracle $\O$ which either outputs uniform messages, i.e. $\O_u$ or messages of  the form $\mes_\A\leftarrow\A(\tape_\A)$ for $\tape_\A\leftarrow\bits^*$. $\D_u$ invokes \D and creates its input as follows. It invokes $\Adv$ and interacts with him as $\hyb_{3k-1}$ does with the difference that $\mes_j$ are requested from $\O$ rather than computing them.  After receiving the output, $\D_u$ uses it as input for $\D$ together with $(s_{\B,i})_{i\in[n]}$, where $s_{\B,i}\leftarrow\EK(\tape_{\B,i},\mes_{\A,i})$. $\D_u$ outputs the output of \D. 
 
 If $\O$ is oracle $\O_{u}$, all $\mes_j$ are uniform and hence all random oracle queries $q$ are answered with a uniformly random $\H_i(q)\in\G$.  Otherwise, \Adv' is identical with \send as well as $(s_{\B,i})_{i\in[n]}$ are identical with the output of \send.  
 Hence 
@@ -88,7 +88,7 @@ Hence
 \begin{claim}
 For any $k\in[Q+1]$, let there be a distinguisher $\D$ with
 $$
-\epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k+1})=1] -\Pr[\D(z,\hyb_{3k+2})=1]|.
+\epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k-1})=1] -\Pr[\D(z,\hyb_{3k})=1]|.
 $$
 Then there is a distinguisher $\D_k$ that breaks the $(Q,n-1)$-multi-instance key-indistinguishability of the \UKA protocol.
 \end{claim}
@@ -96,7 +96,7 @@ Then there is a distinguisher $\D_k$ that breaks the $(Q,n-1)$-multi-instance ke
 \begin{proof}
 $\D_k$ has access to oracles $\O_{\langle \A,\B\rangle}$ and \O which is either $\O_u$ or $\O_k$. $\D_k$ invokes $\D$ and creates its input as follows. $\D_k$ invokes \Adv and interacts with it as $\hyb_{3k+2}$ does with the difference, that $\D_k$ generates $\mes_j$ by querying a transcript $\langle \A, \B\rangle=(\mes_{\A,j}',\mes_{\B,j}')$ from $\O_{\langle \A,\B\rangle}$ and setting $\mes_j=\mes_{\A,j}'$. 
 
-If $(r_i)_{i\in[n]}$ corresponds to a query $j\neq k$, then $\hyb_{3k+1}$ and $\hyb_{3k+2}$ are equivalent. Follow the description of $\hyb_{3k+1}$ and ignore oracle $\O$, since the keys for the challenge transcripts are not needed.
+If $(r_i)_{i\in[n]}$ corresponds to a query $j\neq k$, then $\hyb_{3k-1}$ and $\hyb_{3k}$ are equivalent. Follow the description of $\hyb_{3k-1}$ and ignore oracle $\O$, since the keys for the challenge transcripts are not needed.
 
 If $(r_i)_{i\in[n]}$ corresponds to query $k$,
 compute for all $i\in[n]\setminus\{i^*\}$
@@ -114,9 +114,9 @@ where there exists a $j\in[Q]$ such that the last equality holds. It also uses o
 \end{proof}
 
 \begin{claim}\label{claim:first}
-For any $k\in\{0\}\cup[Q]$, let there be a distinguisher $\D$ with
+For any $k\in[Q]$, let there be a distinguisher $\D$ with
 $$
-\epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k+2})=1] -\Pr[\D(z,\hyb_{3k+3})=1]|.
+\epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k})=1] -\Pr[\D(z,\hyb_{3k+1})=1]|.
 $$
 Then, there is a distinguisher $\D_u$ breaking the $Q$-multi-instance uniformity of the \UKA protocol.
 \end{claim}
@@ -163,11 +163,62 @@ For stand alone security, security of \UKA against uniform adversaries is suffic
 	Let the Choose-and-Open DDH assumption for parameter $n$ (\definitionref{def:CODDH}) hold over group $\G$. Then the One-round Diffie-Hellman based protocol  of \figureref{fig:KAtoOT} satisfies malicious receiver security (\definitionref{def:otSec}) in the UC model with respect to the 1-out-of-$n$ $\OOT^\E$ functionality.
 \end{lemma}
 \begin{proof}
-The difference to the previous regimes is that now the simulator and sender will send their message before seeing the adversaries first message. The simulator for the malicious receiver is still straight forward. It sends the first message according to protocol. As previously, he will extract the receiver's input after seeing the malicious receveirs response $(r_i)_{i\in [n]}$. The input will be the index $i^*$ of random oracle $\H_{i^*}$ for which the malicious receiver makes the first query of the form $(g_1,\ldots,g_{i^*-1},g_{i^*+1},\ldots,g_n)$. The simulator sends the choice bit and all keys to the ideal functionality, where only the $i^*$th key will be computed according to the protocol, all other keys are uniformly random. 
+The difference to the previous regimes is that now the simulator $\Adv'$ and sender will send their message before seeing the adversaries first message. The simulator for the malicious receiver is still straight forward. It sends the first message according to protocol. As previously, he will extract the receiver's input after seeing the malicious receveirs response $(r_i)_{i\in [n]}$. The input will be the index $i^*$ of random oracle $\H_{i^*}$ for which the malicious receiver makes the first query of the form $(g_1,\ldots,g_{i^*-1},g_{i^*+1},\ldots,g_n)$. The simulator sends the choice bit and all keys to the ideal functionality, where only the $i^*$th key will be computed according to the protocol, all other keys are uniformly random. 
+
+As in the previous regime, we define a sequence of hybrids. We now define a sequence of hybrids. The first hybrid is $\hyb_1$ and corresponds the interaction of \Adv with the sender of the protocol description. The last hybrid, $\hyb_{Q+1}$, corresponds to simulator $\Adv'$. Since the messages in the Diffie-Hellman key agreement are statistically close to uniform, we need less hybrids. Let us define the \emph{critical query} with index $j^*\in[Q]$ as the first query of the form $H_d(r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ where $\Adv$ sends $(r_i)_{i\in[n]}$. 
+For $k\in[Q+1]$, we define:
+\begin{description}
+\item[$\hyb_{k}$:] In this hybrid the simulator $\Adv'$ outputs uniform OT messages as the ideal functionality would if $j^*<k$. In more detail,  $\Adv'$ does the following:
+
+$\Adv'$ sends $(\lb a_j\rb)_{j\in [n]}$ to the malicious receiver as its OT message.
+ When \Adv makes an oracle query $q_{j}$, respond with a random group element $\H_i(q_{j})\leftarrow\G$. When \Adv sends $(r_i)_{i\in[n]}$, look up the the critical query of the form $q_{j^*}= (r_1,\dots, r_{d-1},r_{d+1},\dots, r_{n})$ to $\H_d$ for a $d\in[n]$. Let $j^*$ be the query index. Compute for all $i\in[n]$, $\mes_{\A,i}:=r_i\oplus\H_i((r_\ell)_{\ell\neq i})$, $\tape_{\B,i}\leftarrow\bits^*$ and $\mes_{\B,i}\leftarrow\B(\tape_{\B,i},\mes_{\A,i})$. Further, compute $s_{\B,i}:=\EK(\tape_{\B,i},\mes_{\A,i})$. 
+
+If $j^*<k$, sample for all $i\neq d$, $s_i$ uniformly. Otherwise, for all $i\neq d$, $s_i:=s_{\B,i}$.   Define $\set_{\B}:=(s_{1},\dots, s_{d-1},s_{\B,d},s_{d+1},\dots, s_{n})$.  
+ Send $(\mes_{\B,i})_{i\in[n]}$ to \Adv and output $\set_{\B}$ together with the output of \Adv. 
+\end{description}
+
+\begin{claim}
+For any $k\in[Q+1]$, let there be a distinguisher $\D$ with
+$$
+\epsilon_{\D}:=|\Pr[\D(z,\hyb_{k})=1] -\Pr[\D(z,\hyb_{k+1})=1]|.
+$$
+Then there is a distinguisher $\D_k$ that breaks CODDH for parameter $n$.
+\end{claim}
+
+\begin{proof}
+First, $\D'$ receives challenge $\lb 1\rb, (\lb a_j\rb,\lb b_j\rb)_{j\in [n]}$. He sends $(\lb a_j\rb)_{j\in [n]}$ to the malicious receiver as its OT message. He programs the random oracle similar as in the proof of \claimref{claim:UCmalreceiver}. I.e. when \Adv makes an oracle query $q_{j}$ respond normally with a random group element $\H_i(q_{j})\leftarrow\G$ except for the following queries. Let us define $i^*, (g^*_1,\dots, g^*_{i^*-1},g^*_{i^*+1},\dots, g^*_{n}):=q_k$ s.t. the $k$'th oracle query \Adv makes is $\H_{i^*}(q_{k})$. 
+For all following random oracle queries $H_i(q_j)$ and $i\neq i^*$ s.t. $q_j\in \{ (g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i \mid g\in G \}$, sample $\beta_j\leftarrow \G$ and respond with $\H_i(q_j):=\lb b_i\rb\cdot \beta_j - g^*_{i}$. Here we define $(g^*_1,\dots, g^*_{i^*-1}, g,g^*_{i^*+1},\dots, g^*_{n}) \setminus g^*_i$ as the ordered sequence with the element $g^*_i$ removed.
+
+If $(r_i)_{i\in[n]}$ corresponds to query $k$,
+compute for all $i\in[n]\setminus\{i^*\}$
+$$
+\mes_{\A,i}:=r_i\oplus\H_i((r_{\ell})_{\ell\neq i})=\mes_{\A,j}'
+$$
+where there exists a $j\in[Q]$ such that the last equality holds. It also uses oracle $\O$ to query for all $i\in[n]\setminus\{i^*\}$ the $n-1$ corresponding keys $\key_i$ that match with the transcripts containing $\mes_{\A,i}$. $\D_k$ sets $\mes_{\B,i}:=\mes_{\B,j}'$ and $s_{\B,i}:=\key_i$. It creates $\mes_{\B,i^*}$ and $s_{\B,i^*}$ as usual. It sends $(\mes_{\B,i})_{i\in[n]}$ to \Adv to receive its output which it uses together with $(s_{\B,i})_{i\in[n]}$ as input for \D. $\D_k$ outputs \D's output.  
+\begin{eqnarray*}
+\epsilon_{k}&=&|\Pr[\D_k^{\O_{k}}(z)]=1]-Pr[\D_k^{\O_{u}}(z)=1]|\\
+&= &|\Pr[\D(z,((s_{\B,i})_{i\in[n]},\Adv)_{\D_k^{\O_{k}}})=1]\\
+&&-Pr[\D(z,(\set_{\B,i^*},\Adv)_{\D_k^{\O_{u}}})=1]|\\
+&\geq&\epsilon_{\D}.
+\end{eqnarray*}
+\pe
+\end{proof}
+
+For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the same argument as in Claim~\ref{claim:malsender} using the correctness of the scheme. Hence we obtain
+
+\begin{eqnarray*}
+\epsilon_{\OT} &=&|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv))=1]|\\
+&\leq &Q\epsilon_{k}+(1-\delta),
+\end{eqnarray*}
+where $\epsilon_{k}$ is the advantage for breaking CODDH for parameter $n$.
 
 If there is an environment $\D$ that can distinguish the real execution from the ideal world, then there is a distinguisher $\D'$ that breaks the CODDH assumption as follows. 
 
-First, $\D'$ receives challenge $\lb 1\rb, (\lb a_j\rb,\lb b_j\rb)_{j\in [n]}$. He sends $(\lb a_j\rb)_{j\in [n]}$ to the malicious receiver as its OT message. Whenever the malicious receiver makes an random oracle query, $\D'$ 
+First, $\D'$ receives challenge $\lb 1\rb, (\lb a_j\rb,\lb b_j\rb)_{j\in [n]}$. He sends $(\lb a_j\rb)_{j\in [n]}$ to the malicious receiver as its OT message. Whenever the malicious receiver makes an random oracle query $q_\ell$ to $\H_j$ for an $j\in[n]$, $\D'$ samples $d_\ell\leftarrow \Z_p$ and returns $H_j(q_\ell):=\lb b_j\rb \cdot d_\ell$.
+
+When the malicious receiver sends its message $(r_i)_{i\in[n]}$, $\D'$ looks up the first random oracle query of the form $(r_1,\ldots,r_{i^*-1},r_{i^*+1},\ldots,r_n)$ to $\H_{i^*}$ for an $i^*\in[n]$. Let this be query number $\ell^*$. 
+
+$\D'$ requests $a_{i^*}$, $b_{i^*}$ and $(\lb c_j \rb)_{j\neq i^*}$ from the CODDH challenger. It outputs the key $s_{\B,i^*}:=(r_{i^*}+H((r_j)_{j\neq i^*})$ and for all $j\neq i^*$, it outputs $s_j:=r_j+$ 
 
 
 
