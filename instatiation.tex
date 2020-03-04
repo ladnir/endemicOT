@@ -89,10 +89,10 @@ The reason is simple, in our security proof during the simulation, $\Adv'$ needs
 \begin{definition}[Interactive Decisional Diffie-Hellman (IDDH) Assumption]\label{def:IDDH}
 For a group $\G$, the \emph{interactive decisional Diffie-Hellman} assumption is hard if for any ppt distinguisher $\D_1,\D_2$,
 \begin{eqnarray*}
-&&|\Pr[ \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb ab\rb)=1]\\
-&&-\Pr[ \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb b\rb,\lb xb\rb,\lb c\rb)=1]|=\negl,
+&&|\Pr[ \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb xb\rb,\lb ab\rb)=1]\\
+&&-\Pr[ \D_2(\mathsf{st},\lb 1\rb,\lb a\rb,\lb xb\rb,\lb c\rb)=1]|=\negl,
 \end{eqnarray*}
-where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{st},\lb x\rb)\leftarrow\D_1(\lb 1\rb)$.
+where $a\leftarrow\Z_p$, $b\leftarrow\Z_p$ and $c\leftarrow\Z_p$ and $(\mathsf{st},\lb x\rb)\leftarrow\D_1(\lb b\rb)$.
 \end{definition}
 
 
