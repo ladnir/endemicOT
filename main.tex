@@ -1,7 +1,7 @@
 
 \newif\iffullversion
 
-\fullversionfalse
+\fullversiontrue
 
 
 \iffullversion    
@@ -80,6 +80,8 @@ Further, we revisit, correct and improve existing oblivious transfer extension t
 
 \section*{Acknowledgements}
 We thank Jonathan Katz and Mike Rosulek for pointing out flaws with the UC security in the original paper. In this version, we fixed flaws and removed wrong claims. This mainly affects UC security of our one-round OT constructions. It is an open question to obtain UC secure one-round endemic OT from uniform key agreement. For our one-round UC OT from cyclic group based assumptions, we seem to require significantly stronger assumptions than previously claimed.   
+
+We thank Sebastian R. Verschoor for pointing out that we do not need the correctness of the key exchange protocol to prove security against a malicious receiver or sender. This is in particular significant for LWE based OTs where malicious parties can cause decryption errors. 
 
 
 \bibliographystyle{alpha}

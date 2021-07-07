@@ -48,12 +48,13 @@ Given a correct and secure \UKA scheme, then the $1$ out of $n$ oblivious transf
 \end{theorem}
 
 \begin{proof}
+Given a honest sender, receiver and the fact that \UKA, an environment cannot distinguish the protocol from the ideal functionality. 
 
-We start with proving that the scheme is secure against a malicious sender. 
+We focus now on security against a malicious sender. 
 \begin{claim}\label{claim:malsender}
-Given a $\delta$ correct and  $(n-1)$-multi-instance $\epsilon$-uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
+Given a  $(n-1)$-multi-instance $\epsilon$-uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
 $$
-|\Pr[\D(z,(\Adv,\rec)_{\Pi})=1] -\Pr[\D(z, (\Adv', \OOT^\E))=1]|\leq \epsilon+(1-\delta),
+|\Pr[\D(z,(\Adv,\rec)_{\Pi})=1] -\Pr[\D(z, (\Adv', \OOT^\E))=1]|\leq \epsilon,
 $$
 where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 \end{claim}
@@ -79,7 +80,7 @@ then it implicitly breaks the $(n-1)$-multi-instance uniformity of the \UKA prot
 &\geq & \epsilon_{\D}.
 \end{eqnarray*}
 
-For finishing the proof of the claim, we now need to show that given the output of \Adv, $\D$ cannot distinguish the output of \rec, i.e. $s_{\A,i}$,  from the output of $\OOT^\E$, which is identical to $s_{\B,i}$. This follows from the $\delta$ correctness of the \UKA scheme. By a union bound, 
+% For finishing the proof of the claim, we now need to show that given the output of \Adv, $\D$ cannot distinguish the output of \rec, i.e. $s_{\A,i}$,  from the output of $\OOT^\E$, which is identical to $s_{\B,i}$. This follows from the $\delta$ correctness of the \UKA scheme. By a union bound, 
 % 
 % 
 % Given that \UKA is correct with probability $\delta$, i.e. 
@@ -100,7 +101,9 @@ For finishing the proof of the claim, we now need to show that given the output 
 % $$
 % \Pr[\D((\Adv,\rec)_{\Pi})=1]]>\Pr[  \D((\Adv',\OOT^\E))=1],
 % $$
- we can lower bound $\epsilon$ of our distinguisher against the \UKA protocol by $\epsilon\geq\epsilon_{\OT}-(1-\delta)$.
+
+%  we can lower bound $\epsilon$ of our distinguisher against the \UKA protocol by $\epsilon\geq\epsilon_{\OT}-(1-\delta)$.
+
 %\begin{eqnarray*}
 %\epsilon 
 %&=&|\Pr[\D((\Adv,s_{\A,i})_{\D_{\UKA}^{\O_{\A}}})=1] -\Pr[ \D((\Adv,s_{\A,i})_{\D_{\UKA}^{\O_{u}}})=1]|\\
@@ -112,9 +115,9 @@ For finishing the proof of the claim, we now need to show that given the output 
 
 We finish the proof of the theorem by showing that the \OT protocol is secure against a malicious receiver.
 \begin{claim}\label{claim:malreceiver}
-Given a $\delta$ correct,  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,n-1)$-multi-instance $\epsilon_k$-key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
+Given a  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,n-1)$-multi-instance $\epsilon_k$-key indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
 $$
-|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq \epsilon_{u}+\epsilon_{k}+(1-\delta),
+|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq \epsilon_{u}+\epsilon_{k},
 $$
 where all algorithms receive input $1^\sec$ and \Adv' is expected to rewind \Adv $Q$ times.
 \end{claim}
@@ -164,15 +167,16 @@ where there exists a $j\in[Q]$ such that the last equality holds. It also uses o
 &\geq&\epsilon_{\D}.
 \end{eqnarray*}
 
-For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the same argument as in Claim~\ref{claim:malsender} using the correctness of the scheme. Hence we obtain
-
+% For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the same argument as in Claim~\ref{claim:malsender} using the correctness of the scheme. Hence we obtain
+%
+We conclude with: 
 \begin{eqnarray*}
 \epsilon_{\OT} &=&|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv))=1]|\\
 &\leq & \epsilon_{u}+|\Pr[\D((s_{\B,i})_{i\in[n]},\Adv)=1]-\Pr[\D(\set_{\B,i^*}, \Adv)=1]|\\
 %&\leq & Q(\epsilon_{u}+\epsilon_{k})+|\Pr[\D(\set_{\B,i^*},\Adv)=1]-\Pr[\D(\set_{\A,i^*}, \Adv)=1]|\\
-&\leq &\epsilon_{u}+\epsilon_{k}+(1-\delta),
+&\leq &\epsilon_{u}+\epsilon_{k},
 \end{eqnarray*}
-where $\set_{\A,i^*}:=(s_{1},\dots, s_{i^*-1},s_{\A,i^*},s_{i^*+1},\dots, s_{n})$.
+%where $\set_{\A,i^*}:=(s_{1},\dots, s_{i^*-1},s_{\A,i^*},s_{i^*+1},\dots, s_{n})$.
 \pe
 \end{proof}
 \pe
