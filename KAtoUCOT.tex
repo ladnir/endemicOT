@@ -7,9 +7,9 @@ In \theoremref{thm:KAtoOT} in \sectionref{sec:endemicOT}, we only show stand-alo
 \subsection{UC Security of the Two-Round OT}
  
 \begin{claim}\label{claim:UCmalreceiver}
-Given a $\delta$ correct,  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,n-1)$-multi-instance $\epsilon_k$-key indistinguishable two-round \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary. Then the proposed two-round OT is UC-secure against malicious receivers, i.e. in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
+Given a  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,n-1)$-multi-instance $\epsilon_k$-key indistinguishable two-round \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary. Then the proposed two-round OT is UC-secure against malicious receivers, i.e. in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$,
 $$
-|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq 2Q\epsilon_{u}+Q\epsilon_{k}+(1-\delta),
+|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv'))=1]|\leq 2Q\epsilon_{u}+Q\epsilon_{k},
 $$
 where all algorithms receive input $1^\sec$.
 \end{claim}
@@ -113,7 +113,7 @@ where there exists a $j\in[Q]$ such that the last equality holds. It also uses o
 \pe
 \end{proof}
 
-\begin{claim}\label{claim:first}
+\begin{claim}
 For any $k\in[Q]$, let there be a distinguisher $\D$ and a polynomial size auxiliary input $z$ with
 $$
 \epsilon_{\D}:=|\Pr[\D(z,\hyb_{3k})=1] -\Pr[\D(z,\hyb_{3k+1})=1]|.
@@ -126,11 +126,11 @@ The proof is almost identical to the proof of \claimref{claim:first} and therefo
 \pe
 \end{proof}
 
-For the last step, we need to replace $s_{\B,i^*}$ with $s_{\A,i^*}$. We use the same argument as in Claim~\ref{claim:malsender} using the correctness of the scheme. Hence we obtain
+We obtain
 
 \begin{eqnarray*}
 \epsilon_{\OT} &=&|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\E,\Adv))=1]|\\
-&\leq &2Q\epsilon_{u}+Q\epsilon_{k}+(1-\delta).
+&\leq &2Q\epsilon_{u}+Q\epsilon_{k}.
 \end{eqnarray*}
 \pe
 \end{proof}

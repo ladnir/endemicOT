@@ -41,9 +41,9 @@ The proof is very similar to the security proof of the $1$ out of $n$ OT. In fac
 
 Security against a malicious sender follows by the claim below. 
 \begin{claim}\label{claim:malsender}
-Given a $\delta$ correct and $\epsilon$ uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
+Given an $\epsilon$ uniform \UKA scheme, then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
 $$
-|\Pr[\D(z,(\Adv,\rec)_{\Pi})=1] -\Pr[\D(z, (\Adv', \OOT^\send))=1]|\leq \epsilon+(1-\delta),
+|\Pr[\D(z,(\Adv,\rec)_{\Pi})=1] -\Pr[\D(z, (\Adv', \OOT^\send))=1]|\leq \epsilon,
 $$
 where all algorithms receive input $1^\sec$ and \rec additionally receives input \set.
 \end{claim}
@@ -51,9 +51,9 @@ where all algorithms receive input $1^\sec$ and \rec additionally receives input
 
 By a second claim, the protocol is secure against a malicious receiver.
 \begin{claim}\label{claim:malreceiver}
-Given a $\delta$ correct,  $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,1)$-multi-instance $\epsilon_k$-key-indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
+Given a $Q$-multi-instance $\epsilon_u$-uniform,  $(Q,1)$-multi-instance $\epsilon_k$-key-indistinguishable  \UKA scheme, where $Q$ upper bounds the amount of random oracle queries by an adversary then it holds that in the programmable random oracle model for any ppt adversary \Adv, there exists a ppt adversary \Adv' such that for any ppt distinguisher \D and any polynomial size auxiliary input $z$
 $$
-|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\rec,\Adv'))=1]|\leq \epsilon_{u}+\epsilon_{k}+(1-\delta),
+|\Pr[\D(z,(\send, \Adv)_{\Pi})=1] -\Pr[\D(z,(\OOT^\rec,\Adv'))=1]|\leq \epsilon_{u}+\epsilon_{k},
 $$
 where all algorithms receive input $1^\sec$ and adversary \Adv' rewinds \Adv $Q$ times.
 \end{claim}
